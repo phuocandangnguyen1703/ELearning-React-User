@@ -1,10 +1,12 @@
 import React from 'react'
-
+import DanhChoBan from "~/components/DanhChoBan";
 type Props = {}
 
 const B = (props: Props) => {
   return (
-    <div>B</div>
+    <div>
+      <DanhChoBan/>
+    </div>
   )
 }
 
