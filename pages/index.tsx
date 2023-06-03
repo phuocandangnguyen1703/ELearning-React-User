@@ -1,17 +1,11 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
-
-import { Admin } from "~/layouts";
-import { Category } from "~/components";
+import { HFLayout } from "~/layouts";
 
 function Home() {
-  return <div className=""></div>;
+	return <div className=""></div>;
 }
 
 Home.getLayout = function getLayout(page: React.ReactElement) {
-  return <Admin>{page}</Admin>;
+	return <HFLayout>{page}</HFLayout>;
 };
 
 export default Home;

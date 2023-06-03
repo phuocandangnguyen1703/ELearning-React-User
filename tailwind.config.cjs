@@ -46,6 +46,9 @@ module.exports = {
     extend: {
       colors: {
         ...tailwindColors,
+        main: {
+          100: '#2F80ED'
+        },
         green: {
           500: "#7AE497",
           700: "#2BC86A",
