@@ -88,7 +88,7 @@ const PopularCourse = (props: Props) => {
 
 
   return (
-    <div className='w-4/5 flex-col  bg-white'>
+    <div className='w-full flex-col justify-center bg-white'>
         {/* header */}
         <div className='flex justify-center items-center w-full px-14'>
             <div className='flex flex-row items-center w-full justify-between'>
