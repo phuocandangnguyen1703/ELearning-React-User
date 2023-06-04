@@ -11,7 +11,7 @@ const Header = (props: Props) => {
   const {isLogin} = props
   console.log(isLogin)
   return (
-    <div className='w-full h-20 bg-sky-500 justify-between flex flex-row  items-center'>
+    <div className='w-full h-20 bg-[#2F80ED] justify-between flex flex-row  items-center'>
         <div className='flex flex-row h-full px-12 items-center'>
           <Logo/>
           <h2 className='px-5 text-5xl font-sans text-white'>EDUPATCH</h2>
