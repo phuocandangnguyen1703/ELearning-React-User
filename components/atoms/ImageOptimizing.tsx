@@ -7,7 +7,7 @@ import {
 	trackWindowScroll,
 } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-
+// yarn add blurhash react-blurhash react-lazy-load-image-component
 interface ImageOptimizingProps {
 	alt?: string;
 	src?: any;
