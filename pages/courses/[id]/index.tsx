@@ -1,5 +1,5 @@
-import { Details } from "~/components/templates";
-import { HFLayout } from "~/layouts";
+import { Details } from "@/components/templates";
+import { HFLayout } from "@/layouts/Layouts";
 
 const DetailsPage = () => {
 	return <Details />;

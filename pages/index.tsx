@@ -1,4 +1,4 @@
-import { HFLayout } from "~/layouts";
+import { HFLayout } from "../layouts";
 
 function Home() {
 	return <div className=""></div>;

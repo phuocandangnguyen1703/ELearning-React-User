@@ -6,7 +6,8 @@ import * as React from "react";
 // }
 import { Inter } from "next/font/google";
 import Metadata from "../Metadata";
-import { Footer, Header } from "~/components/organisms";
+import { Footer, Header } from "@/components/organisms";
+
 const poppins = Inter({
 	subsets: ["latin"],
 	preload: true,

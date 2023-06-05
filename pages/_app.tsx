@@ -1,9 +1,9 @@
-import "~/styles/globals.css";
+import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Open_Sans } from "next/font/google";
 import type { NextPage } from "next";
 import clsx from "clsx";
-import "~/styles/carousel.css";
+import "@/styles/carousel.css";
 
 const opensans = Open_Sans({ subsets: ["latin"] });
 
