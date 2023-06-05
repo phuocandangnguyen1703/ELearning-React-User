@@ -34,7 +34,7 @@ const ImageOptimizing: React.FC<ImageOptimizingProps> = ({
 			<LazyLoadComponent scrollPosition={scrollPosition}>
 				{
 					<div
-						className={`absolute top-0 left-0 z-20 duration-700 transition-opacity ease-linear w-full h-full ${
+						className={`absolute top-0 left-0 z-20 duration-500 transition-opacity ease-linear w-full h-full ${
 							isLoaded ? "opacity-0" : "opacity-100"
 						}`}
 					>
