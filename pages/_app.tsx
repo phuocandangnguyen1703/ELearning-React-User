@@ -4,6 +4,8 @@ import { Open_Sans } from "next/font/google";
 import type { NextPage } from "next";
 import clsx from "clsx";
 import "@/styles/carousel.css";
+import { Provider } from "react-redux";
+import store from "@/redux/features/store";
 
 const opensans = Open_Sans({ subsets: ["latin"] });
 
@@ -17,5 +19,11 @@ type AppPropsWithLayout = AppProps & {
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
 	const getLayout = Component.getLayout || ((page) => page);
-	return getLayout(<Component {...pageProps} />);
+	return (
+		<>
+			<Provider store={store}>
+				{getLayout(<Component {...pageProps} />)}
+			</Provider>
+		</>
+	);
 }
