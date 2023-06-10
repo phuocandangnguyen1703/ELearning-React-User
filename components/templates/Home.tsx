@@ -110,7 +110,7 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
 						control={stateStore.control}
 						render={({ field: { value: activeCourse, onChange } }) => (
 							<div className="h-[90vh] flex w-full rounded-lg overflow-hidden">
-								<div className="flex-[1.5] flex flex-col h-full overflow-y-auto bg-gray-100 gap-1 p-2 ">
+								<div className="flex-[1.5] flex flex-col h-full overflow-y-auto bg-gray-50 gap-1 p-2 ">
 									{courses.map((item) => (
 										<div
 											onClick={() => onChange(item)}
@@ -126,10 +126,10 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
 											</div>
 											<div className="flex flex-col flex-1 p-4">
 												<h2 className="uppercase font-normal">
-													Học react từ A- Z
+													{item.courseName}
 												</h2>
 												<p className="text-xs text-[#b8b8b8]">
-													Khóa học phổ biến
+													{item.description}
 												</p>
 											</div>
 										</div>
@@ -141,9 +141,16 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
 									</div>
 									<div className="p-4">
 										<div className="flex items-center justify-between">
-											<Button className="!bg-[#ECF0FF] !text-[#0066FF]">
-												Sáng tạo
-											</Button>
+											<div className="flex gap-2">
+												{activeCourse?.courseTag?.split(",")?.map((tag) => (
+													<Button
+														key={tag}
+														className="!bg-[#ECF0FF] !text-[#0066FF]"
+													>
+														{tag}
+													</Button>
+												))}
+											</div>
 
 											<div className="flex gap-1 items-center">
 												{[1, 2, 3, 4].map((num) => (
@@ -157,13 +164,10 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
 										</div>
 										<div className="flex gap-3 flex-col mt-2">
 											<h2 className="uppercase text-xl">
-												{activeCourse?.name}
+												{activeCourse?.courseName}
 											</h2>
 											<p className="text-[#828282]">
-												Lorem, ipsum dolor sit amet consectetur adipisicing
-												elit. Adipisci tempora recusandae asperiores deleniti
-												hic dignissimos quisquam quia saepe quibusdam! Ipsa odit
-												rerum optio, velit commodi qui veniam totam magnam cum?
+												{activeCourse?.description}
 											</p>
 											<div className="flex gap-1 items-center ">
 												<BsPeople size={18} />

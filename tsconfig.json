@@ -24,6 +24,7 @@
 			"@/hooks/*": ["hooks/*"],
 			"@/lib/*": ["lib/*"],
 			"@/styles/*": ["styles/*"],
+			"@/mocks/*": ["mocks/*"],
 			"@/types/*": ["types/*"],
 			"@/constants/*": ["constants/*"],
 			"@/components/*": ["components/*"],

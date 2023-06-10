@@ -3,23 +3,27 @@ import { HFLayout } from "../layouts";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/features/store";
+import DATA_COURSE from "@/mocks/course.json";
 export type CourseType = {
 	id: number;
-	name: string;
-	type: string;
+	courseTypeID: number;
+	courseTypeName: string;
+	courseTag: string;
+	courseName: string;
+	courseImage: string;
+	courseFee: number;
+	description: string;
+	courseState: number;
+	commission: number;
+	is_active: number;
+	is_deleted: number;
+	create_at: string;
+	update_at: string;
+	approvals: number;
+	chapters: number | null;
+	reviews: number | null;
 };
-const courses: CourseType[] = [
-	{
-		id: 1,
-		name: "HỌC REACT TỪ A- Z12",
-		type: "Khóa học phổ biến",
-	},
-	{
-		id: 2,
-		name: "HỌC REACT TỪ A- Z2",
-		type: "Khóa học phổ biến",
-	},
-];
+const courses: CourseType[] = DATA_COURSE.$values;
 export type StateHome = {
 	activeCourse: CourseType | null;
 };
