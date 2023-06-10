@@ -1,8 +1,17 @@
 import React from "react";
-import { ProgressLayout, RoadMapLayout, TagSkill } from "../atoms";
+import { ProgressLayout, TagSkill } from "../atoms";
+import { MapItem } from "../moleculers";
+import { MapItemProps, SkillType } from "../moleculers/MapItem";
 
 let percent = 89;
-const RoadMap = () => {
+export type MapDataType = {
+	title: string;
+	skills: Array<SkillType>;
+};
+interface RoadMapProps {
+	dataRoadMap: Array<MapDataType>;
+}
+const RoadMap: React.FC<RoadMapProps> = ({ dataRoadMap }) => {
 	const circumference = 60 * 2 * Math.PI;
 	return (
 		<div className="bg-white">
@@ -68,92 +77,16 @@ const RoadMap = () => {
 					</div>
 				</div>
 			</div>
-			<div className="w-4/5 m-auto relative">
-				<RoadMapLayout />
-				<div className="w-[26%] px-3 h-[18%] absolute top-[12.5%] left-0 py-8">
-					<h2 className="-translate-y-[3.2rem] lg:-translate-y-[140%] text-center text-white text-[1.8vw] font-bold">
-						Basic knowledge
-					</h2>
-					<div className="w-full h-fit grid grid-cols-2 -mt-4 gap-2">
-						<TagSkill isMarker>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-					</div>
-				</div>
-				<div className="w-[26%] py-8 px-3 h-[19%] absolute top-[24.5%] right-0">
-					<h2 className="-translate-y-[4.2rem] lg:-translate-y-[205%] text-center text-white text-[1.8vw] font-bold">
-						Basic knowledge
-					</h2>
-					<div className="w-full h-fit grid grid-cols-2 -mt-10 gap-2">
-						<TagSkill isMarker>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-					</div>
-				</div>
-				<div className="w-[26%] py-8 px-3 h-[19%] absolute top-[35.5%] left-0">
-					<h2 className="-translate-y-[4.1rem] lg:-translate-y-[205%] text-center text-white text-[1.8vw] font-bold">
-						Basic knowledge
-					</h2>
-					<div className="w-full h-fit grid grid-cols-2 -mt-10 gap-2">
-						<TagSkill isMarker>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-					</div>
-				</div>
-				<div className="w-[26%] py-8 px-3 h-[19%] absolute top-[47%] right-0">
-					<h2 className="-translate-y-[4.2rem] lg:-translate-y-[205%] text-center text-white text-[1.8vw] font-bold">
-						Basic knowledge
-					</h2>
-					<div className="w-full h-fit grid grid-cols-2 -mt-10 gap-2">
-						<TagSkill isMarker>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-					</div>
-				</div>
-				<div className="w-[26%] py-8 px-3 h-[19%] absolute top-[58%] left-0">
-					<h2 className="-translate-y-[4.3rem] lg:-translate-y-[205%] text-center text-white text-[1.8vw] font-bold">
-						Basic knowledge
-					</h2>
-					<div className="w-full h-fit grid grid-cols-2 -mt-10 gap-2">
-						<TagSkill isMarker>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-					</div>
-				</div>
-				<div className="w-[26%] py-8 px-3 h-[19%] absolute top-[69.5%] right-0">
-					<h2 className="-translate-y-[4.3rem] lg:-translate-y-[205%] text-center text-white text-[1.8vw] font-bold">
-						Basic knowledge
-					</h2>
-					<div className="w-full h-fit grid grid-cols-2 -mt-10 gap-2">
-						<TagSkill isMarker>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-					</div>
-				</div>
-				<div className="w-[26%] py-8 px-3 h-[19%] absolute top-[80.5%] left-0">
-					<h2 className="-translate-y-[4.2rem] lg:-translate-y-[205%] text-center text-white text-[1.8vw] font-bold">
-						Basic knowledge
-					</h2>
-					<div className="w-full h-fit grid grid-cols-2 -mt-10 gap-2">
-						<TagSkill isMarker>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-						<TagSkill>Blockchain definition</TagSkill>
-					</div>
-				</div>
+			<div className="w-4/5 m-auto relative mt-28 grid grid-cols-2 pb-20">
+				{dataRoadMap.map((item, index) => (
+					<MapItem
+						numStep={index + 1}
+						key={item.title}
+						skills={item.skills}
+						title={item.title}
+						odd={(index + 1) % 2 == 0}
+					/>
+				))}
 			</div>
 		</div>
 	);
