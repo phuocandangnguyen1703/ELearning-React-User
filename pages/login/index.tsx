@@ -20,6 +20,7 @@ const LoginPage = () => {
 	const handleSubmit = (data: LoginFormType) => {
 		console.log(data);
 		dispatch(setUser({ token: "test", name: "Mẫn Quân" }));
+
 		router.push("/");
 	};
 	const props = { loginForm, handleSubmit };

@@ -48,19 +48,20 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
 				</div>
 			</div>
 			<div className="px-[10%] pb-48">
-				<div>
-					<div className="py-4">
-						<div className="flex justify-between items-center">
-							<h2 className="text-xl font-medium">DÀNH CHO BẠN</h2>
-							<Button
-								className="h-10 uppercase px-8 !border-[#0066FF] !text-[#0066FF]"
-								outline
-							>
-								Xem tất cả
-							</Button>
+				{user.token && (
+					<div>
+						<div className="py-4">
+							<div className="flex justify-between items-center">
+								<h2 className="text-xl font-medium">DÀNH CHO BẠN</h2>
+								<Button
+									className="h-10 uppercase px-8 !border-[#0066FF] !text-[#0066FF]"
+									outline
+								>
+									Xem tất cả
+								</Button>
+							</div>
 						</div>
-					</div>
-					{user.token && (
+
 						<div className="grid grid-cols-3 grid-rows-2 gap-4 h-[90vh]">
 							<div className="col-span-2 rounded-xl overflow-hidden p-6 bg-[url('/home_a.png')] bg-cover bg-no-repeat">
 								<div>
@@ -87,8 +88,8 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
 								</div>
 							</div>
 						</div>
-					)}
-				</div>
+					</div>
+				)}
 				<div>
 					<div className="py-4">
 						<div className="flex justify-between items-center">
