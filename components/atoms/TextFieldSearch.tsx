@@ -28,12 +28,12 @@ const TextFieldSearch = forwardRef<HTMLInputElement, TextFieldSearchProps>(
 					</label>
 				)}
 				<div className={classNames}>
-					<MdOutlineSearch size={20} color="white" />
+					<MdOutlineSearch size={20} />
 					<input
 						id={id}
 						{...props}
 						type="text"
-						className="h-full outline-none bg-transparent text-white pl-2 flex-1"
+						className="h-full outline-none bg-transparent font-normal pl-2 flex-1"
 					/>
 				</div>
 

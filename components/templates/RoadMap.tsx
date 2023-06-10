@@ -3,7 +3,7 @@ import { ProgressLayout, TagSkill } from "../atoms";
 import { MapItem } from "../moleculers";
 import { MapItemProps, SkillType } from "../moleculers/MapItem";
 
-let percent = 89;
+let percent = 49;
 export type MapDataType = {
 	title: string;
 	skills: Array<SkillType>;

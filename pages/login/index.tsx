@@ -4,7 +4,12 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaLogin } from "resolvers/login";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/features/slices/user";
+import { useRouter } from "next/router";
 const LoginPage = () => {
+	const dispatch = useDispatch();
+	const router = useRouter();
 	const loginForm = useForm<LoginFormType>({
 		defaultValues: {
 			username: "",
@@ -14,6 +19,8 @@ const LoginPage = () => {
 	});
 	const handleSubmit = (data: LoginFormType) => {
 		console.log(data);
+		dispatch(setUser({ token: "test", name: "Mẫn Quân" }));
+		router.push("/");
 	};
 	const props = { loginForm, handleSubmit };
 	return <Login {...props} />;
