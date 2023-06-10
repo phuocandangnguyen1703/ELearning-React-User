@@ -72,7 +72,7 @@ const Elearning = () => {
 											data-te-target={`#collapse${key}`}
 											aria-expanded="false"
 											aria-controls="collapse"
-											className="flex flex-col gap-2"
+											className="flex flex-col gap-2 cursor-pointer"
 										>
 											<div className="flex justify-between items-center">
 												<p>Get Started</p>
