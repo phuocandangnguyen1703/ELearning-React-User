@@ -1,11 +1,12 @@
+import { Home } from "@/components/templates";
 import { HFLayout } from "../layouts";
 
-function Home() {
-	return <div className=""></div>;
+function HomePage() {
+	return <Home />;
 }
 
-Home.getLayout = function getLayout(page: React.ReactElement) {
+HomePage.getLayout = function getLayout(page: React.ReactElement) {
 	return <HFLayout>{page}</HFLayout>;
 };
 
-export default Home;
+export default HomePage;
