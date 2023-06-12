@@ -13,7 +13,7 @@ import { converDateTime } from "@/utils/index";
 interface HomeProps {
 	courses: Array<ICourseMix>;
 	stateStore: UseFormReturn<StateHome, any>;
-	user: UserReduxProps;
+	user?: UserReduxProps;
 }
 
 const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
@@ -53,7 +53,7 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
 				</div>
 			</div>
 			<div className="px-[10%] pb-48">
-				{user.token && (
+				{user?.token && (
 					<div>
 						<div className="py-4">
 							<div className="flex justify-between items-center">

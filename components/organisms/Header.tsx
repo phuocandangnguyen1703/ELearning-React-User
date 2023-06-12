@@ -11,6 +11,8 @@ import ModalSurvey from "./ModalSurvey";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/features/store";
 import { setModal } from "@/redux/features/slices/modal";
+import { useEffect, useRef, useState } from "react";
+import { UserReduxProps } from "@/redux/features/slices/user";
 
 const navigation = {
 	pages: [
@@ -24,14 +26,20 @@ const navigation = {
 };
 
 const Header = () => {
-	const { asPath } = useRouter();
+	const { asPath, push } = useRouter();
+	const isDivDropDownClicked = useRef(false);
 	const modal = useSelector((state: RootState) => state.modal);
 	const user = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
+	const [auth, setAuth] = useState<UserReduxProps>();
+
+	useEffect(() => {
+		setAuth(user);
+	}, [user]);
 	return (
 		<>
 			{modal.isOpen && <ModalSurvey />}
-			<header className="sticky bg-main-100 w-full z-[999] top-0 shadow-sm">
+			<header className="sticky bg-main-100 w-full z-[999] top-0 shadow-sm select-none">
 				<nav aria-label="Top" className="h-16 py-4 flex items-center">
 					<div className="flex-1 flex items-center">
 						<button
@@ -40,10 +48,10 @@ const Header = () => {
 						>
 							{/* <Bars3Icon className="h-6 w-6" aria-hidden="true" /> */}
 						</button>
-						<div className="flex items-center gap-2 px-10">
-							<div className="bg-[url('/logo.png')] w-16 h-12 bg-no-repeat bg-contain" />
-							<div className="bg-[url('/logo_text.png')] w-28 h-4 bg-no-repeat bg-contain" />
-						</div>
+						<span className="flex items-center gap-2 px-10">
+							<span className="bg-[url('/logo.png')] w-16 h-12 bg-no-repeat bg-contain" />
+							<span className="bg-[url('/logo_text.png')] w-28 h-4 bg-no-repeat bg-contain" />
+						</span>
 						<span className="h-8 w-px bg-gray-200" aria-hidden="true" />
 						{/* Flyout menus */}
 
@@ -65,24 +73,26 @@ const Header = () => {
 							<TextFieldSearch className="flex-1 text-white" />
 						</div>
 						{/* Logo */}
-						<div className="ml-auto flex items-center px-8">
+						<section className="ml-auto flex items-center px-8">
 							<div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-								{user?.token ? (
+								{auth?.token ? (
 									<>
-										<Link
-											href="/cart"
+										<BsCart3
+											size={20}
+											onClick={() => push("/cart")}
 											className="text-xs font-medium text-white hover:text-gray-100"
-										>
-											<BsCart3 size={20} color="white" />
-										</Link>
-										<div
+											color="white"
+										/>
+										<VscBell
+											size={20}
 											className="text-xs font-medium text-white hover:text-gray-100"
 											onClick={() => dispatch(setModal({ isOpen: true }))}
-										>
-											<VscBell size={20} color="white" />
-										</div>
+											color="white"
+										/>
+
 										<span className="h-8 w-px bg-gray-200" aria-hidden="true" />
-										<div className="flex items-center gap-2">
+
+										<div id="user" className="flex items-center gap-2 relative">
 											<Image
 												className="object-cover w-8 h-8 rounded-full"
 												src={"" || "https://shorturl.at/aNQT2"}
@@ -93,25 +103,68 @@ const Header = () => {
 												aria-hidden="true"
 											/>
 											<p className="text-xs font-medium text-white">
-												{user?.name}
+												{auth?.name}
 											</p>
 											<BiChevronDown size={14} color="white" />
+											<div
+												id="dropdown"
+												className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute top-[30px] right-0 translate-x-1/2 w-fit"
+											>
+												<ul
+													className="py-2 text-sm text-gray-700"
+													aria-labelledby="dropdownDefaultButton"
+												>
+													<li>
+														<a
+															href="#"
+															className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+														>
+															Dashboard
+														</a>
+													</li>
+													<li>
+														<a
+															href="#"
+															className="block px-4 py-2 hover:bg-gray-100"
+														>
+															Settings
+														</a>
+													</li>
+													<li>
+														<a
+															href="#"
+															className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+														>
+															Earnings
+														</a>
+													</li>
+													<li>
+														<a
+															href="#"
+															className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+														>
+															Sign out
+														</a>
+													</li>
+												</ul>
+											</div>
 										</div>
 									</>
 								) : (
-									<Link href={"/login"} passHref>
-										<Button className="!bg-white !text-[#0066FF] uppercase">
-											Đăng nhập
-										</Button>
-									</Link>
+									<Button
+										onClick={() => push("/login")}
+										className="!bg-white !text-[#0066FF] uppercase"
+									>
+										Đăng nhập
+									</Button>
 								)}
 
 								<div className="flex items-center gap-2 bg-[#1414681A] rounded-full p-2">
-									<div className="bg-[url('/vietnam.png')] rounded-full w-4 h-4 bg-no-repeat bg-contain" />
+									<span className="bg-[url('/vietnam.png')] rounded-full w-4 h-4 bg-no-repeat bg-contain" />
 									<BiChevronDown size={14} color="white" />
 								</div>
 							</div>
-						</div>
+						</section>
 					</div>
 				</nav>
 			</header>

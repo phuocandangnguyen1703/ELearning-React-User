@@ -81,4 +81,11 @@ main {
 	div[aria-expanded="true"] .chev {
 		transform: rotate(180deg);
 	}
+	#user:hover #dropdown {
+		display: block;
+	}
+
+	#user:not(:hover) #dropdown {
+		display: none;
+	}
 }

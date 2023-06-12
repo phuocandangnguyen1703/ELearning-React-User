@@ -6,8 +6,11 @@ import * as React from "react";
 // }
 import { Lexend_Deca } from "next/font/google";
 import Metadata from "../Metadata";
-import { Footer, Header } from "@/components/organisms";
-
+import { Footer } from "@/components/organisms";
+import dynamic from "next/dynamic";
+const Header = dynamic(() => import("@/components/organisms/Header"), {
+	ssr: false,
+});
 const poppins = Lexend_Deca({
 	subsets: ["latin"],
 	preload: true,

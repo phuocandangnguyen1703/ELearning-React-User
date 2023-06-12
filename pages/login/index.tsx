@@ -7,6 +7,7 @@ import { schemaLogin } from "resolvers/login";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/features/slices/user";
 import { useRouter } from "next/router";
+import { setCookie } from "cookies-next";
 const LoginPage = () => {
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -19,7 +20,11 @@ const LoginPage = () => {
 	});
 	const handleSubmit = (data: LoginFormType) => {
 		console.log(data);
-		dispatch(setUser({ token: "test", name: "Mẫn Quân" }));
+		dispatch(setUser({ token: "test", name: "Mẫn Quân", id: "hahaa" }));
+		setCookie(
+			"user",
+			JSON.stringify({ token: "test", name: "Mẫn Quân", id: "hahaa" })
+		);
 
 		router.push("/");
 	};
