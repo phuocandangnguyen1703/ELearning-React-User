@@ -1,15 +1,14 @@
-import React from "react";
-import { Button, ImageOptimizing, TextFieldSearch } from "../atoms";
 import { StateHome } from "@/pages/index";
+import { UserReduxProps } from "@/redux/features/slices/user";
+import { ICourseMix } from "@/types/course";
 import clsx from "clsx";
+import React from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { AiFillStar, AiOutlineClockCircle } from "react-icons/ai";
 import { BsCart3, BsPeople } from "react-icons/bs";
-import { UserReduxProps } from "@/redux/features/slices/user";
-import {ICourseMix} from "@/types/course";
-import ImageComponent from "@/components/templates/getImage";
-import {forEach} from "lodash";
-import ConverDateTime from "@/components/templates/convertDateTime";
+import { Button, TextFieldSearch } from "../atoms";
+import { ImageComponent } from "../organisms";
+import { converDateTime } from "@/utils/index";
 
 interface HomeProps {
 	courses: Array<ICourseMix>;
@@ -17,8 +16,7 @@ interface HomeProps {
 	user: UserReduxProps;
 }
 
-
-const Home: React.FC<HomeProps> = ({courses, stateStore, user }) => {
+const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
 	return (
 		<div>
 			<div className="h-[90vh] bg-[url('/banner_home.png')] bg-no-repeat bg-cover flex p-32 items-center">
@@ -144,8 +142,7 @@ const Home: React.FC<HomeProps> = ({courses, stateStore, user }) => {
 								</div>
 								<div className="flex-[2] h-full overflow-auto ">
 									<div className="h-[45%] w-full">
-										<ImageComponent urldb={activeCourse?.courseImage}  />
-
+										<ImageComponent urldb={activeCourse?.courseImage} />
 									</div>
 									<div className="p-4">
 										<div className="flex items-center justify-between">
@@ -168,7 +165,6 @@ const Home: React.FC<HomeProps> = ({courses, stateStore, user }) => {
 																.map((_, index) => (
 																	<AiFillStar color="orange" key={index} />
 																))}
-
 														</>
 													) : (
 														<>
@@ -191,15 +187,18 @@ const Home: React.FC<HomeProps> = ({courses, stateStore, user }) => {
 											</p>
 											<div className="flex gap-1 items-center ">
 												<BsPeople size={18} />
-												<p>{activeCourse?.enrollmentCount} học viên đã ghi danh</p>
-
+												<p>
+													{activeCourse?.enrollmentCount} học viên đã ghi danh
+												</p>
 											</div>
 											<div className="flex gap-1 items-center">
 												<AiOutlineClockCircle size={18} />
-												<ConverDateTime dateString={activeCourse?.create_at}/>
+												<p>{converDateTime(activeCourse?.create_at)}</p>
 											</div>
 											<div className="flex gap-2 items-center">
-												<p className="text-xl text-[#FF852D]">{activeCourse?.courseFee.toLocaleString('en')} ₫</p>
+												<p className="text-xl text-[#FF852D]">
+													{activeCourse?.courseFee.toLocaleString("en")} ₫
+												</p>
 												<p className="text-base line-through">6,590,000 ₫</p>
 											</div>
 											<Button className="flex items-center justify-center !bg-[#0066FF]">

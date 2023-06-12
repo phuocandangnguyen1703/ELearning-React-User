@@ -11,7 +11,7 @@ import { FiClock } from "react-icons/fi";
 import { FaChartBar, FaCertificate } from "react-icons/fa";
 import { HiDocumentText } from "react-icons/hi";
 import { BiCategory } from "react-icons/bi";
-import ImageComponent from "@/components/templates/getImage";
+import { ImageComponent } from "../organisms";
 
 interface DetailsProps {
 	linkimage: string;
