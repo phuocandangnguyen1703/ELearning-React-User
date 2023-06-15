@@ -19,17 +19,21 @@ const LoginPage = () => {
 		resolver: yupResolver(schemaLogin),
 	});
 	const handleSubmit = (data: LoginFormType) => {
-		console.log(data);
-		dispatch(setUser({ token: "test", name: "Mẫn Quân", id: "hahaa" }));
-		setCookie(
-			"user",
-			JSON.stringify({ token: "test", name: "Mẫn Quân", id: "hahaa" })
-		);
+	console.log(data);
+	//TODO: Xử lý đăng nhập chổ này.
+	// TODO: Mã hoá token dựa trên username, id
+	// const token = ......
 
-		router.push("/");
-	};
-	const props = { loginForm, handleSubmit };
-	return <Login {...props} />;
+	dispatch(setUser({ token: "test", name: "Mẫn Quân", id: "hahaa" }));
+	setCookie(
+		"user",
+		JSON.stringify({ token: "test", name: "Mẫn Quân", id: "hahaa" })
+	);
+
+	router.push("/");
+};
+const props = { loginForm, handleSubmit };
+return <Login {...props} />;
 };
 
 export default LoginPage;

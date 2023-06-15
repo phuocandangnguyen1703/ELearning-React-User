@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/features/store";
 import DATA_COURSE from "@/mocks/course.json";
 import { storage } from "../apis/firebase";
-import { ICourseMix } from "@/types/course";
+import { ICourseMix } from "@/types/IType";
 
 import React, { useEffect, useState } from "react";
 import { all } from "../apis/home";

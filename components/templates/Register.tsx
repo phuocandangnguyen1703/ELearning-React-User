@@ -3,15 +3,34 @@ import { Button, ImageOptimizing, TextField } from "../atoms";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import React from "react";
+import toast from "@/components/atoms/Toast";
+import ToastTemplate from "@/components/templates/ToastTemplate";
 interface RegisterProps {
 	registerForm: UseFormReturn<RegisterFormType, any>;
 	handleSubmit: (data: RegisterFormType) => void;
+	message: string;
+	status:number;
 }
-const Register: React.FC<RegisterProps> = ({ registerForm, handleSubmit }) => {
+const Register: React.FC<RegisterProps> = ({ registerForm, handleSubmit,status,message }) => {
+	const notify = React.useCallback((type: string, message: string) => {
+		toast({ type, message });
+	}, []);
+
+
 	return (
 		<div className="bg-white h-screen w-full flex items-center">
-			<div className="w-2/3 flex items-center h-[93%] m-auto shadow-lg rounded-xl overflow-hidden">
-				<div className="flex-1 h-full">
+			<div className ="d-flex justify-content-end">
+				{/*{status === 200 && (*/}
+				{/*	<ToastTemplate messages={message} toastType={"success"}/>*/}
+				{/*)}*/}
+				{/*{status === 210 && (*/}
+				{/*	<ToastTemplate messages={message} toastType={"warning"}/>*/}
+				{/*)}*/}
+			</div>
+
+			<div className="w-[80%] flex items-center h-[100%] m-auto shadow-lg rounded-xl overflow-hidden">
+				<div className=" h-full">
 					<ImageOptimizing src="/register.png" />
 				</div>
 				<div className="flex-1 p-4 w-full h-full">
@@ -41,13 +60,9 @@ const Register: React.FC<RegisterProps> = ({ registerForm, handleSubmit }) => {
 								</div>
 
 								<form
-									className="flex flex-col gap-4"
+									className="flex w-full flex-col gap-4"
 									onSubmit={registerForm.handleSubmit(handleSubmit)}
 								>
-									<p className="mt-2 text-sm text-[#5B5B5B] w-full ">
-										Lorem Ipsum is simply dummy text of the printing and
-										typesetting industry.
-									</p>
 									<Controller
 										name="email"
 										control={registerForm.control}
@@ -58,6 +73,19 @@ const Register: React.FC<RegisterProps> = ({ registerForm, handleSubmit }) => {
 												required
 												title="Địa chỉ Email"
 												placeholder="Nhập username"
+											/>
+										)}
+									/>
+									<Controller
+										name="fullname"
+										control={registerForm.control}
+										render={({ field, fieldState }) => (
+											<TextField
+												{...field}
+												errors={fieldState.error}
+												required
+												title="Họ và tên"
+												placeholder="Nhập Họ và tên"
 											/>
 										)}
 									/>

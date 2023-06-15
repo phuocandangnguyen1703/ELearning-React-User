@@ -49,3 +49,23 @@ export type ICourseMix = {
   "create_at": string;
   "update_at": string;
 };
+
+export type IUser = {
+  message: string;
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+  fullname: string;
+  phone: string;
+  biography: string;
+  birthday: string;
+  facebook: string;
+  job: string;
+  avt_img: string;
+  background_img: string;
+  is_active: number;
+  is_deleted: number;
+  create_at: Date;
+  update_at: Date;
+};

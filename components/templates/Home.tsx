@@ -1,6 +1,6 @@
 import { StateHome } from "@/pages/index";
 import { UserReduxProps } from "@/redux/features/slices/user";
-import { ICourseMix } from "@/types/course";
+import { ICourseMix } from "@/types/IType";
 import clsx from "clsx";
 import React from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
