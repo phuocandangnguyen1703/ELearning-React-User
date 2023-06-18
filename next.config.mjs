@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    BACKEND: "https://localhost:44331/",
+    BACKEND: "http://localhost:4000/",
   },
   images: {
     remotePatterns: [

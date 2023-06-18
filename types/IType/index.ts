@@ -33,26 +33,26 @@ export type IChapter = {
 };
 
 export type ICourseMix = {
-  "id": number;
-  "courseName": string;
-  "typeName": string;
-  "statusName": string;
-  "authorName": string;
-  "reviewStar": number;
-  "enrollmentCount": number;
-  "levelName": string;
-  "languageName": string;
-  "courseImage": string;
-  "courseFee": number;
-  "description": string;
-  "tags": string;
-  "create_at": string;
-  "update_at": string;
+  id: number;
+  courseName: string;
+  typeName: string;
+  statusName: string;
+  authorName: string;
+  reviewStar: number;
+  enrollmentCount: number;
+  levelName: string;
+  languageName: string;
+  courseImage: string;
+  courseFee: number;
+  description: string;
+  tags: string;
+  create_at: string;
+  update_at: string;
 };
 
 export type IUser = {
   message: string;
-  id: number;
+  _id: string;
   username: string;
   email: string;
   password: string;

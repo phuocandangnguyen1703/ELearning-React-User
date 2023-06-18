@@ -9,40 +9,41 @@ import Metadata from "../Metadata";
 import { Footer } from "@/components/organisms";
 import dynamic from "next/dynamic";
 const Header = dynamic(() => import("@/components/organisms/Header"), {
-	ssr: false,
+  ssr: false,
 });
 const poppins = Lexend_Deca({
-	subsets: ["latin"],
-	preload: true,
-	weight: ["400", "100", "200", "300", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+  preload: true,
+  weight: ["400", "100", "200", "300", "500", "600", "700", "800", "900"],
 });
 
 interface MainLayoutProps {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 function MainLayout({ children }: MainLayoutProps) {
-	return (
-		<div className={poppins.className}>
-			<Metadata title="E-Learning" description="Khám phá E-Learning" />
-			{children}
-		</div>
-	);
+  React.useEffect(() => {}, []);
+  return (
+    <div className={poppins.className}>
+      <Metadata title="E-Learning" description="Khám phá E-Learning" />
+      {children}
+    </div>
+  );
 }
 
 const HFLayout = ({ children }: MainLayoutProps) => (
-	<MainLayout>
-		<Header />
-		{children}
-		<Footer />
-	</MainLayout>
+  <MainLayout>
+    <Header />
+    {children}
+    <Footer />
+  </MainLayout>
 );
 
 const DefaultLayout = ({ children }: MainLayoutProps) => (
-	<MainLayout>{children}</MainLayout>
+  <MainLayout>{children}</MainLayout>
 );
 const FooterLayout = ({ children }: MainLayoutProps) => (
-	<MainLayout>{children}</MainLayout>
+  <MainLayout>{children}</MainLayout>
 );
 export default MainLayout;
 export { HFLayout, DefaultLayout, FooterLayout };

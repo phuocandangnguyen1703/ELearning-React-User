@@ -8,32 +8,52 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/features/slices/user";
 import { useRouter } from "next/router";
 import { setCookie } from "cookies-next";
+import { login } from "apis/auth";
+import { useToast } from "@iscv/toast";
 const LoginPage = () => {
-	const dispatch = useDispatch();
-	const router = useRouter();
-	const loginForm = useForm<LoginFormType>({
-		defaultValues: {
-			username: "",
-			password: "",
-		},
-		resolver: yupResolver(schemaLogin),
-	});
-	const handleSubmit = (data: LoginFormType) => {
-	console.log(data);
-	//TODO: Xử lý đăng nhập chổ này.
-	// TODO: Mã hoá token dựa trên username, id
-	// const token = ......
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const toast = useToast();
+  const loginForm = useForm<LoginFormType>({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    resolver: yupResolver(schemaLogin),
+  });
+  const handleSubmit = async (data: LoginFormType) => {
+    console.log(data);
+    await login(data)
+      .then((success) => {
+        const data = success.data;
+        dispatch(
+          setUser({
+            token: data.accessToken,
+            name: data.user.fullname,
+            id: data.user._id,
+          })
+        );
+        setCookie(
+          "user",
+          JSON.stringify({
+            token: data.accessToken,
+            name: data.user.fullname,
+            id: data.user._id,
+          })
+        );
 
-	dispatch(setUser({ token: "test", name: "Mẫn Quân", id: "hahaa" }));
-	setCookie(
-		"user",
-		JSON.stringify({ token: "test", name: "Mẫn Quân", id: "hahaa" })
-	);
-
-	router.push("/");
-};
-const props = { loginForm, handleSubmit };
-return <Login {...props} />;
+        router.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Đăng nhập thất bại");
+      });
+    //TODO: Xử lý đăng nhập chổ này.
+    // TODO: Mã hoá token dựa trên username, id
+    // const token = ......
+  };
+  const props = { loginForm, handleSubmit };
+  return <Login {...props} />;
 };
 
 export default LoginPage;
