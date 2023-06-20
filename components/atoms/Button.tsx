@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = forwardRef<
 		ref
 	) => {
 		const classNames = clsx({
-			"text-gray-800 font-normal text-xs py-2 px-6 rounded-lg hover:shadow-[0_0_4px_#36423e5c] cursor-pointer opacity-100 hover:opacity-90":
+			"transform active:scale-95 transition-all ease-in duration-100 text-gray-800 font-normal text-xs py-2 px-6 rounded-lg hover:shadow-[0_0_4px_#36423e5c] cursor-pointer opacity-100 hover:opacity-90":
 				"true",
 			"bg-emerald-400 text-white": !outline && mode === "primary",
 			"bg-red-400 text-white": !outline && mode === "danger",

@@ -1,13 +1,23 @@
 import { Details } from "@/components/templates";
 import { HFLayout } from "@/layouts/Layouts";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const DetailsPage = () => {
 	const props = {
-		linkimage:"gs://edupath-dfcd4.appspot.com/course_overview.png"
-	}
+		imageURL: "/banner_details.png",
+	};
 	const { query } = useRouter();
 	const id = query.id;
+	useEffect(() => {
+		const _initTE = async () => {
+			const use = (await import("tw-elements")).initTE;
+			const { Collapse, initTE } = await import("tw-elements");
+			use({ Collapse, initTE });
+		};
+		_initTE();
+	}, []);
+
 	return <Details {...props} />;
 };
 

@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { Open_Sans } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 
 const opensans = Open_Sans({ subsets: ["latin"] });
@@ -21,6 +22,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
 	return (
 		<>
+			<Toaster />
 			<Provider store={store}>
 				{getLayout(<Component {...pageProps} />)}
 			</Provider>

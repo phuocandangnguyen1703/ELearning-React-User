@@ -10,27 +10,31 @@ interface RegisterProps {
 	registerForm: UseFormReturn<RegisterFormType, any>;
 	handleSubmit: (data: RegisterFormType) => void;
 	message: string;
-	status:number;
+	status: number;
 }
-const Register: React.FC<RegisterProps> = ({ registerForm, handleSubmit,status,message }) => {
+const Register: React.FC<RegisterProps> = ({
+	registerForm,
+	handleSubmit,
+	status,
+	message,
+}) => {
 	const notify = React.useCallback((type: string, message: string) => {
 		toast({ type, message });
 	}, []);
 
-
 	return (
 		<div className="bg-white h-screen w-full flex items-center">
-			<div className ="d-flex justify-content-end">
+			<div className="d-flex justify-content-end">
 				{/*{status === 200 && (*/}
 				{/*	<ToastTemplate messages={message} toastType={"success"}/>*/}
 				{/*)}*/}
 				{/*{status === 210 && (*/}
-				{/*	<ToastTemplate messages={message} toastType={"warning"}/>*/}
+				{/* <ToastTemplate messages={message} toastType={"warning"} /> */}
 				{/*)}*/}
 			</div>
 
 			<div className="w-[80%] flex items-center h-[100%] m-auto shadow-lg rounded-xl overflow-hidden">
-				<div className=" h-full">
+				<div className=" h-full" onClick={() => notify("success", "aaaaa")}>
 					<ImageOptimizing src="/register.png" />
 				</div>
 				<div className="flex-1 p-4 w-full h-full">

@@ -6,24 +6,97 @@ import {
 	AiFillRedditCircle,
 	AiFillStar,
 	AiFillTwitterCircle,
+	AiOutlineClockCircle,
 } from "react-icons/ai";
-import { FiClock } from "react-icons/fi";
+import { FiChevronDown, FiClock } from "react-icons/fi";
 import { FaChartBar, FaCertificate } from "react-icons/fa";
 import { HiDocumentText } from "react-icons/hi";
 import { BiCategory } from "react-icons/bi";
 import { ImageComponent } from "../organisms";
+import { BsBook, BsCalendarMinus } from "react-icons/bs";
+import clsx from "clsx";
 
 interface DetailsProps {
-	linkimage: string;
+	imageURL: string;
 }
-const Details: React.FC<DetailsProps> = ({ linkimage }) => {
+const Details: React.FC<DetailsProps> = ({ imageURL }) => {
 	return (
 		<main className="bg-white">
 			<div className="h-[70vh] w-full relative">
-				<ImageComponent urldb={linkimage} />
+				<ImageComponent urldb={imageURL} />
 			</div>
+
 			<div className="w-full h-fit bg-white flex px-28 py-16">
 				<div className="flex-[2] h-full px-28 flex flex-col gap-8">
+					<div className="w-full h-fit max-h-screen bg-white overflow-hidden p-4 rounded-xl flex flex-col">
+						<h1 className="text-black font-semibold text-2xl">
+							Course Contents
+						</h1>
+						<div className="flex flex-col gap-2 flex-1 overflow-hidden">
+							<div className="flex items-center justify-between">
+								<p className="text-sm uppercase text-[#2F80ED]">
+									2/5 COMPLETED
+								</p>
+								<p className="text-sm uppercase text-[#2F80ED]">
+									<BsCalendarMinus size={18} />
+								</p>
+							</div>
+							<div className="flex gap-1">
+								{[1, 2, 3, 4, 5].map((item) => (
+									<span
+										key={item}
+										className={clsx("flex-1 h-1 bg-[#2F80ED]", {
+											"opacity-25": item > 2,
+										})}
+									/>
+								))}
+							</div>
+							<div className="flex flex-col gap-4 flex-1 overflow-y-auto">
+								{[1, 2, 3].map((key) => (
+									<div key={key} className="h-fit p-2 px-4 border rounded-xl">
+										<div
+											data-te-collapse-init
+											data-te-ripple-init
+											data-te-ripple-color="light"
+											data-te-target={`#collapse${key}`}
+											aria-expanded="false"
+											aria-controls="collapse"
+											className="flex flex-col gap-2 cursor-pointer"
+										>
+											<div className="flex justify-between items-center">
+												<p>Get Started</p>
+												<span className="chev ease-linear transition-all duration-100">
+													<FiChevronDown size={20} />
+												</span>
+											</div>
+											<div className="flex items-center justify-between">
+												<div className="flex items-center gap-1 text-xs text-[#252641CC]">
+													<AiOutlineClockCircle size={14} />
+													<span>1 Hour</span>
+												</div>
+												<div className="flex items-center gap-1 text-xs text-[#252641CC]">
+													<BsBook size={14} />
+													<span>5 Lessons</span>
+												</div>
+											</div>
+										</div>
+										<div
+											className="!visible hidden divide-y-2"
+											id={`collapse${key}`}
+											data-te-collapse-item
+										>
+											{[1, 2, 3, 4].map((lesson) => (
+												<div className="p-2 py-4 flex items-center justify-between text-sm">
+													<p>{lesson}.Lorem ipsum dolor sit amet</p>
+													<p>65:00</p>
+												</div>
+											))}
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					</div>
 					<div className="flex justify-between">
 						{[1, 2, 3, 4].map((num) => (
 							<Button

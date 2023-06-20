@@ -1,18 +1,18 @@
 "use client";
+import { setModal } from "@/redux/features/slices/modal";
+import { UserReduxProps } from "@/redux/features/slices/user";
+import { RootState } from "@/redux/features/store";
 import clsx from "clsx";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Button, TextFieldSearch } from "../atoms";
+import { useEffect, useState } from "react";
+import { BiChevronDown } from "react-icons/bi";
 import { BsCart3 } from "react-icons/bs";
 import { VscBell } from "react-icons/vsc";
-import { BiChevronDown } from "react-icons/bi";
-import Image from "next/image";
-import ModalSurvey from "./ModalSurvey";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/features/store";
-import { setModal } from "@/redux/features/slices/modal";
-import { useEffect, useRef, useState } from "react";
-import { UserReduxProps } from "@/redux/features/slices/user";
+import { Button, TextFieldSearch } from "../atoms";
+import ModalSurvey from "./ModalSurvey";
 
 const navigation = {
 	pages: [
@@ -27,7 +27,6 @@ const navigation = {
 
 const Header = () => {
 	const { asPath, push } = useRouter();
-	const isDivDropDownClicked = useRef(false);
 	const modal = useSelector((state: RootState) => state.modal);
 	const user = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
