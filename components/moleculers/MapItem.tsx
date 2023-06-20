@@ -10,6 +10,7 @@ export interface MapItemProps {
 	numStep: number;
 	skills?: Array<SkillType>;
 	odd?: boolean;
+	onTap?: () => void;
 }
 
 const MapItem: React.FC<MapItemProps> = ({
@@ -17,6 +18,7 @@ const MapItem: React.FC<MapItemProps> = ({
 	title,
 	numStep,
 	odd = false,
+	onTap,
 }) => {
 	return (
 		<div
@@ -145,7 +147,11 @@ const MapItem: React.FC<MapItemProps> = ({
 						</h2>
 						<div className="w-full h-fit grid grid-cols-2 mt-10 gap-2">
 							{skills?.map((skill) => (
-								<TagSkill key={skill.title} isMarker={!!skill?.isMarker}>
+								<TagSkill
+									key={skill.title}
+									isMarker={!!skill?.isMarker}
+									onClick={onTap}
+								>
 									{skill.title}
 								</TagSkill>
 							))}
@@ -161,7 +167,11 @@ const MapItem: React.FC<MapItemProps> = ({
 						</h2>
 						<div className="w-full h-fit grid grid-cols-2 pt-10 gap-2">
 							{skills?.map((skill) => (
-								<TagSkill key={skill.title} isMarker={!!skill?.isMarker}>
+								<TagSkill
+									key={skill.title}
+									isMarker={!!skill?.isMarker}
+									onClick={onTap}
+								>
 									{skill.title}
 								</TagSkill>
 							))}

@@ -15,6 +15,7 @@ import { BiCategory } from "react-icons/bi";
 import { ImageComponent } from "../organisms";
 import { BsBook, BsCalendarMinus } from "react-icons/bs";
 import clsx from "clsx";
+import { Course } from "../moleculers";
 
 interface DetailsProps {
 	imageURL: string;
@@ -246,7 +247,7 @@ const Details: React.FC<DetailsProps> = ({ imageURL }) => {
 					</div>
 				</div>
 			</div>
-			<div className="w-full h-[80vh] p-20 flex flex-col gap-2 bg-[#9DCCFF] mix-blend-normal bg-opacity-20">
+			<div className="w-full min-h-[80vh] p-20 flex flex-col gap-2 bg-[#9DCCFF] mix-blend-normal bg-opacity-20">
 				<div className="flex items-center justify-between">
 					<h2 className="text-xl font-bold text-black">Marketing Articles</h2>
 
@@ -254,55 +255,9 @@ const Details: React.FC<DetailsProps> = ({ imageURL }) => {
 						Xem tất cả
 					</Button>
 				</div>
-				<div className="flex justify-between flex-wrap">
+				<div className="flex justify-between flex-wrap gap-4">
 					{[1, 2, 3, 4, 5].map((item) => (
-						<div
-							key={item}
-							className="h-[380px] bg-white w-[260px]
-						rounded-lg p-4 flex flex-col gap-1 shadow-md"
-						>
-							<div className="h-[140px] rounded-lg overflow-hidden">
-								<ImageOptimizing
-									blurhash="NVKKc$Ny4n%LNG%M~qxux]o2o2X8-;kW%LoeRjt7"
-									src="/banner_details.png"
-								/>
-							</div>
-							<div className="flex items-center justify-between p-2">
-								<div className="whitespace-nowrap flex justify-center items-center gap-1 opacity-75">
-									<BiCategory color="gray" />
-									<span className="text-xs"> Design</span>
-								</div>
-								<div className="whitespace-nowrap flex justify-center items-center gap-1 opacity-75">
-									<FiClock color="gray" />
-									<span className="text-xs"> 3 months</span>
-								</div>
-							</div>
-							<h2 className="text-base font-semibold text-black">
-								AWS Certified solutions Architect
-							</h2>
-							<p className="line-clamp-3">
-								Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-								Pariatur eligendi ratione libero, quis voluptatum voluptate
-							</p>
-							<div className="flex items-center justify-between">
-								<div className="flex items-center">
-									<div className="flex-shrink-0">
-										<img
-											className="h-10 w-10 rounded-full"
-											src="/avatar.png"
-											alt="Avatar"
-										/>
-									</div>
-									<div className="ml-4">
-										<h2 className="text-base font-bold text-gray-900">Lina</h2>
-									</div>
-								</div>
-								<div className="flex gap-1 items-center">
-									<p className="line-through text-sm opacity-50">$100</p>
-									<p className="text-lg text-[#2F80ED] font-bold">$80</p>
-								</div>
-							</div>
-						</div>
+						<Course key={item} />
 					))}
 				</div>
 			</div>
