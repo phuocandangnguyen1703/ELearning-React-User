@@ -3,7 +3,7 @@ import { OptionType } from "@/types/common";
 import clsx from "clsx";
 import React, { forwardRef, memo } from "react";
 import { FieldError } from "react-hook-form";
-import ReactSelect, {
+import {
 	ControlProps,
 	GroupBase,
 	MenuListProps,
@@ -13,7 +13,7 @@ import ReactSelect, {
 	ValueContainerProps,
 	components,
 } from "react-select";
-
+import ReactSelect from "react-select/creatable";
 export interface ISelectProps {
 	value: OptionType;
 	title: string;
@@ -26,7 +26,7 @@ export interface ISelectProps {
 	onChange: (value: OptionType) => void;
 }
 
-const SelectComplete: React.FC<ISelectProps> = forwardRef<
+const Select: React.FC<ISelectProps> = forwardRef<
 	HTMLSelectElement,
 	ISelectProps
 >(
@@ -104,7 +104,7 @@ const SelectComplete: React.FC<ISelectProps> = forwardRef<
 
 			return (
 				<components.Control {...props}>
-					<div className="bg-white border border-gray-300 font-semibold text-black text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 outline-none min-h-[40px] flex justify-between w-full h-fit">
+					<div className="bg-whitefont-semibold text-black text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 outline-none min-h-[40px] flex justify-between w-full h-fit">
 						{children}
 					</div>
 				</components.Control>
@@ -137,10 +137,12 @@ const SelectComplete: React.FC<ISelectProps> = forwardRef<
 					ref={ref as any}
 					id="react-select-3-live-region"
 					instanceId="react-select-3-live-region"
-					placeholder="Lựa chọn"
+					placeholder="Nhập vào đây để trả lời...."
 					options={options}
 					value={
-						!value ? null : options.find((item) => item?.value === value?.value)
+						!value
+							? null
+							: options.filter((item) => item?.value === value?.value)
 					}
 					onChange={(opt) => {
 						const option = opt as OptionType;
@@ -190,5 +192,5 @@ const SelectComplete: React.FC<ISelectProps> = forwardRef<
 		);
 	}
 );
-SelectComplete.displayName = "SelectComplete";
-export default memo(SelectComplete);
+Select.displayName = "select";
+export default memo(Select);

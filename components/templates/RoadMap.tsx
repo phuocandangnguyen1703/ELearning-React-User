@@ -20,7 +20,7 @@ const RoadMap: React.FC<RoadMapProps> = ({ dataRoadMap, stateStore }) => {
 	return (
 		<div className="bg-white">
 			<Controller
-				name="isOpenModel"
+				name="isOpenModal"
 				control={stateStore.control}
 				render={({ field: { value, onChange } }) => {
 					return (
@@ -94,7 +94,7 @@ const RoadMap: React.FC<RoadMapProps> = ({ dataRoadMap, stateStore }) => {
 			<div className="w-4/5 m-auto relative mt-28 grid grid-cols-2 pb-20 z-20">
 				{dataRoadMap.map((item, index) => (
 					<MapItem
-						onTap={() => stateStore.setValue("isOpenModel", true)}
+						onTap={() => stateStore.setValue("isOpenModal", true)}
 						numStep={index + 1}
 						key={item.title}
 						skills={item.skills}
