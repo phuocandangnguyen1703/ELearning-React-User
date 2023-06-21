@@ -152,12 +152,12 @@ const dataRoadMap = [
 	},
 ];
 export type StateStoreType = {
-	isOpenModel: boolean;
+	isOpenModal: boolean;
 };
 const RoadMapPage = () => {
 	const stateStore = useForm<StateStoreType>({
 		defaultValues: {
-			isOpenModel: false,
+			isOpenModal: false,
 		},
 	});
 	const props = { dataRoadMap, stateStore };
