@@ -8,7 +8,7 @@ interface ImageProps {
 }
 
 const ImageComponent: React.FC<ImageProps> = ({ urldb }) => {
-	const [imageUrl, setImageUrl] = useState("");
+	const [imageUrl, setImageUrl] = useState(urldb);
 	const base_link = "gs://edupath-dfcd4.appspot.com/";
 
 	useEffect(() => {
@@ -20,7 +20,7 @@ const ImageComponent: React.FC<ImageProps> = ({ urldb }) => {
 				} else {
 					url = await getDownloadURL(ref(storage, base_link + " "));
 				}
-				setImageUrl(url);
+				if (url) setImageUrl(url);
 			} catch (error) {
 				console.error("Error getting image URL from Firebase Storage:", error);
 			}

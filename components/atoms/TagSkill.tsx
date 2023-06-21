@@ -1,18 +1,22 @@
 import clsx from "clsx";
-import React, { ReactNode } from "react";
-interface TagSkillProps {
+import React, { ReactHTMLElement, ReactNode } from "react";
+interface TagSkillProps extends React.AnchorHTMLAttributes<HTMLDivElement> {
 	isMarker?: boolean;
 	children: ReactNode;
 }
-const TagSkill: React.FC<TagSkillProps> = ({ isMarker, children }) => {
+const TagSkill: React.FC<TagSkillProps> = ({
+	isMarker,
+	children,
+	...props
+}) => {
 	const classNames = clsx(
-		"w-fit h-8 flex items-center justify-center border border-[#46A0CC] rounded-full text-black relative px-3",
+		"w-fit h-8 flex items-center justify-center border border-[#46A0CC] rounded-full text-black relative px-3 cursor-pointer",
 		{
 			"bg-[#9DE1FF80]": isMarker,
 		}
 	);
 	return (
-		<div className={classNames}>
+		<div className={classNames} {...props}>
 			{isMarker && (
 				<span className="absolute -left-2 -top-2">
 					<svg

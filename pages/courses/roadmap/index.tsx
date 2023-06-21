@@ -1,158 +1,166 @@
 import { RoadMap } from "@/components/templates";
 import { HFLayout } from "@/layouts/Layouts";
-
+import { useForm } from "react-hook-form";
+const dataRoadMap = [
+	{
+		title: "ABC",
+		skills: [
+			{
+				title: "Blockchain definition1",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+		],
+	},
+	{
+		title: "ABC",
+		skills: [
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+		],
+	},
+	{
+		title: "ABC",
+		skills: [
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+		],
+	},
+	{
+		title: "ABC",
+		skills: [
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+			{
+				title: "Blockchain definition",
+				isMarker: true,
+			},
+		],
+	},
+];
+export type StateStoreType = {
+	isOpenModel: boolean;
+};
 const RoadMapPage = () => {
-	const dataRoadMap = [
-		{
-			title: "ABC",
-			skills: [
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-			],
+	const stateStore = useForm<StateStoreType>({
+		defaultValues: {
+			isOpenModel: false,
 		},
-		{
-			title: "ABC",
-			skills: [
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-			],
-		},
-		{
-			title: "ABC",
-			skills: [
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-			],
-		},
-		{
-			title: "ABC",
-			skills: [
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-				{
-					title: "Blockchain definition",
-					isMarker: true,
-				},
-			],
-		},
-	];
-	const props = { dataRoadMap };
+	});
+	const props = { dataRoadMap, stateStore };
 	return <RoadMap {...props} />;
 };
 

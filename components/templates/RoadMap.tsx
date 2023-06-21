@@ -1,7 +1,10 @@
+import { StateStoreType } from "@/pages/courses/roadmap";
 import React from "react";
-import { ProgressLayout, TagSkill } from "../atoms";
+import { Controller, UseFormReturn } from "react-hook-form";
+import { ProgressLayout } from "../atoms";
 import { MapItem } from "../moleculers";
-import { MapItemProps, SkillType } from "../moleculers/MapItem";
+import { SkillType } from "../moleculers/MapItem";
+import { ModalRoadMap } from "../organisms";
 
 let percent = 49;
 export type MapDataType = {
@@ -9,12 +12,23 @@ export type MapDataType = {
 	skills: Array<SkillType>;
 };
 interface RoadMapProps {
+	stateStore: UseFormReturn<StateStoreType, any>;
 	dataRoadMap: Array<MapDataType>;
 }
-const RoadMap: React.FC<RoadMapProps> = ({ dataRoadMap }) => {
+const RoadMap: React.FC<RoadMapProps> = ({ dataRoadMap, stateStore }) => {
 	const circumference = 60 * 2 * Math.PI;
 	return (
 		<div className="bg-white">
+			<Controller
+				name="isOpenModel"
+				control={stateStore.control}
+				render={({ field: { value, onChange } }) => {
+					return (
+						<>{value && <ModalRoadMap onClose={() => onChange(false)} />}</>
+					);
+				}}
+			/>
+
 			<div className="bg-[url('/bg_skill.png')] h-screen w-full right-0 bg-no-repeat absolute z-10 top-0 bg-right-top blur-lg"></div>
 			<div className="bg-[url('/bg_skill_2.png')] h-screen w-full right-0 bg-no-repeat absolute z-10 top-0 bg-left-top blur-lg"></div>
 			<div className="h-[50vh] w-2/3 m-auto p-14 flex gap-10">
@@ -77,9 +91,10 @@ const RoadMap: React.FC<RoadMapProps> = ({ dataRoadMap }) => {
 					</div>
 				</div>
 			</div>
-			<div className="w-4/5 m-auto relative mt-28 grid grid-cols-2 pb-20">
+			<div className="w-4/5 m-auto relative mt-28 grid grid-cols-2 pb-20 z-20">
 				{dataRoadMap.map((item, index) => (
 					<MapItem
+						onTap={() => stateStore.setValue("isOpenModel", true)}
 						numStep={index + 1}
 						key={item.title}
 						skills={item.skills}
