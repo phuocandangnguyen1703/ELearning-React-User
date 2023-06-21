@@ -252,7 +252,10 @@ const ModalSurvey = () => {
 																if (
 																	!getValues("programings").includes(suggestion)
 																)
-																	setValue("programings", [suggestion]);
+																	setValue("programings", [
+																		...getValues("programings"),
+																		suggestion,
+																	]);
 															}}
 														>
 															{suggestion}
