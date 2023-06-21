@@ -29,7 +29,8 @@
 			"@/constants/*": ["constants/*"],
 			"@/components/*": ["components/*"],
 			"@/providers/*": ["providers/*"],
-			"@/layouts/*": ["layouts/*"]
+			"@/layouts/*": ["layouts/*"],
+			"@/assets/*": ["assets/*"]
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

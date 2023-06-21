@@ -35,13 +35,12 @@ for (const colorName in tailwindColors) {
   }
 }
 module.exports = {
-
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./sections/**/*.{js,ts,jsx,tsx}",
     "./layouts/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/tw-elements/dist/js/**/*.js"
+    "./node_modules/tw-elements/dist/js/**/*.js",
   ],
   plugins: [require("tw-elements/dist/plugin.cjs")],
   safelist: colorSafeList,
@@ -49,8 +48,12 @@ module.exports = {
     extend: {
       colors: {
         ...tailwindColors,
+        gray: {
+          tertiary: "#F3F3F3",
+          secondary: "#5C5F62",
+        },
         main: {
-          100: '#2F80ED'
+          100: "#2F80ED",
         },
         green: {
           500: "#7AE497",
@@ -66,6 +69,8 @@ module.exports = {
         blue: {
           400: "#67EAEB",
           600: "#418EFD",
+          secondary: "#2F80ED",
+          primary: "#0066FF",
         },
         red: {
           600: "#EA2A35",

@@ -45,5 +45,12 @@ const DefaultLayout = ({ children }: MainLayoutProps) => (
 const FooterLayout = ({ children }: MainLayoutProps) => (
   <MainLayout>{children}</MainLayout>
 );
+
+const HeaderLayout = ({ children }: MainLayoutProps) => (
+  <MainLayout>
+    <Header />
+    {children}
+  </MainLayout>
+);
 export default MainLayout;
-export { HFLayout, DefaultLayout, FooterLayout };
+export { HFLayout, DefaultLayout, FooterLayout, HeaderLayout };

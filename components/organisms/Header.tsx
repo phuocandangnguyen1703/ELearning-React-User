@@ -47,10 +47,10 @@ const Header = () => {
 						>
 							{/* <Bars3Icon className="h-6 w-6" aria-hidden="true" /> */}
 						</button>
-						<span className="flex items-center gap-2 px-10">
+						<Link href="/" className="flex items-center gap-2 px-10">
 							<span className="bg-[url('/logo.png')] w-16 h-12 bg-no-repeat bg-contain" />
 							<span className="bg-[url('/logo_text.png')] w-28 h-4 bg-no-repeat bg-contain" />
-						</span>
+						</Link>
 						<span className="h-8 w-px bg-gray-200" aria-hidden="true" />
 						{/* Flyout menus */}
 

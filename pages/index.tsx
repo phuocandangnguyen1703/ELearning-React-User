@@ -6,7 +6,7 @@ import { RootState } from "@/redux/features/store";
 import DATA_COURSE from "@/mocks/course.json";
 import { storage } from "../apis/firebase";
 import { ICourseMix } from "@/types/IType";
-
+import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
 import { all } from "../apis/home";
 import { useRouter } from "next/router";
