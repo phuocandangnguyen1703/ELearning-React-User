@@ -2,19 +2,14 @@ import React, { useEffect } from "react";
 import { ToastContainer } from "@iscv/toast";
 import { LoadingContainer } from "@/components/Loading";
 
-type Props = {
-  children: React.ReactNode;
-};
+type Props = {};
 
-function ToastLayout({ children }: Props) {
-  useEffect(() => {
-    console.log("first");
-  }, []);
+function ToastLayout({}: Props) {
   return (
     <div>
       <ToastContainer></ToastContainer>
       <LoadingContainer></LoadingContainer>
-      {children}
+      {/* {children} */}
     </div>
   );
 }

@@ -26,9 +26,8 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <Provider store={store}>
         {getLayout(
           <>
-            <ToastLayout>
-              <Component {...pageProps} />
-            </ToastLayout>
+            <ToastLayout></ToastLayout>
+            <Component {...pageProps} />
           </>
         )}
       </Provider>
