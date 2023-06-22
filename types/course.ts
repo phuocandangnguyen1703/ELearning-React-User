@@ -46,4 +46,6 @@ export type ICourse = {
   description: string;
   course_status: number;
   course_img: string;
+  tag_id?: string;
+  tag_name?: string;
 } & IMyDocument;

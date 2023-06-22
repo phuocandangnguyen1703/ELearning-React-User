@@ -39,9 +39,9 @@ const LoginPage = () => {
             token: data.accessToken,
             name: data.user.fullname,
             id: data.user._id,
-          })
+          }),
         );
-          
+
         router.push("/");
       })
       .catch((error) => {

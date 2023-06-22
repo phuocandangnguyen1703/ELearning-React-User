@@ -438,7 +438,7 @@ const ModalSurvey = () => {
                       </h4>
                     </button>
                     <div className=" shrink-0 text-center w-[160px] text-2xl ">
-                      {item.percent} %
+                      {item.percent?.toFixed(2)} %
                     </div>
                   </div>
                 );
