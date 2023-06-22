@@ -16,13 +16,14 @@ import ReactSelect, {
 
 export interface ISelectProps {
 	value: OptionType;
-	title: string;
+	title?: string;
 	className?: string;
 	error?: FieldError;
 	options: OptionType[];
 	isMulti?: boolean;
 	disabled?: boolean;
 	isClearable?: boolean;
+	placeHolder?: string;
 	onChange: (value: OptionType) => void;
 }
 
@@ -38,6 +39,7 @@ const SelectComplete: React.FC<ISelectProps> = forwardRef<
 			className,
 			title,
 			disabled,
+			placeHolder,
 			isClearable = false,
 			onChange,
 			...props
@@ -127,17 +129,20 @@ const SelectComplete: React.FC<ISelectProps> = forwardRef<
 		};
 		return (
 			<div className="flex flex-col w-full relative pb-2">
-				<label
-					htmlFor="name"
-					className="block mb-2 text-sm font-medium text-gray-900"
-				>
-					{title}
-				</label>
+				{title && (
+					<label
+						htmlFor="name"
+						className="block mb-2 text-sm font-medium text-gray-900"
+					>
+						{title}
+					</label>
+				)}
+
 				<ReactSelect
 					ref={ref as any}
 					id="react-select-3-live-region"
 					instanceId="react-select-3-live-region"
-					placeholder="Lựa chọn"
+					placeholder={placeHolder || "Lựa chọn"}
 					options={options}
 					value={
 						!value ? null : options.find((item) => item?.value === value?.value)
