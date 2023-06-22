@@ -19,6 +19,7 @@ import { searchSubstring } from "@/utils/string";
 import { useLoading } from "../Loading";
 import { frontend } from "@/assets/home";
 import { useToast } from "@iscv/toast";
+import { useRouter } from "next/router";
 
 const QUESTIONS = [
   {
@@ -57,6 +58,7 @@ const ModalSurvey = () => {
   const [recommendStatus, setRecommendStatus] = useState<ERecommendStatus>(
     ERecommendStatus.NONE
   );
+  const router = useRouter()
   const selectionRef = useRef<any>(null);
   const list = useRef<string[]>([]);
   useEffect(() => {
@@ -179,6 +181,7 @@ const ModalSurvey = () => {
     await chooseMaintype(choosen)
       .then((success) => {
         toast.success();
+        router.push("/roadmap")
       })
       .catch((error) => {
         console.log(error);

@@ -37,7 +37,7 @@ const ChatbotMain = (props: Props) => {
 
         {/* typing */}
         <div className="w-full min-h-[95px] flex items-center px-6">
-          <ChatbotTyping></ChatbotTyping>
+          <ChatbotTyping onSubmit={() => {}}></ChatbotTyping>
         </div>
       </div>
     </div>

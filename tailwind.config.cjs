@@ -51,6 +51,7 @@ module.exports = {
         gray: {
           tertiary: "#F3F3F3",
           secondary: "#5C5F62",
+          primary: "#CCCDCD",
         },
         main: {
           100: "#2F80ED",

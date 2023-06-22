@@ -9,3 +9,9 @@ export function searchSubstring(array: string[], substring: string): string[] {
 
   return results;
 }
+
+export function extractLastName(fullName: string) {
+  const words = fullName.split(" ");
+  const lastName = words[words.length - 1];
+  return lastName;
+}
