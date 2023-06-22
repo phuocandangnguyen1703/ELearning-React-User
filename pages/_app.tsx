@@ -1,5 +1,5 @@
 import ToastLayout from "@/layouts/ToastLayout";
-import store from "@/redux/features/store";
+import store from "@/redux/store";
 import "@/styles/carousel.css";
 import "@/styles/globals.css";
 import type { NextPage } from "next";

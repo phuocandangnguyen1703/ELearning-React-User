@@ -1,7 +1,7 @@
 "use client";
 import { setModal } from "@/redux/features/slices/modal";
 import { UserReduxProps } from "@/redux/features/slices/user";
-import { RootState } from "@/redux/features/store";
+import { RootState } from "@/redux/store";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";

@@ -1,3 +1,4 @@
+import store from "@/redux/store";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import EventEmitter from "events";
 import jwt_decode from "jwt-decode";
@@ -13,7 +14,7 @@ class AxiosServices {
 
     instance.interceptors.response.use(this.handleSuccess, this.handleError);
     instance.interceptors.request.use(async (config) => {
-      // config.headers!.Authorization = 'Bearer ' + process.env.CRE_TOKEN;
+      config.headers!.Authorization = "Bearer " + store.getState().user.token;
       // config.headers!['Content-Type'] = 'application/json';
       // return config as any;
       return config;

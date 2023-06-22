@@ -41,7 +41,7 @@ const LoginPage = () => {
             id: data.user._id,
           })
         );
-
+          
         router.push("/");
       })
       .catch((error) => {

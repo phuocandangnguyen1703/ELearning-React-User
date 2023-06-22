@@ -2,7 +2,7 @@ import { Details, Home } from "@/components/templates";
 import { HFLayout } from "../layouts";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { RootState } from "@/redux/features/store";
+import { RootState } from "@/redux/store";
 import DATA_COURSE from "@/mocks/course.json";
 import { storage } from "../apis/firebase";
 import { ICourseMix } from "@/types/IType";

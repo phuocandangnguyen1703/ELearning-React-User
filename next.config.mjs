@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    BACKEND: "http://192.168.1.61:4000/",
+    BACKEND: "http://192.168.1.7:4000/",
+    // BACKEND: "http://192.168.1.61:4000/",
   },
   images: {
     remotePatterns: [

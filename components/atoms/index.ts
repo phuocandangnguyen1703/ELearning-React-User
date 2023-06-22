@@ -9,3 +9,4 @@ export { default as TextFieldSearch } from "./TextFieldSearch";
 export { default as Button } from "./Button";
 export { default as TagSkill } from "./TagSkill";
 export { default as ProgressLayout } from "./ProgressLayout";
+export * from "./Loading";
