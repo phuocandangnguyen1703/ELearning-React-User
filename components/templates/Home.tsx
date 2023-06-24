@@ -6,15 +6,16 @@ import React, { useEffect, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { AiFillStar, AiOutlineClockCircle } from "react-icons/ai";
 import { BsCart3, BsPeople } from "react-icons/bs";
-import { Button, TextFieldSearch } from "../atoms";
+import { Button, ImageOptimizing, TextFieldSearch } from "../atoms";
 import { ImageComponent, ModalSurvey } from "../organisms";
 import { converDateTime } from "@/utils/index";
 import { BotIcon } from "@/assets/home/index";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { ActiveCourse, OverviewCourse } from "../moleculers";
 
 interface HomeProps {
-  courses: Array<ICourseMix>;
+  courses: string[];
   stateStore: UseFormReturn<StateHome, any>;
   user?: UserReduxProps;
 }
@@ -65,17 +66,20 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
             <div className="py-4">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-medium">DÀNH CHO BẠN</h2>
-                <Button
-                  className="h-10 uppercase px-8 !border-[#0066FF] !text-[#0066FF]"
-                  outline
+                <Link
+                  href="/course"
+                  className="h-10 uppercase px-8 border-[1.5px] btn !border-[#0066FF] !text-[#0066FF] !bg-white"
                 >
                   Xem tất cả
-                </Button>
+                </Link>
               </div>
             </div>
 
             <div className="grid grid-cols-3 grid-rows-2 gap-4 h-[90vh]">
-              <Link href="/roadmap" className="col-span-2 rounded-xl overflow-hidden p-6 bg-[url('/home_a.png')] bg-cover bg-no-repeat">
+              <Link
+                href="/roadmap"
+                className="col-span-2 rounded-xl overflow-hidden p-6 bg-[url('/home_a.png')] bg-cover bg-no-repeat"
+              >
                 <div>
                   <h2 className="uppercase font-medium">lộ trình của bạn</h2>
                   <p className="text-sm text-[#4F4F4F]">Tiến độ 15%</p>
@@ -108,115 +112,40 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
               <h2 className="uppercase text-xl font-medium">
                 KHóa học phổ biến
               </h2>
-              <Button
-                className="h-10 uppercase px-8 !border-[#0066FF] !text-[#0066FF]"
-                outline
+              <Link
+                href="/course"
+                className="h-10 uppercase px-8 !border-[#0066FF] !text-[#0066FF] btn !bg-white"
               >
                 Xem tất cả
-              </Button>
+              </Link>
             </div>
           </div>
           <Controller
             name="activeCourse"
-            defaultValue={null}
+            defaultValue={undefined}
             control={stateStore.control}
             render={({ field: { value: activeCourse, onChange } }) => (
               <div className="h-[90vh] flex w-full rounded-lg overflow-hidden">
                 <div className="flex-[1.5] flex flex-col h-full overflow-y-auto bg-gray-50 gap-1 p-2 ">
                   {courses.map((item) => (
-                    <div
+                    <OverviewCourse
+                      key={item}
+                      courseId={item}
                       onClick={() => onChange(item)}
-                      className={clsx(
-                        "flex items-center w-full p-4 rounded-lg border",
-                        {
-                          "bg-white shadow-xl": activeCourse?.id === item.id,
-                        }
-                      )}
-                    >
-                      <div className="min-w-[80px] w-[80px] h-[80px] rounded-2xl overflow-hidden">
-                        <ImageComponent urldb={item.courseImage} />
-                      </div>
-                      <div className="flex flex-col flex-1 p-4">
-                        <h2 className="uppercase font-normal">
-                          {item.courseName}
-                        </h2>
-                        <p className="text-xs text-[#b8b8b8]">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
+                    ></OverviewCourse>
                   ))}
                 </div>
-                <div className="flex-[2] h-full overflow-auto ">
-                  <div className="h-[45%] w-full">
-                    <ImageComponent urldb={activeCourse?.courseImage} />
-                  </div>
-                  <div className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex flex-wrap gap-2">
-                        {activeCourse?.tags?.split(",")?.map((tag) => (
-                          <Button
-                            key={tag}
-                            className="!bg-[#ECF0FF] !text-[#0066FF]"
-                          >
-                            {tag}
-                          </Button>
-                        ))}
-                      </div>
-                      <div className="flex gap-1 items-center">
-                        {activeCourse?.reviewStar ? (
-                          activeCourse.reviewStar > 0 ? (
-                            <>
-                              {Array(activeCourse.reviewStar)
-                                .fill(null)
-                                .map((_, index) => (
-                                  <AiFillStar color="orange" key={index} />
-                                ))}
-                            </>
-                          ) : (
-                            <>
-                              <p>No Rank</p>
-                            </>
-                          )
-                        ) : null}
-
-                        <span className="text-[#909599] font-light text-xs">
-                          ({activeCourse?.enrollmentCount})
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex gap-3 flex-col mt-2">
-                      <h2 className="uppercase text-xl">
-                        {activeCourse?.courseName}
-                      </h2>
-                      <p className="text-[#828282]">
-                        {activeCourse?.description}
-                      </p>
-                      <div className="flex gap-1 items-center ">
-                        <BsPeople size={18} />
-                        <p>
-                          {activeCourse?.enrollmentCount} học viên đã ghi danh
-                        </p>
-                      </div>
-                      <div className="flex gap-1 items-center">
-                        <AiOutlineClockCircle size={18} />
-                        <p>{converDateTime(activeCourse?.create_at)}</p>
-                      </div>
-                      <div className="flex gap-2 items-center">
-                        <p className="text-xl text-[#FF852D]">
-                          {activeCourse?.courseFee.toLocaleString("en")} ₫
-                        </p>
-                        <p className="text-base line-through">6,590,000 ₫</p>
-                      </div>
-                      <Button className="flex items-center justify-center !bg-[#0066FF]">
-                        <label className="flex items-center not-italic text-base gap-2">
-                          <BsCart3 size={18} />
-                          ĐĂNG KÝ NGAY
-                        </label>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+                <Controller
+                  control={stateStore.control}
+                  name="activeCourse"
+                  render={({ field: { value: courseId } }) => {
+                    return (
+                      <ActiveCourse
+                        courseId={courseId || courses.at(0)}
+                      ></ActiveCourse>
+                    );
+                  }}
+                ></Controller>
               </div>
             )}
           />

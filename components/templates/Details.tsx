@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, ImageOptimizing, useLoading } from "../atoms";
+import React, { useCallback, useEffect, useState } from "react";
+import { Button, ImageOptimizing, TextAreaField, useLoading } from "../atoms";
 import {
   AiFillCamera,
   AiFillGoogleCircle,
@@ -22,32 +22,218 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { checkPayment } from "apis/payment";
 import Link from "next/link";
-
+import { Controller, useForm } from "react-hook-form";
+import { StartIcon } from "@/assets/detail";
+import { useToast } from "@iscv/toast";
+import { getCourseReview, postReview } from "apis/review";
+import { IReview } from "@/types/review";
+import { ICourseReview } from "apis/review/types";
+import { calculateRelativeTime } from "@/utils/date";
+import _ from "lodash";
+import { getCoursesSimilarTag } from "apis/roadmap";
+import { getCoursesOfMaintype } from "@/apis/course";
 interface DetailsProps {
   imageURL: string;
   course: ICourse | undefined;
+  courseId: string | undefined;
 }
-const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
-  const [isPaid, setIsPaid] = useState(false);
+
+type IForm = {
+  isPaid: boolean;
+  review: ICourseReview | undefined;
+  rating: {
+    isRating: boolean;
+    courseReviewStar: number | undefined;
+    hoveredNumber: number;
+    content: string | undefined;
+  };
+  suggestions: string[];
+};
+
+const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
   const router = useRouter();
   const token = useSelector((state: RootState) => state.user.token);
-  const courseId = router.query.id;
   const loading = useLoading();
+  const toast = useToast();
+  const { control, setValue, getValues } = useForm<IForm>({
+    defaultValues: {
+      isPaid: false,
+      review: undefined,
+      rating: {
+        isRating: false,
+        hoveredNumber: 0,
+      },
+      suggestions: [],
+    },
+  });
   useEffect(() => {
-    console.log(courseId);
     if (!courseId) return;
     if (!token) return;
 
     (async () => {
       loading.open();
       await checkPayment(courseId as string)
-        .then((success) => setIsPaid(success.data.is_paid))
+        .then((success) => setValue("isPaid", success.data.is_paid))
         .catch((error) => console.log(error));
       loading.close();
     })();
   }, [courseId, token]);
+  const handleReview = useCallback(async () => {
+    const rating = getValues("rating");
+    if (!rating.courseReviewStar) {
+      toast.warning("Vui lòng chọn số sao");
+      return;
+    }
+    loading.open();
+    await postReview({
+      courseId: course?._id!,
+      courseReviewStar: rating.courseReviewStar,
+      content: rating.content,
+    })
+      .then(() => {
+        toast.success("Đánh giá thành công");
+        setValue("rating.isRating", false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Đánh giá thất bại");
+      });
+
+    loading.close();
+  }, [courseId]);
+  useEffect(() => {
+    if (!courseId) return;
+    (async () => {
+      loading.open();
+      await getCourseReview(courseId)
+        .then((success) => setValue("review", success.data))
+        .catch((error) => console.log(error));
+      loading.close();
+    })();
+  }, [courseId]);
+  useEffect(() => {
+    if (!courseId) return;
+    (async () => {
+      loading.open();
+      await getCoursesOfMaintype(courseId)
+        .then((success) =>
+          setValue(
+            "suggestions",
+            success.data.map((x) => x._id)
+          )
+        )
+        .catch((error) => console.log(error));
+      loading.close();
+    })();
+  }, [courseId]);
   return (
     <main className="bg-white">
+      <Controller
+        control={control}
+        name="rating"
+        render={({ field: { value: rating } }) => {
+          return (
+            <Controller
+              control={control}
+              name="rating.isRating"
+              render={({ field: { value: isRating } }) => {
+                if (!isRating) return <></>;
+                return (
+                  <div className="fixed z-[1000] inset-0">
+                    <div
+                      className="fixed bg-gray-400 opacity-50 inset-0 z-[1002]"
+                      onClick={() => setValue("rating.isRating", false)}
+                    ></div>
+                    <div className=" transform-gpu fixed z-[1003] top-[40%] -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white rounded-2xl w-[25rem] min-h-[20rem] flex flex-col gap-3 px-8 py-6">
+                      <h3 className="font-extralight">
+                        Bạn đánh giá khoá học này thế nào?
+                      </h3>
+                      <Controller
+                        control={control}
+                        name="rating.courseReviewStar"
+                        render={({
+                          field: {
+                            value: courseReviewStar,
+                            onChange: onCourseReviewStarChange,
+                          },
+                        }) => {
+                          return (
+                            <div className="flex items-center justify-between gap-2">
+                              <Controller
+                                control={control}
+                                name="rating.hoveredNumber"
+                                render={({
+                                  field: { value: hoveredNumber, onChange },
+                                }) => (
+                                  <>
+                                    {[1, 2, 3, 4, 5].map((star, index) => {
+                                      return (
+                                        <StartIcon
+                                          key={star}
+                                          className={clsx(
+                                            {
+                                              "!fill-orange-400":
+                                                hoveredNumber === 0
+                                                  ? star <=
+                                                    (courseReviewStar || 0)
+                                                  : star <= hoveredNumber,
+                                            },
+                                            "fill-gray-300 cursor-pointer"
+                                          )}
+                                          onClick={() =>
+                                            onCourseReviewStarChange(star)
+                                          }
+                                          onMouseEnter={() => onChange(star)}
+                                          onMouseLeave={() => onChange(0)}
+                                        ></StartIcon>
+                                      );
+                                    })}
+                                  </>
+                                )}
+                              ></Controller>
+                            </div>
+                          );
+                        }}
+                      ></Controller>
+                      <h4 className="font-extralight">Bình luận thêm</h4>
+                      <Controller
+                        control={control}
+                        name="rating.content"
+                        render={({ field: { value: content, onChange } }) => {
+                          return (
+                            <TextAreaField
+                              name={"rating_comment"}
+                              className="flex-1 w-full"
+                              value={content}
+                              onChange={onChange}
+                              inputClassName="flex-1 w-full p-3 rounded-xl min-h-[7rem] border-[2px] !border-gray-400 text-gray-500"
+                              placeholder="Nhập nội dung..."
+                            ></TextAreaField>
+                          );
+                        }}
+                      ></Controller>
+                      <div className="flex justify-between items-center gap-1">
+                        <Button
+                          onClick={() => setValue("rating.isRating", false)}
+                          className=" border-[2px] border-gray-500 !text-gray-500 flex-1 !bg-white text-xl font-semibold flex justify-center items-end"
+                        >
+                          Huỷ
+                        </Button>
+                        <Button
+                          onClick={() => handleReview()}
+                          className=" !bg-blue-secondary text-white flex-1 text-xl font-semibold justify-center items-end"
+                        >
+                          Đánh giá
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }}
+            ></Controller>
+          );
+        }}
+      ></Controller>
       <div className="h-[70vh] w-full relative">
         <ImageComponent urldb={imageURL} />
       </div>
@@ -142,71 +328,105 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
               </Button>
             ))}
           </div>
-          <div className="flex-1 w-full bg-[#9DCCFF4D] rounded-2xl p-6 overflow-hidden gap-2 flex flex-col">
-            <div className="h-40 flex gap-9">
-              <div className="w-48 h-full bg-white rounded-2xl flex flex-col justify-center items-center gap-2">
-                <h2 className="font-bold text-[#00000080] text-2xl">
-                  4 out of 5
-                </h2>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4].map((num) => (
-                    <AiFillStar color="orange" key={num} />
-                  ))}
-                </div>
-                <h2 className="font-normal text-[#00000080] text-xl">
-                  Top Raiting
-                </h2>
-              </div>
-              <div className="flex-1 h-full bg-white rounded-2xl p-2 flex flex-col gap-2">
-                {[1, 2, 3, 4, 5].reverse().map((item) => (
-                  <div className="flex items-center gap-2" key={item}>
-                    <p className="text-[#00000080]">{item} Stars</p>
-                    <div className="bg-[#D9D9D9] flex-1 h-2 rounded-3xl relative overflow-hidden">
-                      <span className="bg-[#2F80ED] w-[80%] h-2 absolute left-0 top-0 rounded-3xl"></span>
+          <Controller
+            control={control}
+            name="review"
+            render={({ field: { value: review } }) => {
+              return (
+                <div className="flex-1 w-full bg-[#9DCCFF4D] rounded-2xl p-6 overflow-hidden gap-2 flex flex-col">
+                  <div className="h-40 flex gap-9">
+                    <div className="w-48 h-full bg-white rounded-2xl flex flex-col justify-center items-center gap-2">
+                      <h2 className="font-bold text-[#00000080] text-2xl">
+                        {review?.averange.toFixed(1)} out of 5
+                      </h2>
+                      <div className="flex gap-1">
+                        {[
+                          ...Array(
+                            Number(review?.averange.toFixed() || 0)
+                          ).keys(),
+                        ].map((num) => {
+                          return <AiFillStar key={num} color="orange" />;
+                        })}
+                      </div>
+                      <h2 className="font-normal text-[#00000080] text-xl">
+                        Top Raiting
+                      </h2>
+                    </div>
+                    <div className="flex-1 h-full bg-white rounded-2xl p-2 flex flex-col gap-2">
+                      {[1, 2, 3, 4, 5].reverse().map((item) => (
+                        <div className="flex items-center gap-2" key={item}>
+                          <p className="text-[#00000080]">{item} Stars</p>
+                          <div className="bg-[#D9D9D9] flex-1 h-2 rounded-3xl relative overflow-hidden">
+                            <span
+                              className="bg-[#2F80ED] h-2 absolute left-0 top-0 rounded-3xl"
+                              style={{
+                                width: `${(() => {
+                                  if (!review) return 0;
+                                  switch (item) {
+                                    case 1:
+                                      return review.oneStar;
+                                    case 2:
+                                      return review.twoStar;
+                                    case 3:
+                                      return review.threeStar;
+                                    case 4:
+                                      return review.fourStar;
+                                    case 5:
+                                      return review.fiveStar;
+                                    default:
+                                      return 0;
+                                  }
+                                })()}%`,
+                              }}
+                            ></span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col flex-1 overflow-auto h-full p-4 gap-3">
-              {[1, 2].map((item) => (
-                <div className="flex items-center">
-                  <div className="flex flex-col">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0">
-                        <img
-                          className="h-10 w-10 rounded-full"
-                          src="/avatar.png"
-                          alt="Avatar"
-                        />
-                      </div>
-                      <div className="ml-4">
-                        <h2 className="text-base font-bold text-gray-900">
-                          Lina
-                        </h2>
-                        <div className="flex gap-1">
-                          {[1, 2, 3, 4].map((num) => (
-                            <AiFillStar color="orange" key={num} />
-                          ))}
+                  <div className="flex flex-col flex-1 overflow-auto h-full p-4 gap-3">
+                    {review?.list?.map((item) => (
+                      <div className="flex items-center">
+                        <div className="flex flex-col">
+                          <div className="flex items-center">
+                            <div className="flex-shrink-0">
+                              <img
+                                className="h-10 w-10 rounded-full"
+                                src="/avatar.png"
+                                alt="Avatar"
+                              />
+                            </div>
+                            <div className="ml-4">
+                              <h2 className="text-base font-bold text-gray-900">
+                                {item.fullname}
+                              </h2>
+                              <div className="flex gap-1">
+                                {[
+                                  ...Array(item.course_review_star || 0).keys(),
+                                ].map((num) => (
+                                  <AiFillStar color="orange" key={num} />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          {item.content && <p>{item.content}</p>}
+                        </div>
+                        <div className="whitespace-nowrap flex justify-center items-center gap-1 opacity-75">
+                          <FiClock color="gray" />
+                          <span className="text-xs">
+                            {calculateRelativeTime(
+                              new Date(item.createdAt!),
+                              new Date()
+                            )}
+                          </span>
                         </div>
                       </div>
-                    </div>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Exercitationem mollitia dolores dolorem laudantium at illo
-                      ipsum, doloribus, fugit consequuntur porro facere,
-                      voluptatem facilis adipisci eveniet. Facere voluptatem
-                      incidunt dolorem aut?
-                    </p>
-                  </div>
-                  <div className="whitespace-nowrap flex justify-center items-center gap-1 opacity-75">
-                    <FiClock color="gray" />
-                    <span className="text-xs"> 3 months</span>
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              );
+            }}
+          ></Controller>
         </div>
         <div className="flex-1 bg-white shadow-md rounded-lg h-fit p-6 flex flex-col gap-4 -translate-y-[280px]">
           <div className="h-[180px]">
@@ -229,17 +449,33 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
             {course?.duration} hour left at this price
           </p>
 
-          <Button
-            className="w-full text-base !bg-[#2F80ED] font-bold h-10"
-            onClick={() => {
-              if (isPaid) return;
-              router.push(`/payment?course_id=${course?._id}`);
+          <Controller
+            control={control}
+            name="isPaid"
+            render={({ field: { value: isPaid } }) => {
+              return (
+                <Button
+                  className={clsx(
+                    "w-full text-base font-bold h-10 text-center flex justify-center items-center",
+                    {
+                      "!bg-[#2F80ED]": !isPaid,
+                      "!bg-green-600": isPaid,
+                    }
+                  )}
+                  onClick={() => {
+                    if (isPaid) {
+                      setValue("rating.isRating", true);
+                      return;
+                    }
+                    router.push(`/payment?course_id=${course?._id}`);
+                  }}
+                >
+                  {!isPaid && "Buy Now"}
+                  {isPaid && "Đánh giá ngay"}
+                </Button>
+              );
             }}
-          >
-            {!isPaid && "Buy Now"}
-            {isPaid && "Đã thanh toán"}
-          </Button>
-          <div className="h-[1px] w-full bg-black"></div>
+          ></Controller>
           <div className="flex flex-col gap-2">
             <div className="flex gap-2">
               {course?.tag_id && (
@@ -295,14 +531,27 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-black">Marketing Articles</h2>
 
-          <Button className="uppercase" outline>
+          <Link
+            className="uppercase border-[1.5px] border-gray-400 btn !bg-white text-gray-500"
+            href={"/course"}
+          >
             Xem tất cả
-          </Button>
+          </Link>
         </div>
         <div className="flex justify-between flex-wrap gap-4">
-          {[1, 2, 3, 4, 5].map((item) => (
-            <Course key={item} />
-          ))}
+          <Controller
+            control={control}
+            name="suggestions"
+            render={({ field: { value: suggestions } }) => {
+              return (
+                <>
+                  {suggestions.map((suggestion) => {
+                    return <Course key={suggestion} courseId={suggestion} />;
+                  })}
+                </>
+              );
+            }}
+          ></Controller>
         </div>
       </div>
       <div className="h-fit w-full p-10">

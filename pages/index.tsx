@@ -1,55 +1,48 @@
-import { Details, Home } from "@/components/templates";
-import { HFLayout } from "../layouts";
+import { allCourses } from "@/apis/course";
+import { Home } from "@/components/templates";
+import { UserReduxProps } from "@/redux/features/slices/user";
+import { RootState } from "@/redux/store";
+import { ICourseMix } from "@/types/IType";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import DATA_COURSE from "@/mocks/course.json";
-import { storage } from "../apis/firebase";
-import { ICourseMix } from "@/types/IType";
-import { getCookie } from "cookies-next";
-import React, { useEffect, useState } from "react";
-import { all } from "../apis/home";
-import { useRouter } from "next/router";
-import { UserReduxProps } from "@/redux/features/slices/user";
+import { HFLayout } from "../layouts";
 
 // const courses: ICourseMix[] = DATA_COURSE.$values;
 
 export type StateHome = {
-	activeCourse: ICourseMix | null;
+  activeCourse: string | undefined;
 };
 
 const HomePage = () => {
-	const [course, setCourse] = useState<ICourseMix[]>([]);
-	const user = useSelector((state: RootState) => state.user);
-	const stateStore = useForm<StateHome>({
-		defaultValues: {
-			activeCourse: null,
-		},
-	});
-	useEffect(() => {
-		all()
-			.then((success) => {
-				setCourse(success.data.$values);
-				stateStore.setValue("activeCourse", success.data.$values[0]);
-			})
-			.catch((error) => console.log(error));
-	}, []);
-	const [auth, setAuth] = useState<UserReduxProps>();
+  const [course, setCourse] = useState<string[]>([]);
+  const user = useSelector((state: RootState) => state.user);
+  const stateStore = useForm<StateHome>({
+    defaultValues: {
+      activeCourse: undefined,
+    },
+  });
+  useEffect(() => {
+    allCourses()
+      .then((success) => setCourse(success.data.map((x) => x._id)))
+      .catch((error) => console.log(error));
+  }, []);
+  const [auth, setAuth] = useState<UserReduxProps>();
 
-	useEffect(() => {
-		setAuth(user);
-	}, [user]);
-	const props = {
-		courses: course,
-		stateStore,
-		user: auth,
-	};
+  useEffect(() => {
+    setAuth(user);
+  }, [user]);
+  const props = {
+    courses: course,
+    stateStore,
+    user: auth,
+  };
 
-	return <Home {...props} />;
+  return <Home {...props} />;
 };
 
 HomePage.getLayout = function getLayout(page: React.ReactElement) {
-	return <HFLayout>{page}</HFLayout>;
+  return <HFLayout>{page}</HFLayout>;
 };
 
 export default HomePage;

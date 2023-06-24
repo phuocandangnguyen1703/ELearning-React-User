@@ -49,4 +49,6 @@ export type ICourse = {
   tag_id?: string;
   tag_name?: string;
   lesson_quantity?: number;
+  enrollment?: number;
+  star?: number;
 } & IMyDocument;

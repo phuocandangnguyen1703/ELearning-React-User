@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    BACKEND: "http://localhost:4000/",
-    // BACKEND: "http://192.168.1.61:4000/",
+    // BACKEND: "http://localhost:4000/",
+    BACKEND: "https://node.edupath.ftisu.vn/",
   },
   images: {
     remotePatterns: [

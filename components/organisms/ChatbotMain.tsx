@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useRef } from "react";
 import { Button, TextField } from "../atoms";
 import { AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
 import ChatbotTyping from "../moleculers/ChatbotTyping";
-import { ChatbotContext } from "../contexts/ChatbotContext";
+import { ChatbotContext, chatbotListener } from "../contexts/ChatbotContext";
 
 import { Controller } from "react-hook-form";
 
@@ -13,7 +13,12 @@ type Props = {};
 
 const ChatbotMain = (props: Props) => {
   const { listForm, chatForm, chatRef } = useContext(ChatbotContext);
-
+  const handleSuggest = useCallback((input: string) => {
+    chatbotListener.emit("suggest", input);
+    setTimeout(() => {
+      chatForm?.setValue("isBegin", false);
+    }, 15000);
+  }, []);
   return (
     <div className="flex-1 flex flex-col">
       {/* header */}
@@ -55,15 +60,45 @@ const ChatbotMain = (props: Props) => {
         </div>
 
         {/* typing */}
-        <div className="w-full flex items-center px-4 py-3">
-          <ChatbotTyping
-            mode="chatbot"
-            className=""
-          ></ChatbotTyping>
+        <div className="w-full bg-white">
+          <Controller
+            control={chatForm?.control}
+            name="isBegin"
+            render={({ field: { value: isBegin } }) => {
+              if (!isBegin) return <></>;
+              return (
+                <div className="w-full px-4 pt-2">
+                  <h6 className="text-sm">Câu hỏi gợi ý</h6>
+                  <div className="w-full flex mt-2 gap-3 items-end overflow-x-auto">
+                    {questionDefault.map((question, index) => {
+                      return (
+                        <Button
+                          key={index}
+                          onClick={() => handleSuggest(question)}
+                          className="!bg-white border-[1px] border-gray-300 !text-gray-600"
+                        >
+                          {question}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            }}
+          ></Controller>
+          <div className="w-full flex items-center px-4 py-2">
+            <ChatbotTyping mode="chatbot" className=""></ChatbotTyping>
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
+const questionDefault = [
+  "Kỹ năng nào đang được tuyển dụng nhiều nhất ?",
+  "Mức lương tham khảo của công ty FPT Software ?",
+  "Mức lương của ngành Game ?",
+];
 
 export default ChatbotMain;

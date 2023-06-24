@@ -6,7 +6,7 @@ import { ChatbotRecentItem } from "../moleculers";
 type Props = {};
 
 const ChatbotRecent = (props: Props) => {
-  const { recents } = useContext(ChatbotContext);
+  // const { recents } = useContext(ChatbotContext);
   return (
     <>
       <div
@@ -18,9 +18,9 @@ const ChatbotRecent = (props: Props) => {
           <span>Tin nhắn gần đây</span>
         </div>
         <div className="flex flex-col w-full overflow-y-auto p-[12px] gap-2">
-          {recents?.map((recent) => {
+          {/* {recents?.map((recent) => {
             return <ChatbotRecentItem></ChatbotRecentItem>;
-          })}
+          })} */}
         </div>
       </div>
     </>

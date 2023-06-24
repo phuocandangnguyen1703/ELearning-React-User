@@ -27,6 +27,7 @@ const DetailsPage = () => {
   const props = {
     imageURL: "/banner_details.png",
     course,
+    courseId: id as string | undefined,
   };
   return <Details {...props} />;
 };

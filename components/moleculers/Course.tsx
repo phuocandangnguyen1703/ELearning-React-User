@@ -31,15 +31,15 @@ const Course: React.FC<CourseProps> = ({ fitWidth, courseId }) => {
       <div className="h-[140px] rounded-lg overflow-hidden">
         <ImageOptimizing
           blurhash="NVKKc$Ny4n%LNG%M~qxux]o2o2X8-;kW%LoeRjt7"
-          src="/banner_details.png"
+          src={`${process.env.BACKEND}${course?.course_img}`}
         />
       </div>
-      <div className="flex items-center justify-between py-2">
-        <div className="whitespace-nowrap flex justify-center items-center gap-1 opacity-75">
+      <div className="flex items-center justify-between py-2 max-w-full overflow-hidden">
+        <div className="whitespace-nowrap overflow-hidden flex justify-center items-center gap-1 opacity-75">
           <BiCategory color="gray" />
-          <span className="text-xs">{course?.course_name}</span>
+          <span className="text-xs truncate">{course?.course_name}</span>
         </div>
-        <div className="whitespace-nowrap flex justify-center items-center gap-1 opacity-75">
+        <div className="whitespace-nowrap shrink-0 flex justify-center items-center gap-1 opacity-75">
           <FiClock color="gray" />
           {course?.duration && (
             <span className="text-xs">
@@ -48,7 +48,10 @@ const Course: React.FC<CourseProps> = ({ fitWidth, courseId }) => {
           )}
         </div>
       </div>
-      <Link href={`/course/${courseId}`} className="text-base font-semibold text-black">
+      <Link
+        href={`/course/${courseId}`}
+        className="text-base font-semibold text-black"
+      >
         {course?.course_name}
       </Link>
       <p className="line-clamp-3 text-sm opacity-70">{course?.description}</p>

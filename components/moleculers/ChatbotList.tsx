@@ -29,7 +29,7 @@ const ChatbotList = ({ chats }: Props) => {
       {chats.map((chat, index) => {
         if (chat.from === EChatbotFrom.STUDENT)
           return (
-            <div key={chat.__v} className="w-full flex justify-end gap-2 ">
+            <div key={chat._id} className="w-full flex justify-end gap-2 ">
               <div className="max-w-[70%] flex gap-2">
                 <div className=" bg-blue-secondary rounded-s-xl rounded-br-xl py-2 px-4 text-white">
                   {chat.messages}

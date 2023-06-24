@@ -146,7 +146,7 @@ const Payment = (props: Props) => {
         <div className="w-full flex justify-between">
           <h3 className="text-xl font-light">Gợi ý cho bạn</h3>
           <Link
-            href="/allcourses"
+            href="/course"
             className="border-[1.5px] border-blue-secondary bg-white text-blue-secondary py-3 px-7 rounded-xl"
           >
             Xem tất cả

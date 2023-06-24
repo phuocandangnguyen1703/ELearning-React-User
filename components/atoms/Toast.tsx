@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import {
 	FaInfo,
@@ -38,9 +38,9 @@ const ToastMessage: React.FC<ToastMessageProps> = ({ type, message }) => (
 	</div>
 );
 
-ToastMessage.propTypes = {
-	message: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired
-};
+// ToastMessage.propTypes = {
+// 	message: PropTypes.string.isRequired,
+// 	type: PropTypes.string.isRequired
+// };
 
 export default ToastMessage;

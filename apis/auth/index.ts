@@ -1,4 +1,5 @@
-import { IUser } from "@/types/IType";
+
+import { IUser } from "@/types/auth";
 import { LoginFormType } from "@/types/login";
 import { RegisterFormType } from "@/types/register";
 import AxiosServices from "apis/axiosServices";

@@ -1,8 +1,8 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Button, TextAreaField, TextField } from "../atoms";
 import { IoMdSend } from "react-icons/io";
 import clsx from "clsx";
-import { ChatbotContext } from "../contexts/ChatbotContext";
+import { ChatbotContext, chatbotListener } from "../contexts/ChatbotContext";
 import { getChat } from "apis/chatbot";
 import { v4 } from "uuid";
 import { useSelector } from "react-redux";
@@ -23,24 +23,24 @@ const ChatbotTyping = (props: Props) => {
   const { listForm } = useContext(ChatbotContext);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleChat = async () => {
-    if (!text) return;
+  const handleChat = async (input?: string) => {
+    if (!text && !input) return;
     setText("");
     listForm?.append({
       _id: v4(),
       user_id: userId,
       from: EChatbotFrom.STUDENT,
-      messages: text!,
+      messages: input || text!,
       createdAt: new Date(),
     });
-    await getChat(text!)
+    await getChat(input || text!)
       .then((success) => {
         listForm?.append(success.data);
       })
       .catch((error) => console.log(error));
   };
 
-  const handleKeyDown = async(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       await handleChat();
@@ -53,6 +53,12 @@ const ChatbotTyping = (props: Props) => {
       }
     }
   };
+  useEffect(() => {
+    chatbotListener.on("suggest", (recive: string) => {
+      if (!recive) return;
+      handleChat(recive);
+    });
+  }, []);
 
   return (
     <div className={clsx("flex w-full items-center relative", props.className)}>

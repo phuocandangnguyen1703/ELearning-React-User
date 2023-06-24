@@ -4,3 +4,5 @@ export { default as ChatbotRecentItem } from "./ChatbotRecentItem";
 export { default as Pagination } from "./Pagination";
 export { default as PaymentTimer } from "./PaymentTimer";
 export { default as ChatbotList } from "./ChatbotList";
+export { default as OverviewCourse } from "./OverviewCourse";
+export { default as ActiveCourse } from "./ActiveCourse";
