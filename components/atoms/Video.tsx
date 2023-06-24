@@ -16,16 +16,17 @@ import {
 type Props = {
   className?: string;
   video: File | string;
-  thumnail?: string;
+  thumbnail?: string;
 };
 
 const Video = (props: Props) => {
-  const { className, video, thumnail } = props;
+  const { className, video, thumbnail } = props;
   return (
     <Player
       // width={100}
       // height={100}
-      poster={thumnail}
+      // playsInline
+      poster={thumbnail}
       src={
         (typeof video === "string" && video) ||
         (typeof video === "object" && URL.createObjectURL(video)) ||
@@ -35,7 +36,7 @@ const Video = (props: Props) => {
     >
       {/* <source src={URL.createObjectURL(video)} /> */}
       <LoadingSpinner />
-      <ControlBar autoHide={true} disableDefaultControls={true}>
+      <ControlBar autoHide={true}  disableCompletely={false} disableDefaultControls={true}>
         <ReplayControl seconds={10} />
         {/* <ForwardControl seconds={30} /> */}
         <CurrentTimeDisplay order={4.1} />

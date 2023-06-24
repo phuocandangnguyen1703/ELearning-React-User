@@ -1,11 +1,19 @@
 import { BotIcon } from "@/assets/home";
-import React from "react";
+import React, { useCallback, useContext, useRef } from "react";
 import { Button, TextField } from "../atoms";
 import { AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
 import ChatbotTyping from "../moleculers/ChatbotTyping";
+import { ChatbotContext } from "../contexts/ChatbotContext";
+
+import { Controller } from "react-hook-form";
+
+import _ from "lodash";
+import { ChatbotList } from "../moleculers";
 type Props = {};
 
 const ChatbotMain = (props: Props) => {
+  const { listForm, chatForm, chatRef } = useContext(ChatbotContext);
+
   return (
     <div className="flex-1 flex flex-col">
       {/* header */}
@@ -31,13 +39,27 @@ const ChatbotMain = (props: Props) => {
       </div>
 
       {/* main */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col w-full overflow-hidden">
         {/* history */}
-        <div className="flex-1"></div>
+        <div
+          ref={chatRef}
+          className="flex-1 flex flex-col w-full p-4 overflow-y-auto gap-4 items-start"
+        >
+          <Controller
+            control={chatForm?.control}
+            name="list"
+            render={({ field: chats }) => (
+              <ChatbotList chats={chats.value}></ChatbotList>
+            )}
+          ></Controller>
+        </div>
 
         {/* typing */}
-        <div className="w-full min-h-[95px] flex items-center px-6">
-          <ChatbotTyping onSubmit={() => {}}></ChatbotTyping>
+        <div className="w-full flex items-center px-4 py-3">
+          <ChatbotTyping
+            mode="chatbot"
+            className=""
+          ></ChatbotTyping>
         </div>
       </div>
     </div>

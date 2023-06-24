@@ -1,21 +1,49 @@
-import React, { createContext, useContext, useState } from "react";
+import { IChatbot } from "@/types/chatbot";
+import React, { createContext, useContext, useRef, useState } from "react";
+import {
+  UseFieldArrayReturn,
+  UseFormReturn,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 
 type Props = {
   children: React.ReactNode;
 };
 
 type IContext = {
-  recents?: unknown[];
-  setRecents?: React.Dispatch<React.SetStateAction<unknown[]>>;
+  chatForm?: UseFormReturn<IChatForm, any, undefined>;
+  listForm?: UseFieldArrayReturn<IChatForm, "list", "id">;
+  chatRef?: React.RefObject<HTMLDivElement>;
+};
+
+type IChatForm = {
+  recents: {
+    _id: string;
+    time: Date;
+    text: string;
+  }[];
+  list: IChatbot[];
 };
 
 export const ChatbotContext = createContext<IContext>({});
 
 const ChatbotContextProvider = (props: Props) => {
-  const [recents, setRecents] = useState<unknown[]>([1, 2, 3]);
+  const chatForm = useForm<IChatForm>({
+    defaultValues: {
+      recents: [],
+      list: [],
+    },
+  });
+  const chatRef = useRef<HTMLDivElement>(null);
+  const listForm = useFieldArray({
+    control: chatForm.control,
+    name: "list",
+  });
   const value = {
-    recents,
-    setRecents,
+    chatForm,
+    listForm,
+    chatRef,
   };
   return (
     <ChatbotContext.Provider value={value}>

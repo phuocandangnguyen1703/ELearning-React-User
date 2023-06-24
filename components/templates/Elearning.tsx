@@ -8,7 +8,7 @@ import { BsBook, BsCalendarMinus } from "react-icons/bs";
 import { FiChevronDown } from "react-icons/fi";
 import { MdOutlineArrowBack } from "react-icons/md";
 import { Video, useLoading } from "../atoms";
-import { learning_default } from "@/assets/learning";
+import { thumbnail } from "@/assets/learning";
 type Props = {
   lessonId: string;
   courseId: string;
@@ -32,7 +32,7 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
   return (
     <div className="bg-[#9DCCFF] p-8 flex justify-center  h-screen items-center w-full">
       <div className="w-full m-auto h-full flex items-center justify-between gap-4">
-        <div className="flex-[3] h-full flex flex-col gap-2 w-full">
+        <div className="flex-1 h-full flex flex-col gap-2 w-full">
           <div className="flex gap-2 h-24 justify-between items-center ">
             <Link
               href={`/course/${courseId}`}
@@ -40,9 +40,9 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
             >
               <MdOutlineArrowBack size={20} />
             </Link>
-            <div className="w-full h-fit bg-white rounded-xl p-3 flex-1">
-              <div className="flex flex-col">
-                <h1 className="text-black font-semibold text-2xl">
+            <div className="h-fit bg-white rounded-xl p-3 flex-1">
+              <div className="flex flex-col overflow-hidden truncate">
+                <h1 className="text-black font-semibold text-2xl truncate">
                   {course.course_name}
                 </h1>
 
@@ -53,15 +53,13 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
               </div>
             </div>
           </div>
-          <div className="flex-1 rounded-xl overflow-hidden">
-            {video && (
-              <Video video={video} thumnail={learning_default.src}></Video>
-            )}
+          <div className="rounded-xl overflow-hidden w-full">
+            {video && <Video video={video} thumbnail={thumbnail.src}></Video>}
           </div>
         </div>
-        <div className="flex-[1] max-w-[30rem] h-full flex flex-col gap-8">
+        <div className="w-[21rem] h-full flex flex-col gap-8">
           <div className="w-full h-fit max-h-screen bg-white overflow-hidden p-4 rounded-xl flex flex-col">
-            <h1 className="text-black font-semibold text-xl">
+            <h1 className="text-black font-semibold text-xl whitespace-nowrap overflow-hidden text-ellipsis">
               {course.course_name}
             </h1>
             <div className="flex flex-col gap-2 flex-1 overflow-hidden">
@@ -126,7 +124,7 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
                           key={lesson._id}
                           className="p-2 py-4 flex items-center justify-between text-sm gap-1"
                         >
-                          <p className=" text-ellipsis whitespace-nowrap">
+                          <p className=" text-ellipsis whitespace-nowrap overflow-hidden">
                             {lesson.lesson_name}
                           </p>
                           <p className=" whitespace-nowrap">

@@ -7,7 +7,7 @@ import type { AppProps } from "next/app";
 import { Open_Sans } from "next/font/google";
 // import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
-import "video-react/dist/video-react.css"
+import "node_modules/video-react/dist/video-react.css"; // import css
 
 const opensans = Open_Sans({ subsets: ["latin"] });
 

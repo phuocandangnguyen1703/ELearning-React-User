@@ -1,1 +1,1 @@
-export { default as learning_default } from "./learning_default.png";
+export { default as thumbnail } from "./thumbnail.png";
