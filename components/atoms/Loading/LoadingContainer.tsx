@@ -30,11 +30,14 @@ function Loading() {
 
   if (!isLoading) return <></>;
   return (
-    <div className={styles.container}>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div className="fixed w-screen h-screen flex justify-center items-center z-[99]">
+      <div className="w-full h-full bg-blue-100 opacity-40 "></div>
+      <div className={styles.container}>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 }

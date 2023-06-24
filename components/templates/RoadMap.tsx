@@ -5,6 +5,7 @@ import { ProgressLayout } from "../atoms";
 import { MapItem } from "../moleculers";
 import { ModalRoadMap } from "../organisms";
 import { IRoadmap } from "apis/roadmap/types";
+import _ from "lodash";
 
 interface RoadMapProps {
   stateStore: UseFormReturn<StateStoreType, any>;
@@ -98,7 +99,10 @@ const RoadMap: React.FC<RoadMapProps> = ({ roadmap, stateStore }) => {
         {roadmap?.sections.map((item, index) => (
           <MapItem
             onTap={(detailId: string) =>
-              stateStore.setValue("isOpenModal", detailId)
+              _.throttle(
+                () => stateStore.setValue("isOpenModal", detailId),
+                1000
+              )()
             }
             numStep={index + 1}
             key={item.section_id}

@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, ImageOptimizing } from "../atoms";
+import React, { useEffect, useState } from "react";
+import { Button, ImageOptimizing, useLoading } from "../atoms";
 import {
   AiFillCamera,
   AiFillGoogleCircle,
@@ -17,12 +17,31 @@ import { BsBook, BsCalendarMinus } from "react-icons/bs";
 import clsx from "clsx";
 import { Course } from "../moleculers";
 import { ICourse } from "@/types/course";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { checkPayment } from "apis/payment";
 
 interface DetailsProps {
   imageURL: string;
   course: ICourse | undefined;
 }
 const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
+  const [isPaid, setIsPaid] = useState(false);
+  const router = useRouter();
+  const token = useSelector((state: RootState) => state.user.token);
+  const courseId = router.query.course_id;
+  const loading = useLoading();
+  useEffect(() => {
+    if (!courseId) return;
+    if (!token) return;
+
+    (async () => {
+      loading.open();
+      // await checkPayment(courseId as string).then((success)=>setIsPaid)
+      loading.close();
+    })();
+  }, [courseId]);
   return (
     <main className="bg-white">
       <div className="h-[70vh] w-full relative">
@@ -55,7 +74,7 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
                 ))}
               </div>
               <div className="flex flex-col gap-4 flex-1 overflow-y-auto">
-                {course?.chapters.map((chapter) => (
+                {course?.chapters.map((chapter, index) => (
                   <div
                     key={chapter._id}
                     className="h-fit p-2 px-4 border rounded-xl"
@@ -91,12 +110,15 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
                       id={`collapse${chapter._id}`}
                       data-te-collapse-item
                     >
-                      {chapter?.lessons?.map((lesson) => (
-                        <div className="p-2 py-4 flex items-center justify-between text-sm">
-                          <p>{lesson.lesson_name}</p>
-                          <p>{lesson.duration}</p>
-                        </div>
-                      ))}
+                      {chapter?.lessons?.map((lesson) => {
+                        console.log(lesson);
+                        return (
+                          <div key={lesson._id} className="p-2 py-4 flex items-center justify-between text-sm">
+                            <p>{lesson.lesson_name}</p>
+                            <p>{lesson.duration}</p>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 ))}
@@ -183,6 +205,7 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
           <div className="h-[180px]">
             <ImageOptimizing
               blurhash="NVKKc$Ny4n%LNG%M~qxux]o2o2X8-;kW%LoeRjt7"
+              className=" rounded-xl"
               src={`${process.env.BACKEND}${course?.course_img}`}
             />
           </div>

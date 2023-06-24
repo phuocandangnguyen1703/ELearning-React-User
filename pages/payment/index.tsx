@@ -1,5 +1,6 @@
 import { Payment } from "@/components/templates";
 import { HFLayout } from "@/layouts/index";
+import { Permission } from "middleware";
 import React from "react";
 
 type Props = {};
@@ -13,7 +14,11 @@ const PaymentPage = (props: Props) => {
 };
 
 PaymentPage.getLayout = function getLayout(page: React.ReactElement) {
-  return <HFLayout>{page}</HFLayout>;
+  return (
+    <Permission>
+      <HFLayout>{page}</HFLayout>
+    </Permission>
+  );
 };
 
 export default PaymentPage;

@@ -11,6 +11,7 @@ import { ImageComponent, ModalSurvey } from "../organisms";
 import { converDateTime } from "@/utils/index";
 import { BotIcon } from "@/assets/home/index";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface HomeProps {
   courses: Array<ICourseMix>;
@@ -57,7 +58,6 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
             </Button>
           </div>
         </div>
-        r
       </div>
       <div className="px-[10%] pb-48">
         {user?.token && (
@@ -75,12 +75,12 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
             </div>
 
             <div className="grid grid-cols-3 grid-rows-2 gap-4 h-[90vh]">
-              <div className="col-span-2 rounded-xl overflow-hidden p-6 bg-[url('/home_a.png')] bg-cover bg-no-repeat">
+              <Link href="/roadmap" className="col-span-2 rounded-xl overflow-hidden p-6 bg-[url('/home_a.png')] bg-cover bg-no-repeat">
                 <div>
                   <h2 className="uppercase font-medium">lộ trình của bạn</h2>
                   <p className="text-sm text-[#4F4F4F]">Tiến độ 15%</p>
                 </div>
-              </div>
+              </Link>
               <div className="row-span-2 col-start-3 rounded-xl overflow-hidden p-6 bg-[url('/home_b.png')] bg-cover bg-no-repeat">
                 <div>
                   <h2 className="uppercase font-medium">lộ trình của bạn</h2>

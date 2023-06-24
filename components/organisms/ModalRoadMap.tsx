@@ -1,12 +1,13 @@
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Course } from "../moleculers";
 import { GrClose } from "react-icons/gr";
 import { getCoursesSimilarTag } from "apis/roadmap";
 import { ELevel, ICourse } from "@/types/course";
 import { ICourseSimilar } from "apis/roadmap/types";
+import _ from "lodash";
 
 interface ModalSurveyProps {
   onClose: () => void;
@@ -25,9 +26,11 @@ const ModalSurvey: React.FC<ModalSurveyProps> = ({ onClose, detailId }) => {
   }, []);
   const [filterLevel, setFilterLevel] = useState(ELevel.ALL_LEVELS);
   useEffect(() => {
-    getCoursesSimilarTag(detailId)
-      .then((success) => setList(success.data))
-      .catch((error) => console.log(error));
+    _.throttle(() => {
+      getCoursesSimilarTag(detailId)
+        .then((success) => setList(success.data))
+        .catch((error) => console.log(error));
+    }, 1000)();
   }, [detailId]);
 
   return (
@@ -146,4 +149,4 @@ const ModalSurvey: React.FC<ModalSurveyProps> = ({ onClose, detailId }) => {
   );
 };
 
-export default ModalSurvey;
+export default memo(ModalSurvey);

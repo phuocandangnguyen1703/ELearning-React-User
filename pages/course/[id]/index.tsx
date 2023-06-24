@@ -10,18 +10,18 @@ const DetailsPage = () => {
   const { query } = useRouter();
   const id = query.id;
   useEffect(() => {
-    const _initTE = async () => {
-      const use = (await import("tw-elements")).initTE;
-      const { Collapse, initTE } = await import("tw-elements");
-      use({ Collapse, initTE });
-    };
-    _initTE();
-  }, []);
-
-  useEffect(() => {
-    getCourse(id as string)
-      .then((success) => setCourse(success.data))
-      .catch((error) => console.log(error));
+    if (!id) return;
+    (async () => {
+      const _initTE = async () => {
+        const use = (await import("tw-elements")).initTE;
+        const { Collapse, initTE } = await import("tw-elements");
+        use({ Collapse, initTE });
+      };
+      await getCourse(id as string)
+        .then((success) => setCourse(success.data))
+        .catch((error) => console.log(error));
+      await _initTE();
+    })();
   }, [id]);
 
   const props = {

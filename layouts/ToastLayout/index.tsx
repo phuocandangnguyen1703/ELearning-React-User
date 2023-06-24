@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { ToastContainer } from "@iscv/toast";
-import { LoadingContainer } from "@/components/Loading";
+import { LoadingContainer } from "@/components/atoms";
 
 type Props = {};
 

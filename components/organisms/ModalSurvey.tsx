@@ -3,10 +3,10 @@ import { ERecommendStatus } from "@/types/index";
 import { searchSubstring } from "@/utils/string";
 import { useToast } from "@iscv/toast";
 import {
-	checkStatus,
-	chooseMaintype,
-	listTag,
-	processRecommend,
+  checkStatus,
+  chooseMaintype,
+  listTag,
+  processRecommend,
 } from "apis/recommend";
 import clsx from "clsx";
 import { getCookie } from "cookies-next";
@@ -16,436 +16,436 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { RxDotFilled } from "react-icons/rx";
-import { useLoading } from "../Loading";
 import { Button } from "../atoms";
 import ChatbotTyping from "../moleculers/ChatbotTyping";
+import { useLoading } from "../atoms/Loading";
 
 const QUESTIONS = [
-	{
-		name: "q1",
-		type: "button",
-		questions: [
-			"Chào bạn, mình là Usagi - Trợ lý AI của EduPath. Mình cần một số thông tin từ bạn để tạo các lộ trình theo lĩnh vực phù hợp nhất với bạn.",
-			"Vui lòng cho mình biết bạn đang là đối tượng nào",
-		],
-		options: [
-			{ value: "Học sinh", label: "Học sinh" },
-			{ value: "Sinh viên", label: "Sinh viên" },
-			{ value: "Người đi làm", label: "Người đi làm" },
-		],
-	},
-	{
-		name: "q2",
-		type: "button",
-		questions: ["Bạn đã có kinh nghiệm về lập trình chưa?"],
-		options: [
-			{ value: "Rồi", label: "Rồi" },
-			{ value: "Chưa có", label: "Chưa có" },
-		],
-	},
-	{
-		name: "q3",
-		type: "input",
-		questions: [
-			"Hãy liệt kê một số kỹ năng hoặc ngôn ngữ lập trình mà bạn từng sử dụng nhé",
-		],
-	},
+  {
+    name: "q1",
+    type: "button",
+    questions: [
+      "Chào bạn, mình là Usagi - Trợ lý AI của EduPath. Mình cần một số thông tin từ bạn để tạo các lộ trình theo lĩnh vực phù hợp nhất với bạn.",
+      "Vui lòng cho mình biết bạn đang là đối tượng nào",
+    ],
+    options: [
+      { value: "Học sinh", label: "Học sinh" },
+      { value: "Sinh viên", label: "Sinh viên" },
+      { value: "Người đi làm", label: "Người đi làm" },
+    ],
+  },
+  {
+    name: "q2",
+    type: "button",
+    questions: ["Bạn đã có kinh nghiệm về lập trình chưa?"],
+    options: [
+      { value: "Rồi", label: "Rồi" },
+      { value: "Chưa có", label: "Chưa có" },
+    ],
+  },
+  {
+    name: "q3",
+    type: "input",
+    questions: [
+      "Hãy liệt kê một số kỹ năng hoặc ngôn ngữ lập trình mà bạn từng sử dụng nhé",
+    ],
+  },
 ];
 const ModalSurvey = () => {
-	const bottomRef = useRef<HTMLDivElement>(null);
-	const [onForcus, setOnForcus] = useState(false);
-	const [recommendStatus, setRecommendStatus] = useState<ERecommendStatus>(
-		ERecommendStatus.NONE
-	);
-	const router = useRouter();
-	const selectionRef = useRef<any>(null);
-	const list = useRef<string[]>([]);
-	useEffect(() => {
-		const bodyElement = document.querySelector("body");
-		if (bodyElement) bodyElement.classList.add("!overflow-hidden", "relative");
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const [onForcus, setOnForcus] = useState(false);
+  const [recommendStatus, setRecommendStatus] = useState<ERecommendStatus>(
+    ERecommendStatus.NONE
+  );
+  const router = useRouter();
+  const selectionRef = useRef<any>(null);
+  const list = useRef<string[]>([]);
+  // useEffect(() => {
+  // 	const bodyElement = document.querySelector("body");
+  // 	if (bodyElement) bodyElement.classList.add("!overflow-hidden", "relative");
 
-		return () => {
-			if (bodyElement) bodyElement.classList.remove("!overflow-hidden");
-		};
-	}, []);
+  // 	return () => {
+  // 		if (bodyElement) bodyElement.classList.remove("!overflow-hidden");
+  // 	};
+  // }, []);
 
-	useEffect(() => {
-		listTag()
-			.then((success) => (list.current = success.data))
-			.catch((error) => console.log(error));
-	}, []);
+  useEffect(() => {
+    listTag()
+      .then((success) => (list.current = success.data))
+      .catch((error) => console.log(error));
+  }, []);
 
-	useEffect(() => {
-		const userData = getCookie("user")?.toString();
-		if (!userData) return;
-		const userId = JSON.parse(userData).id;
+  useEffect(() => {
+    const userData = getCookie("user")?.toString();
+    if (!userData) return;
+    const userId = JSON.parse(userData).id;
 
-		if (!userId) return;
+    if (!userId) return;
 
-		checkStatus(userId)
-			.then((success) => {
-				setRecommendStatus(success.data.status);
-				setPrediction(success.data.prediction);
-			})
-			.catch((error) => console.log(error));
-	}, []);
+    checkStatus(userId)
+      .then((success) => {
+        setRecommendStatus(success.data.status);
+        setPrediction(success.data.prediction);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-	const [questions, setQuestions] = useState<Array<(typeof QUESTIONS)[0]>>([
-		QUESTIONS[0],
-	]);
-	const toast = useToast();
-	const [response, setResponse] = useState<Record<string, Array<string>>>();
-	const { control, setValue, getValues, resetField, handleSubmit } = useForm<{
-		programings: string[];
-		text: string | undefined;
-		suggestions: string[];
-	}>({
-		defaultValues: {
-			programings: [],
-			text: undefined,
-			suggestions: [],
-		},
-	});
+  const [questions, setQuestions] = useState<Array<(typeof QUESTIONS)[0]>>([
+    QUESTIONS[0],
+  ]);
+  const toast = useToast();
+  const [response, setResponse] = useState<Record<string, Array<string>>>();
+  const { control, setValue, getValues, resetField, handleSubmit } = useForm<{
+    programings: string[];
+    text: string | undefined;
+    suggestions: string[];
+  }>({
+    defaultValues: {
+      programings: [],
+      text: undefined,
+      suggestions: [],
+    },
+  });
 
-	const { fields, remove, append } = useFieldArray({
-		control,
-		name: "programings" as never,
-	});
-	const [prediction, setPrediction] = useState<
-		| {
-				maintype: string;
-				maintype_id: string;
-				percent: number;
-		  }[]
-		| undefined
-	>(undefined);
-	const loading = useLoading();
-	useEffect(() => {
-		if (!selectionRef.current) return;
-		function handleClickOutside(event: any) {
-			if (
-				selectionRef.current &&
-				!selectionRef.current.contains(event.target)
-			) {
-				console.log("first");
-				setValue("suggestions", []);
-			}
-		}
-		// Bind the event listener
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			// Unbind the event listener on clean up
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [selectionRef]);
+  const { fields, remove, append } = useFieldArray({
+    control,
+    name: "programings" as never,
+  });
+  const [prediction, setPrediction] = useState<
+    | {
+        maintype: string;
+        maintype_id: string;
+        percent: number;
+      }[]
+    | undefined
+  >(undefined);
+  const loading = useLoading();
+  useEffect(() => {
+    if (!selectionRef.current) return;
+    function handleClickOutside(event: any) {
+      if (
+        selectionRef.current &&
+        !selectionRef.current.contains(event.target)
+      ) {
+        console.log("first");
+        setValue("suggestions", []);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [selectionRef]);
 
-	const handelNextQuestion = (value: Array<string>, name: string) => {
-		setResponse((r) => ({ ...r, [name]: [...value] }));
-		if (questions.length < QUESTIONS.length)
-			setQuestions((q) => [...q, QUESTIONS[q.length]]);
-	};
-	const scrollToBottom = () => {
-		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-	};
-	useEffect(() => {
-		const time = setTimeout(() => {
-			scrollToBottom();
-		}, 300);
-		return () => clearTimeout(time);
-	}, [questions, onForcus]);
-	const handleSuggestions = (e: string) => {
-		if (!e) {
-			resetField("suggestions");
-			return;
-		}
-		const result = searchSubstring(list.current, e).slice(0, 3).reverse();
-		setValue("suggestions", result);
-	};
-	const onSubmit = async (data: any) => {
-		if (!data.programings.length) return;
-		loading.open();
+  const handelNextQuestion = (value: Array<string>, name: string) => {
+    setResponse((r) => ({ ...r, [name]: [...value] }));
+    if (questions.length < QUESTIONS.length)
+      setQuestions((q) => [...q, QUESTIONS[q.length]]);
+  };
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(() => {
+    const time = setTimeout(() => {
+      scrollToBottom();
+    }, 300);
+    return () => clearTimeout(time);
+  }, [questions, onForcus]);
+  const handleSuggestions = (e: string) => {
+    if (!e) {
+      resetField("suggestions");
+      return;
+    }
+    const result = searchSubstring(list.current, e).slice(0, 3).reverse();
+    setValue("suggestions", result);
+  };
+  const onSubmit = async (data: any) => {
+    if (!data.programings.length) return;
+    loading.open();
 
-		await processRecommend(data.programings)
-			.then((success) => {
-				const data = success.data;
-				setRecommendStatus(ERecommendStatus.CHOOSEN);
-				setPrediction(data);
-			})
-			.catch((error) => console.log(error));
+    await processRecommend(data.programings)
+      .then((success) => {
+        const data = success.data;
+        setRecommendStatus(ERecommendStatus.CHOOSEN);
+        setPrediction(data);
+      })
+      .catch((error) => console.log(error));
 
-		loading.close();
-	};
-	const handleChoose = async (choosen: string) => {
-		loading.open();
-		await chooseMaintype(choosen)
-			.then((success) => {
-				toast.success();
-				router.push("/roadmap");
-			})
-			.catch((error) => {
-				console.log(error);
-				toast.error;
-			});
-		loading.close();
-	};
-	if (!recommendStatus || recommendStatus === ERecommendStatus.DONE)
-		return null;
-	return (
-		<div className="bg-[#50505072] fixed top-0 bottom-0 z-50 h-screen w-screen flex items-center justify-center">
-			<div className={clsx("w-2/3 h-4/5 bg-white flex rounded-2xl", {})}>
-				{recommendStatus === ERecommendStatus.FIRST_TIME && (
-					<>
-						<div className="flex-[2] bg-[#D8EDFF] h-full relative flex flex-col">
-							<div className="w-full flex flex-col gap-2 p-10">
-								<h2 className="text-2xl text-[#16325C] font-bold text-center">
-									CHÀO MỪNG ĐẾN VỚI EDUPATH
-								</h2>
-								<p className="text-xs text-[#666666] leading-6 mt-3">
-									Vui lòng hoàn thành khảo sát nhanh cùng Usagi để EduPath giúp
-									bạn tạo lộ trình học tập riêng phù hợp nhé!
-								</p>
-							</div>
-							<div className="flex-1 flex items-center justify-center flex-col gap-2">
-								<p className="text-xs font-semibold text-[#16325C]">
-									{(response && Object.keys(response)?.length) || 0}/
-									{QUESTIONS?.length || 0} câu đã hoàn thành
-								</p>
-								<div className="w-1/2 h-2 bg-white relative rounded-full overflow-hidden">
-									<span
-										className={clsx(
-											"h-2 bg-[#5EB4FF] absolute top-0 left-0 transition-all ease-linear duration-700",
-											{
-												"w-0": response && Object.keys(response).length === 0,
-												"w-1/3": response && Object.keys(response).length === 1,
-												"w-2/3": response && Object.keys(response).length === 2,
-												"w-3/3": response && Object.keys(response).length === 3,
-											}
-										)}
-									></span>
-								</div>
-							</div>
-							<div className="bg-[url('/bg_info.png')] absolute -bottom-1 w-full h-[70px] bg-cover bg-no-repeat " />
-						</div>
-						<div className="flex-[3] h-full flex flex-col relative">
-							<div className="bg-[#103D9C] h-16 flex items-center justify-start gap-2">
-								<div className="flex -mr-2">
-									<RxDotFilled size={30} color="#34A853" />
-								</div>
-								<div className="h-[50px] w-[50px] p-1 rounded-full bg-white">
-									<Image
-										src="/usagi.svg"
-										alt="usagi"
-										className="w-full h-full"
-										width={100}
-										height={100}
-									/>
-								</div>
-								<div>
-									<h2 className="font-medium text-base text-white">Usagi</h2>
-									<p className="text-xs italic text-white font-light">
-										Trợ lý AI
-									</p>
-								</div>
-							</div>
+    loading.close();
+  };
+  const handleChoose = async (choosen: string) => {
+    loading.open();
+    await chooseMaintype(choosen)
+      .then((success) => {
+        toast.success();
+        router.push("/roadmap");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error;
+      });
+    loading.close();
+  };
+  if (!recommendStatus || recommendStatus === ERecommendStatus.DONE)
+    return null;
+  return (
+    <div className="bg-[#50505072] fixed top-0 bottom-0 z-50 h-screen w-screen flex items-center justify-center">
+      <div className={clsx("w-2/3 h-4/5 bg-white flex rounded-2xl", {})}>
+        {recommendStatus === ERecommendStatus.FIRST_TIME && (
+          <>
+            <div className="flex-[2] bg-[#D8EDFF] h-full relative flex flex-col">
+              <div className="w-full flex flex-col gap-2 p-10">
+                <h2 className="text-2xl text-[#16325C] font-bold text-center">
+                  CHÀO MỪNG ĐẾN VỚI EDUPATH
+                </h2>
+                <p className="text-xs text-[#666666] leading-6 mt-3">
+                  Vui lòng hoàn thành khảo sát nhanh cùng Usagi để EduPath giúp
+                  bạn tạo lộ trình học tập riêng phù hợp nhé!
+                </p>
+              </div>
+              <div className="flex-1 flex items-center justify-center flex-col gap-2">
+                <p className="text-xs font-semibold text-[#16325C]">
+                  {(response && Object.keys(response)?.length) || 0}/
+                  {QUESTIONS?.length || 0} câu đã hoàn thành
+                </p>
+                <div className="w-1/2 h-2 bg-white relative rounded-full overflow-hidden">
+                  <span
+                    className={clsx(
+                      "h-2 bg-[#5EB4FF] absolute top-0 left-0 transition-all ease-linear duration-700",
+                      {
+                        "w-0": response && Object.keys(response).length === 0,
+                        "w-1/3": response && Object.keys(response).length === 1,
+                        "w-2/3": response && Object.keys(response).length === 2,
+                        "w-3/3": response && Object.keys(response).length === 3,
+                      }
+                    )}
+                  ></span>
+                </div>
+              </div>
+              <div className="bg-[url('/bg_info.png')] absolute -bottom-1 w-full h-[70px] bg-cover bg-no-repeat " />
+            </div>
+            <div className="flex-[3] h-full flex flex-col relative">
+              <div className="bg-[#103D9C] h-16 flex items-center justify-start gap-2">
+                <div className="flex -mr-2">
+                  <RxDotFilled size={30} color="#34A853" />
+                </div>
+                <div className="h-[50px] w-[50px] p-1 rounded-full bg-white">
+                  <Image
+                    src="/usagi.svg"
+                    alt="usagi"
+                    className="w-full h-full"
+                    width={100}
+                    height={100}
+                  />
+                </div>
+                <div>
+                  <h2 className="font-medium text-base text-white">Usagi</h2>
+                  <p className="text-xs italic text-white font-light">
+                    Trợ lý AI
+                  </p>
+                </div>
+              </div>
 
-							<div className="flex-1 h-full p-3 flex flex-col gap-3 overflow-x-auto ">
-								<>
-									{questions.map((question) => (
-										<div
-											key={question.name}
-											className={clsx("flex flex-col gap-3", {
-												// "mb-[100px]":
-												// 	questions[questions.length - 1].type === "input" &&
-												// 	question.type === "input",
-											})}
-										>
-											<AnimatePresence mode="wait">
-												<motion.div
-													initial={{ y: 10, opacity: 0 }}
-													animate={{ y: 0, opacity: 1 }}
-													exit={{ y: -10, opacity: 0 }}
-													transition={{ duration: 0.2 }}
-													className="flex items-center gap-2"
-												>
-													<div className="self-start h-[50px] w-[50px] p-1 rounded-full bg-white">
-														<Image
-															src="/usagi.svg"
-															alt="usagi"
-															className="w-full h-full"
-															width={100}
-															height={100}
-														/>
-													</div>
-													<div className="flex flex-col w-2/3 gap-3">
-														{question?.questions.map((content) => (
-															<p
-																key={content}
-																className="bg-[#F5F5F5] p-2 text-sm rounded-lg"
-															>
-																{content}
-															</p>
-														))}
-													</div>
-												</motion.div>
-											</AnimatePresence>
+              <div className="flex-1 h-full p-3 flex flex-col gap-3 overflow-x-auto ">
+                <>
+                  {questions.map((question) => (
+                    <div
+                      key={question.name}
+                      className={clsx("flex flex-col gap-3", {
+                        // "mb-[100px]":
+                        // 	questions[questions.length - 1].type === "input" &&
+                        // 	question.type === "input",
+                      })}
+                    >
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          initial={{ y: 10, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          exit={{ y: -10, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="flex items-center gap-2"
+                        >
+                          <div className="self-start h-[50px] w-[50px] p-1 rounded-full bg-white">
+                            <Image
+                              src="/usagi.svg"
+                              alt="usagi"
+                              className="w-full h-full"
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                          <div className="flex flex-col w-2/3 gap-3">
+                            {question?.questions.map((content) => (
+                              <p
+                                key={content}
+                                className="bg-[#F5F5F5] p-2 text-sm rounded-lg"
+                              >
+                                {content}
+                              </p>
+                            ))}
+                          </div>
+                        </motion.div>
+                      </AnimatePresence>
 
-											<div className="flex gap-3">
-												<span className="self-start w-[50px] p-1 rounded-full bg-white" />
-												<div className="flex gap-3">
-													{question?.options?.map((item) => (
-														<Button
-															key={item.label}
-															onClick={() =>
-																handelNextQuestion([item.value], question.name)
-															}
-															className="!bg-[#103D9C]"
-														>
-															{item.label}
-														</Button>
-													))}
-												</div>
-											</div>
-											{response?.[question?.name] &&
-												response?.[question?.name]?.map((res) => (
-													<div key={res} className="flex justify-end">
-														<Button className="!bg-[#103D9C] w-fit">
-															{res}
-														</Button>
-													</div>
-												))}
-										</div>
-									))}
-									{questions[questions.length - 1]?.type == "input" && (
-										<div
-											ref={bottomRef}
-											className="w-full flex flex-col gap-2 relative"
-											onFocus={() => setOnForcus((r) => !r)}
-										>
-											<div
-												ref={selectionRef}
-												className=" absolute bottom-[80px] left-[-12px] right-0 gap-2 flex flex-col items-start"
-											>
-												<Controller
-													name="suggestions"
-													control={control}
-													render={({ field }) => (
-														<div className="flex flex-col gap-2 items-stretch bg-white rounded-xl p-3">
-															{field.value.map((suggestion) => {
-																return (
-																	<Button
-																		mode="default"
-																		key={suggestion}
-																		className="!bg-blue-secondary"
-																		onClick={() => {
-																			if (
-																				!getValues("programings").includes(
-																					suggestion
-																				)
-																			)
-																				append(suggestion);
-																		}}
-																	>
-																		{suggestion}
-																	</Button>
-																);
-															})}
-														</div>
-													)}
-												/>
-											</div>
-											<Controller
-												name="text"
-												control={control}
-												render={({ field }) => (
-													<ChatbotTyping
-														value={field.value}
-														onChange={(e) => {
-															field.onChange(e);
-															handleSuggestions(e.target.value);
-														}}
-														onSubmit={handleSubmit(onSubmit)}
-													></ChatbotTyping>
-												)}
-											/>
-											<Controller
-												name="programings"
-												control={control}
-												render={({ field }) => {
-													return (
-														<div className="flex w-full gap-2 h-[40px]">
-															{fields.map((skill, index) => {
-																return (
-																	<Controller
-																		key={skill.id}
-																		control={control}
-																		name={`programings.${index}` as const}
-																		render={({ field: fieldItem }) => {
-																			return (
-																				<Button
-																					mode="default"
-																					className="!bg-blue-secondary"
-																					isCloseToggle
-																					onClick={() => remove(index)}
-																				>
-																					{fieldItem.value}
-																				</Button>
-																			);
-																		}}
-																	></Controller>
-																);
-															})}
-														</div>
-													);
-												}}
-											/>
-										</div>
-									)}
-								</>
+                      <div className="flex gap-3">
+                        <span className="self-start w-[50px] p-1 rounded-full bg-white" />
+                        <div className="flex gap-3">
+                          {question?.options?.map((item) => (
+                            <Button
+                              key={item.label}
+                              onClick={() =>
+                                handelNextQuestion([item.value], question.name)
+                              }
+                              className="!bg-[#103D9C]"
+                            >
+                              {item.label}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      {response?.[question?.name] &&
+                        response?.[question?.name]?.map((res) => (
+                          <div key={res} className="flex justify-end">
+                            <Button className="!bg-[#103D9C] w-fit">
+                              {res}
+                            </Button>
+                          </div>
+                        ))}
+                    </div>
+                  ))}
+                  {questions[questions.length - 1]?.type == "input" && (
+                    <div
+                      ref={bottomRef}
+                      className="w-full flex flex-col gap-2 relative"
+                      onFocus={() => setOnForcus((r) => !r)}
+                    >
+                      <div
+                        ref={selectionRef}
+                        className=" absolute bottom-[80px] left-[-12px] right-0 gap-2 flex flex-col items-start"
+                      >
+                        <Controller
+                          name="suggestions"
+                          control={control}
+                          render={({ field }) => (
+                            <div className="flex flex-col gap-2 items-stretch bg-white rounded-xl p-3">
+                              {field.value.map((suggestion) => {
+                                return (
+                                  <Button
+                                    mode="default"
+                                    key={suggestion}
+                                    className="!bg-blue-secondary"
+                                    onClick={() => {
+                                      if (
+                                        !getValues("programings").includes(
+                                          suggestion
+                                        )
+                                      )
+                                        append(suggestion);
+                                    }}
+                                  >
+                                    {suggestion}
+                                  </Button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        />
+                      </div>
+                      <Controller
+                        name="text"
+                        control={control}
+                        render={({ field }) => (
+                          <ChatbotTyping
+                            value={field.value}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              handleSuggestions(e.target.value);
+                            }}
+                            onSubmit={handleSubmit(onSubmit)}
+                          ></ChatbotTyping>
+                        )}
+                      />
+                      <Controller
+                        name="programings"
+                        control={control}
+                        render={({ field }) => {
+                          return (
+                            <div className="flex w-full gap-2 h-[40px]">
+                              {fields.map((skill, index) => {
+                                return (
+                                  <Controller
+                                    key={skill.id}
+                                    control={control}
+                                    name={`programings.${index}` as const}
+                                    render={({ field: fieldItem }) => {
+                                      return (
+                                        <Button
+                                          mode="default"
+                                          className="!bg-blue-secondary"
+                                          isCloseToggle
+                                          onClick={() => remove(index)}
+                                        >
+                                          {fieldItem.value}
+                                        </Button>
+                                      );
+                                    }}
+                                  ></Controller>
+                                );
+                              })}
+                            </div>
+                          );
+                        }}
+                      />
+                    </div>
+                  )}
+                </>
 
-								{/* {recommendStatus === ERecommendStatus.CHOOSEN && } */}
-								<div ref={bottomRef}></div>
-							</div>
-						</div>
-					</>
-				)}
-				{recommendStatus === ERecommendStatus.CHOOSEN && (
-					<div className="flex flex-col items-center gap-8 flex-1 p-[29px]">
-						<h2 className="font-bold text-2xl text-center">Lộ trình đê xuất</h2>
-						<div className="flex flex-col items-stretch gap-7">
-							<p>Chọn 1 lộ trình dưới đây để bắt đầu hành trình của bạn</p>
-							{prediction?.map((item) => {
-								return (
-									<div
-										key={item.maintype_id}
-										className="h-[105px] flex items-center"
-									>
-										<button
-											className="flex shadow-lg p-[7px] rounded-2xl items-center"
-											onClick={() => handleChoose(item.maintype_id)}
-										>
-											<Image
-												alt="main_type"
-												src={frontend.src}
-												width={100}
-												height={50}
-												className=" rounded-2xl h-[90px] w-[171px]"
-											></Image>
-											<h4 className="px-[44px] text-[#103D9C] text-xl">
-												{item.maintype}
-											</h4>
-										</button>
-										<div className=" shrink-0 text-center w-[160px] text-2xl ">
-											{item.percent?.toFixed(2)} %
-										</div>
-									</div>
-								);
-							})}
-						</div>
-					</div>
-				)}
-			</div>
-		</div>
-	);
+                {/* {recommendStatus === ERecommendStatus.CHOOSEN && } */}
+                <div ref={bottomRef}></div>
+              </div>
+            </div>
+          </>
+        )}
+        {recommendStatus === ERecommendStatus.CHOOSEN && (
+          <div className="flex flex-col items-center gap-8 flex-1 p-[29px]">
+            <h2 className="font-bold text-2xl text-center">Lộ trình đê xuất</h2>
+            <div className="flex flex-col items-stretch gap-7">
+              <p>Chọn 1 lộ trình dưới đây để bắt đầu hành trình của bạn</p>
+              {prediction?.map((item) => {
+                return (
+                  <div
+                    key={item.maintype_id}
+                    className="h-[105px] flex items-center"
+                  >
+                    <button
+                      className="flex shadow-lg p-[7px] rounded-2xl items-center"
+                      onClick={() => handleChoose(item.maintype_id)}
+                    >
+                      <Image
+                        alt="main_type"
+                        src={frontend.src}
+                        width={100}
+                        height={50}
+                        className=" rounded-2xl h-[90px] w-[171px]"
+                      ></Image>
+                      <h4 className="px-[44px] text-[#103D9C] text-xl">
+                        {item.maintype}
+                      </h4>
+                    </button>
+                    <div className=" shrink-0 text-center w-[160px] text-2xl ">
+                      {item.percent?.toFixed(2)} %
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default ModalSurvey;
