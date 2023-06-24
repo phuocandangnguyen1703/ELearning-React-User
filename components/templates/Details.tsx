@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { checkPayment } from "apis/payment";
+import Link from "next/link";
 
 interface DetailsProps {
   imageURL: string;
@@ -30,18 +31,21 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
   const [isPaid, setIsPaid] = useState(false);
   const router = useRouter();
   const token = useSelector((state: RootState) => state.user.token);
-  const courseId = router.query.course_id;
+  const courseId = router.query.id;
   const loading = useLoading();
   useEffect(() => {
+    console.log(courseId);
     if (!courseId) return;
     if (!token) return;
 
     (async () => {
       loading.open();
-      // await checkPayment(courseId as string).then((success)=>setIsPaid)
+      await checkPayment(courseId as string)
+        .then((success) => setIsPaid(success.data.is_paid))
+        .catch((error) => console.log(error));
       loading.close();
     })();
-  }, [courseId]);
+  }, [courseId, token]);
   return (
     <main className="bg-white">
       <div className="h-[70vh] w-full relative">
@@ -111,12 +115,15 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
                       data-te-collapse-item
                     >
                       {chapter?.lessons?.map((lesson) => {
-                        console.log(lesson);
                         return (
-                          <div key={lesson._id} className="p-2 py-4 flex items-center justify-between text-sm">
+                          <Link
+                            href={`/learning/${lesson._id}?course_id=${course._id}`}
+                            key={lesson._id}
+                            className="p-2 py-4 flex items-center justify-between text-sm"
+                          >
                             <p>{lesson.lesson_name}</p>
                             <p>{lesson.duration}</p>
-                          </div>
+                          </Link>
                         );
                       })}
                     </div>
@@ -221,8 +228,16 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course }) => {
           <p className="text-[#2F80ED] text-sm font-bold text-center">
             {course?.duration} hour left at this price
           </p>
-          <Button className="w-full text-base !bg-[#2F80ED] font-bold h-10">
-            Buy Now
+
+          <Button
+            className="w-full text-base !bg-[#2F80ED] font-bold h-10"
+            onClick={() => {
+              if (isPaid) return;
+              router.push(`/payment?course_id=${course?._id}`);
+            }}
+          >
+            {!isPaid && "Buy Now"}
+            {isPaid && "Đã thanh toán"}
           </Button>
           <div className="h-[1px] w-full bg-black"></div>
           <div className="flex flex-col gap-2">

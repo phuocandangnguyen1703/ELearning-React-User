@@ -54,6 +54,7 @@
 		"tw-elements": "^1.0.0-beta2",
 		"typescript": "5.0.4",
 		"uuid": "^9.0.0",
+		"video-react": "^0.16.0",
 		"yup": "^1.2.0"
 	},
 	"devDependencies": {
@@ -62,6 +63,7 @@
 		"@types/react-lazy-load-image-component": "^1.5.3",
 		"@types/redux-logger": "^3.0.9",
 		"@types/uuid": "^9.0.1",
+		"@types/video-react": "^0.15.1",
 		"tailwind-scrollbar": "^3.0.4"
 	}
 }
