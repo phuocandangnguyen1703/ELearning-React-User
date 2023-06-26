@@ -32,6 +32,7 @@ import { calculateRelativeTime } from "@/utils/date";
 import _ from "lodash";
 import { getCoursesSimilarTag } from "apis/roadmap";
 import { getCoursesOfMaintype } from "@/apis/course";
+import { error } from "console";
 interface DetailsProps {
 	imageURL: string;
 	course: ICourse | undefined;
@@ -85,8 +86,12 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
 			return;
 		}
 		loading.open();
+		if (!courseId) {
+			toast.warning("Không tìm thấy mã khóa học");
+			return;
+		}
 		await postReview({
-			courseId: course?._id!,
+			courseId: courseId,
 			courseReviewStar: rating.courseReviewStar,
 			content: rating.content,
 		})
