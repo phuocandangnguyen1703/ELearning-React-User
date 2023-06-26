@@ -54,7 +54,9 @@ const Course: React.FC<CourseProps> = ({ fitWidth, courseId }) => {
       >
         {course?.course_name}
       </Link>
-      <p className="line-clamp-3 text-sm opacity-70">{course?.description}</p>
+      <p className="line-clamp-3 text-sm opacity-70 flex-1">
+        {course?.description}
+      </p>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="flex-shrink-0">

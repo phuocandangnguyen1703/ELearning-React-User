@@ -6,4 +6,5 @@ export { default as Register } from "./Register";
 export { default as Home } from "./Home";
 export { default as Chatbot } from "./Chatbot";
 export { default as Payment } from "./Payment";
+export { default as MyCourse } from "./MyCourse";
 export { default as AllCourses } from "./AllCourses";

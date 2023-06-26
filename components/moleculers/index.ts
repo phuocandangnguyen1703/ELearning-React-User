@@ -6,3 +6,4 @@ export { default as PaymentTimer } from "./PaymentTimer";
 export { default as ChatbotList } from "./ChatbotList";
 export { default as OverviewCourse } from "./OverviewCourse";
 export { default as ActiveCourse } from "./ActiveCourse";
+export { default as MyCourseItem } from "./MyCourseItem";

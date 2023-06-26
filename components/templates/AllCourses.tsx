@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { Button, Select, TextField, useLoading } from "../atoms";
 import { OptionType } from "@/types/common";
@@ -6,21 +6,41 @@ import { Course, Pagination } from "../moleculers";
 import { StateStoreType } from "@/pages/course";
 import { allCourses } from "@/apis/course";
 import Link from "next/link";
+import _ from "lodash";
+import { searchCourses } from "@/apis/search";
 interface CoursesProps {
 	stateStore: UseFormReturn<StateStoreType, any>;
 }
 const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
 	const [courses, setCourses] = useState<string[]>([]);
 	const loading = useLoading();
-	useEffect(() => {
-		(async () => {
-			loading.open();
-			await allCourses()
-				.then((success) => setCourses(success.data.map((x) => x._id)))
-				.catch((error) => console.log(error));
-			loading.close();
-		})();
-	}, []);
+  useEffect(() => {
+    (async () => {
+      loading.open();
+      await searchCourses({})
+        .then((success) =>
+          stateStore.setValue(
+            "courses",
+            success.data.map((x) => x._id)
+          )
+        )
+        .catch((error) => console.log(error));
+      loading.close();
+    })();
+  }, []);
+  const handleSearch = useCallback(() => {
+    _.throttle(() => {
+      const search = stateStore.getValues("search");
+      searchCourses({ search: search })
+        .then((success) =>
+          stateStore.setValue(
+            "courses",
+            success.data.map((x) => x._id)
+          )
+        )
+        .catch((error) => console.log(error));
+    }, 300)();
+  }, []);
 	return (
 		<div className="flex flex-col items-center overflow-x-hidden">
 			<div className="w-full h-44 flex items-center justify-center bg-[url('/bg-all-courses.png')] bg-cover flex-col gap-2">
@@ -90,8 +110,8 @@ const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
 			</div>
 			<div className="max-w-full min-w-[70%] mt-10 flex flex-col items-center">
 				<div className="grid grid-cols-4 grid-rows-2 gap-4 content-center">
-					{[...courses, ...courses, ...courses].map((item) => (
-						<Course key={item} fitWidth />
+					{courses.map((item) => (
+						<Course key={item} fitWidth courseId={item} />
 					))}
 				</div>
 				<div className="mt-5">

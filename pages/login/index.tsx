@@ -10,10 +10,12 @@ import { useRouter } from "next/router";
 import { setCookie } from "cookies-next";
 import { login } from "apis/auth";
 import { useToast } from "@iscv/toast";
+import { useLoading } from "@/components/atoms";
 const LoginPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const toast = useToast();
+  const loading = useLoading();
   const loginForm = useForm<LoginFormType>({
     defaultValues: {
       username: "",
@@ -22,7 +24,7 @@ const LoginPage = () => {
     resolver: yupResolver(schemaLogin),
   });
   const handleSubmit = async (data: LoginFormType) => {
-    console.log(data);
+    loading.open();
     await login(data)
       .then((success) => {
         const data = success.data;
@@ -39,7 +41,7 @@ const LoginPage = () => {
             token: data.accessToken,
             name: data.user.fullname,
             id: data.user._id,
-          }),
+          })
         );
 
         router.push("/");
@@ -48,9 +50,7 @@ const LoginPage = () => {
         console.log(error);
         toast.error("Đăng nhập thất bại");
       });
-    //TODO: Xử lý đăng nhập chổ này.
-    // TODO: Mã hoá token dựa trên username, id
-    // const token = ......
+    loading.close();
   };
   const props = { loginForm, handleSubmit };
   return <Login {...props} />;
