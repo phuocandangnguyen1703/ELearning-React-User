@@ -24,6 +24,7 @@ export interface ISelectProps {
 	disabled?: boolean;
 	isClearable?: boolean;
 	placeHolder?: string;
+	isSearchable?: boolean;
 	onChange: (value: OptionType) => void;
 }
 
@@ -41,6 +42,7 @@ const SelectComplete: React.FC<ISelectProps> = forwardRef<
 			disabled,
 			placeHolder,
 			isClearable = false,
+			isSearchable = false,
 			onChange,
 			...props
 		},
@@ -56,7 +58,7 @@ const SelectComplete: React.FC<ISelectProps> = forwardRef<
 			return (
 				<components.MenuList
 					{...menuProps}
-					className={clsx("bg-[#f5f4f4]", { "h-[230px]": options.length })}
+					className={clsx("bg-[#f5f4f4]", { "h-[130px]": options.length })}
 				>
 					<div className="flex flex-col divide-y text-black bg-[#f5f4f4]">
 						{children}
@@ -185,6 +187,7 @@ const SelectComplete: React.FC<ISelectProps> = forwardRef<
 					}}
 					{...props}
 					isClearable={isClearable}
+					isSearchable={isSearchable}
 				/>
 				{!!error && (
 					<p className="text-red-500 text-[10px] absolute bottom-[-12px]">
