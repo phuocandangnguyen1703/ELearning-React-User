@@ -30,7 +30,7 @@ const Login: React.FC<LoginProps> = ({ loginForm, handleSubmit }) => {
                 className="flex-1 flex items-center flex-col gap-2 mt-6"
               >
                 <p className="text-sm font-medium">Chào mừng đến với EduPath</p>
-                <div className="p-2 bg-[#2F80ED99] flex gap-4 w-2/3 h-11 text-xs font-medium justify-between rounded-full">
+                <div className="p-2 bg-[#2F80ED99] flex gap-4 w-full h-11 text-xs font-medium justify-between rounded-full">
                   <p className="bg-[#2F80ED] text-white flex items-center justify-center px-4 w-1/2 text-center rounded-full cursor-pointer">
                     Đăng nhập
                   </p>
@@ -46,10 +46,10 @@ const Login: React.FC<LoginProps> = ({ loginForm, handleSubmit }) => {
                   className="flex flex-col gap-4"
                   onSubmit={loginForm.handleSubmit(handleSubmit)}
                 >
-                  <p className="mt-2 text-sm text-[#5B5B5B] w-full ">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry.
-                  </p>
+                  <i className="mt-2 text-sm text-[#5B5B5B] w-full ">
+                    "Learning is a treasure that will follow its owner
+                    everywhere."
+                  </i>
                   <Controller
                     name="username"
                     control={loginForm.control}

@@ -15,6 +15,7 @@ interface ImageOptimizingProps {
   scrollPosition?: any;
   objectFit?: "cover" | "contain" | "fill";
   className?: string;
+  containerClassName?: string;
 }
 
 const ImageOptimizing: React.FC<ImageOptimizingProps> = ({
@@ -24,6 +25,7 @@ const ImageOptimizing: React.FC<ImageOptimizingProps> = ({
   scrollPosition,
   objectFit = "cover",
   className,
+  containerClassName,
 }) => {
   const [isLoaded, setLoaded] = useState(false);
 
@@ -32,13 +34,13 @@ const ImageOptimizing: React.FC<ImageOptimizingProps> = ({
   };
 
   return (
-    <div className={clsx("relative w-full h-full")}>
+    <div className={clsx("relative w-full h-full", containerClassName)}>
       <LazyLoadComponent scrollPosition={scrollPosition}>
         {
           <div
             className={`absolute top-0 left-0 z-20 duration-500 transition-opacity ease-linear w-full h-full ${
               isLoaded ? "opacity-0" : "opacity-100"
-            }`}
+            } ${className}`}
           >
             <Blurhash
               hash={blurhash}

@@ -6,6 +6,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { schemaRegister } from "resolvers/register";
 import { register } from "../../apis/auth/index";
+import { setUser } from "@/redux/features/slices/user";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { setCookie } from "cookies-next";
+import { useLoading } from "@/components/atoms";
 
 const initForm = {
   confirmPassword: "",
@@ -19,26 +24,42 @@ const RegisterPage = () => {
     defaultValues: initForm,
     resolver: yupResolver(schemaRegister),
   });
+  const dispatch = useDispatch();
+  const router = useRouter();
   const toast = useToast();
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState(0);
-  const handleSubmit = (data: RegisterFormType) => {
-    console.log(data);
-    register(data)
-      .then((response) => {
-        console.log(response);
+  const loading = useLoading();
+  const handleSubmit = async (data: RegisterFormType) => {
+    loading.open();
+    await register(data)
+      .then((success) => {
         toast.success("Đăng ký thành công");
-        setStatus(response.status);
-        // registerForm.reset();
+        const data = success.data;
+        dispatch(
+          setUser({
+            token: data.accessToken,
+            name: data.user.fullname,
+            id: data.user._id,
+          })
+        );
+        setCookie(
+          "user",
+          JSON.stringify({
+            token: data.accessToken,
+            name: data.user.fullname,
+            id: data.user._id,
+          })
+        );
+        router.push("/");
+        registerForm.reset();
       })
       .catch((error) => {
         toast.error();
         console.log(error);
-        // const message = error.response.data?.message;
       });
+    loading.close();
   };
 
-  const props = { registerForm, handleSubmit, message, status };
+  const props = { registerForm, handleSubmit };
   return <Register {...props} />;
 };
 

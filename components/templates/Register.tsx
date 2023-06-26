@@ -10,19 +10,9 @@ import { useToast } from "@iscv/toast";
 interface RegisterProps {
   registerForm: UseFormReturn<RegisterFormType, any>;
   handleSubmit: (data: RegisterFormType) => void;
-  message: string;
-  status: number;
 }
-const Register: React.FC<RegisterProps> = ({
-  registerForm,
-  handleSubmit,
-  status,
-  message,
-}) => {
+const Register: React.FC<RegisterProps> = ({ registerForm, handleSubmit }) => {
   const toast = useToast();
-  const notify = React.useCallback((type: string, message: string) => {
-    toast.success(message);
-  }, []);
 
   return (
     <div className="bg-white h-screen w-full flex items-center">

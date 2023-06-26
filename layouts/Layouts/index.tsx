@@ -25,7 +25,7 @@ function MainLayout({ children }: MainLayoutProps) {
   React.useEffect(() => {}, []);
   return (
     <div className={poppins.className}>
-      <Metadata title="E-Learning" description="Khám phá E-Learning" />
+      <Metadata title="Edupath" description="Khám phá Edupath" />
       {children}
     </div>
   );

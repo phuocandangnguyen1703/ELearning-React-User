@@ -1,4 +1,3 @@
-import { frontend } from "@/assets/home";
 import { ERecommendStatus } from "@/types/index";
 import { searchSubstring } from "@/utils/string";
 import { useToast } from "@iscv/toast";
@@ -19,6 +18,7 @@ import { RxDotFilled } from "react-icons/rx";
 import { Button } from "../atoms";
 import ChatbotTyping from "../moleculers/ChatbotTyping";
 import { useLoading } from "../atoms/Loading";
+import ModalChoosen from "./ModalChoosen";
 
 const QUESTIONS = [
   {
@@ -191,11 +191,15 @@ const ModalSurvey = () => {
   if (!recommendStatus || recommendStatus === ERecommendStatus.DONE)
     return null;
   return (
-    <div className="bg-[#50505072] fixed top-0 bottom-0 z-50 h-screen w-screen flex items-center justify-center">
-      <div className={clsx("w-2/3 h-4/5 bg-white flex rounded-2xl", {})}>
+    <div className="bg-[#50505072] fixed inset-0 bg-whe z-50 flex items-center justify-center">
+      <div
+        className={
+          "fixed bg-white flex rounded-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] rounnded-2xl  w-[70%] h-[80%] overflow-hidden"
+        }
+      >
         {recommendStatus === ERecommendStatus.FIRST_TIME && (
           <>
-            <div className="flex-[2] bg-[#D8EDFF] h-full relative flex flex-col">
+            <div className=" bg-[#D8EDFF] h-full relative flex flex-col">
               <div className="w-full flex flex-col gap-2 p-10">
                 <h2 className="text-2xl text-[#16325C] font-bold text-center">
                   CHÀO MỪNG ĐẾN VỚI EDUPATH
@@ -409,39 +413,10 @@ const ModalSurvey = () => {
           </>
         )}
         {recommendStatus === ERecommendStatus.CHOOSEN && (
-          <div className="flex flex-col items-center gap-8 flex-1 p-[29px]">
-            <h2 className="font-bold text-2xl text-center">Lộ trình đê xuất</h2>
-            <div className="flex flex-col items-stretch gap-7">
-              <p>Chọn 1 lộ trình dưới đây để bắt đầu hành trình của bạn</p>
-              {prediction?.map((item) => {
-                return (
-                  <div
-                    key={item.maintype_id}
-                    className="h-[105px] flex items-center"
-                  >
-                    <button
-                      className="flex shadow-lg p-[7px] rounded-2xl items-center"
-                      onClick={() => handleChoose(item.maintype_id)}
-                    >
-                      <Image
-                        alt="main_type"
-                        src={frontend.src}
-                        width={100}
-                        height={50}
-                        className=" rounded-2xl h-[90px] w-[171px]"
-                      ></Image>
-                      <h4 className="px-[44px] text-[#103D9C] text-xl">
-                        {item.maintype}
-                      </h4>
-                    </button>
-                    <div className=" shrink-0 text-center w-[160px] text-2xl ">
-                      {item.percent?.toFixed(2)} %
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <ModalChoosen
+            prediction={prediction!}
+            handleChoose={handleChoose}
+          ></ModalChoosen>
         )}
       </div>
     </div>
