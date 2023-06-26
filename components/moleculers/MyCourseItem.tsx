@@ -12,7 +12,7 @@ const MyCourse = (props: Props) => {
   return (
     <div className=" flex flex-col px-5 py-7 rounded-2xl bg-white gap-4 shadow-xl items-center">
       <ImageOptimizing
-        containerClassName="!h-fit"
+        containerClassName="h-[10rem] w-[16rem]"
         className=" rounded-xl w-[17rem] h-[11rem] overflow-hidden"
         blurhash="NVKKc$Ny4n%LNG%M~qxux]o2o2X8-;kW%LoeRjt7"
         src={`${process.env.BACKEND}public/course/${course._id}/course_img.jpeg`}
