@@ -16,7 +16,7 @@ export const listTag = () => {
   return new AxiosServices().get<string[]>("/recommend/list_tag");
 };
 
-export const processRecommend = (skills: string[]) => {
+export const processRecommend = (skills?: string[]) => {
   return new AxiosServices().post<
     {
       maintype: string;
