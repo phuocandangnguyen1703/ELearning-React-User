@@ -1,5 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Button, ImageOptimizing, TextAreaField, useLoading } from "../atoms";
+import { getCoursesOfMaintype } from "@/apis/course";
+import { StartIcon } from "@/assets/detail";
+import { RootState } from "@/redux/store";
+import { ICourse } from "@/types/course";
+import { calculateRelativeTime } from "@/utils/date";
+import { useToast } from "@iscv/toast";
+import { checkPayment } from "apis/payment";
+import { getCourseReview, postReview } from "apis/review";
+import { ICourseReview } from "apis/review/types";
+import clsx from "clsx";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useCallback, useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
 	AiFillCamera,
 	AiFillGoogleCircle,
@@ -8,31 +20,14 @@ import {
 	AiFillTwitterCircle,
 	AiOutlineClockCircle,
 } from "react-icons/ai";
-import { FiChevronDown, FiClock } from "react-icons/fi";
-import { FaChartBar, FaCertificate } from "react-icons/fa";
-import { HiDocumentText } from "react-icons/hi";
-import { BiCategory } from "react-icons/bi";
-import { ImageComponent } from "../organisms";
 import { BsBook, BsCalendarMinus } from "react-icons/bs";
-import clsx from "clsx";
-import { Course } from "../moleculers";
-import { ICourse } from "@/types/course";
-import { useRouter } from "next/router";
+import { FaCertificate, FaChartBar } from "react-icons/fa";
+import { FiChevronDown, FiClock } from "react-icons/fi";
+import { HiDocumentText } from "react-icons/hi";
 import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { checkPayment } from "apis/payment";
-import Link from "next/link";
-import { Controller, useForm } from "react-hook-form";
-import { StartIcon } from "@/assets/detail";
-import { useToast } from "@iscv/toast";
-import { getCourseReview, postReview } from "apis/review";
-import { IReview } from "@/types/review";
-import { ICourseReview } from "apis/review/types";
-import { calculateRelativeTime } from "@/utils/date";
-import _ from "lodash";
-import { getCoursesSimilarTag } from "apis/roadmap";
-import { getCoursesOfMaintype } from "@/apis/course";
-import { error } from "console";
+import { Button, ImageOptimizing, TextAreaField, useLoading } from "../atoms";
+import { Course } from "../moleculers";
+import { ImageComponent } from "../organisms";
 interface DetailsProps {
 	imageURL: string;
 	course: ICourse | undefined;

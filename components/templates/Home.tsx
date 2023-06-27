@@ -2,7 +2,7 @@ import { StateHome } from "@/pages/index";
 import { UserReduxProps } from "@/redux/features/slices/user";
 import { ICourseMix } from "@/types/IType";
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { AiFillStar, AiOutlineClockCircle } from "react-icons/ai";
 import { BsCart3, BsPeople } from "react-icons/bs";
@@ -85,7 +85,10 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
                   <p className="text-sm text-[#4F4F4F]">Tiến độ 15%</p>
                 </div>
               </Link>
-              <Link href="/mycourse" className="row-span-2 col-start-3 rounded-xl overflow-hidden p-6 bg-[url('/home_b.png')] bg-cover bg-no-repeat">
+              <Link
+                href="/mycourse"
+                className="row-span-2 col-start-3 rounded-xl overflow-hidden p-6 bg-[url('/home_b.png')] bg-cover bg-no-repeat"
+              >
                 <div>
                   <h2 className="uppercase font-medium">khoá học của bạn</h2>
                   <p className="text-sm text-[#4F4F4F]">12 bài học</p>

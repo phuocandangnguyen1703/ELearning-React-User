@@ -12,7 +12,7 @@ import { getCookie } from "cookies-next";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { RxDotFilled } from "react-icons/rx";
 import { Button } from "../atoms";
@@ -51,7 +51,8 @@ const QUESTIONS = [
     ],
   },
 ];
-const ModalSurvey = () => {
+type Props = {};
+const ModalSurvey = (props: Props) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [onForcus, setOnForcus] = useState(false);
   const [recommendStatus, setRecommendStatus] = useState<ERecommendStatus>(
@@ -106,7 +107,17 @@ const ModalSurvey = () => {
       suggestions: [],
     },
   });
-
+  const suggesionArray = useFieldArray<
+    {
+      programings: string[];
+      text: string | undefined;
+      suggestions: string[];
+    },
+    never
+  >({
+    control: control,
+    name: "suggestions" as never,
+  });
   const { fields, remove, append } = useFieldArray({
     control,
     name: "programings" as never,
@@ -162,17 +173,20 @@ const ModalSurvey = () => {
     setValue("suggestions", result);
   };
   const onSubmit = async (data: any) => {
-    if (!data.programings.length) return;
+    if (!data.programings.length) {
+      return;
+    }
     loading.open();
 
     await processRecommend(data.programings)
       .then((success) => {
         const data = success.data;
         setRecommendStatus(ERecommendStatus.CHOOSEN);
+        setValue("suggestions", []);
         setPrediction(data);
       })
       .catch((error) => console.log(error));
-
+    resetField("suggestions");
     loading.close();
   };
   const handleChoose = async (choosen: string) => {
@@ -188,6 +202,9 @@ const ModalSurvey = () => {
       });
     loading.close();
   };
+  const setOpen = useCallback((e: any) => {
+    setRecommendStatus(e || false);
+  }, []);
   if (!recommendStatus || recommendStatus === ERecommendStatus.DONE)
     return null;
   return (
@@ -230,7 +247,7 @@ const ModalSurvey = () => {
               </div>
               <div className="bg-[url('/bg_info.png')] absolute -bottom-1 w-full h-[70px] bg-cover bg-no-repeat " />
             </div>
-            <div className="flex-[3] h-full flex flex-col relative">
+            <div className="h-full flex flex-col relative">
               <div className="bg-[#103D9C] h-16 flex items-center justify-start gap-2">
                 <div className="flex -mr-2">
                   <RxDotFilled size={30} color="#34A853" />
@@ -329,33 +346,37 @@ const ModalSurvey = () => {
                         ref={selectionRef}
                         className=" absolute bottom-[80px] left-[-12px] right-0 gap-2 flex flex-col items-start"
                       >
-                        <Controller
-                          name="suggestions"
-                          control={control}
-                          render={({ field }) => (
-                            <div className="flex flex-col gap-2 items-stretch bg-white rounded-xl p-3">
-                              {field.value.map((suggestion) => {
-                                return (
-                                  <Button
-                                    mode="default"
-                                    key={suggestion}
-                                    className="!bg-blue-secondary"
-                                    onClick={() => {
-                                      if (
-                                        !getValues("programings").includes(
-                                          suggestion
-                                        )
-                                      )
-                                        append(suggestion);
-                                    }}
-                                  >
-                                    {suggestion}
-                                  </Button>
-                                );
-                              })}
-                            </div>
-                          )}
-                        />
+                        <div className="flex flex-col gap-2 items-stretch bg-white rounded-xl p-3">
+                          {suggesionArray.fields.map((field, index) => {
+                            return (
+                              <Controller
+                                control={control}
+                                key={field.id}
+                                name={`suggestions.${index}`}
+                                render={({ field: { value: suggestion } }) => {
+                                  return (
+                                    <Button
+                                      mode="default"
+                                      className="!bg-blue-secondary"
+                                      onClick={() => {
+                                        if (
+                                          !getValues("programings").includes(
+                                            suggestion
+                                          )
+                                        ) {
+                                          append(suggestion);
+                                          resetField("suggestions");
+                                        }
+                                      }}
+                                    >
+                                      {suggestion}
+                                    </Button>
+                                  );
+                                }}
+                              ></Controller>
+                            );
+                          })}
+                        </div>
                       </div>
                       <Controller
                         name="text"
@@ -414,6 +435,7 @@ const ModalSurvey = () => {
         )}
         {recommendStatus === ERecommendStatus.CHOOSEN && (
           <ModalChoosen
+            setOpen={setOpen}
             prediction={prediction!}
             handleChoose={handleChoose}
           ></ModalChoosen>

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 type Props = {
   prediction: {
@@ -7,6 +7,7 @@ type Props = {
     percent: number;
   }[];
   handleChoose: (choosen: string) => void;
+  setOpen: (e: boolean) => void;
 };
 import {
   android,
@@ -18,7 +19,27 @@ import {
 } from "@/assets/home";
 
 const ModalChoosen = (props: Props) => {
-  const { prediction, handleChoose } = props;
+  const { prediction, handleChoose, setOpen } = props;
+  const modalRef = useRef(null);
+  useEffect(() => {
+    /**
+     * Alert if clicked on outside of element
+     */
+    function handleClickOutside(event: any) {
+      if (
+        modalRef.current &&
+        !(modalRef.current as any).contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalRef]);
   const selectMaintype = useCallback((maintype: string) => {
     switch (maintype) {
       case "FrontEnd":
@@ -38,7 +59,10 @@ const ModalChoosen = (props: Props) => {
     }
   }, []);
   return (
-    <div className="flex flex-col items-center gap-8 flex-1 p-[29px] w-full overflow-auto">
+    <div
+      className="flex flex-col items-center gap-8 flex-1 p-[29px] w-full overflow-auto"
+      ref={modalRef}
+    >
       <h2 className="font-bold text-2xl text-center">Lộ trình đê xuất</h2>
       <div className="flex flex-col items-stretch gap-7">
         <p>Chọn 1 lộ trình dưới đây để bắt đầu hành trình của bạn</p>
@@ -94,7 +118,7 @@ const ModalChoosen = (props: Props) => {
                     >
                       <Image
                         alt="main_type"
-                        src={selectMaintype("")}
+                        src={selectMaintype(item.maintype)}
                         width={70}
                         height={30}
                         className=" rounded-2xl h-[90px] w-[171px] object-cover"

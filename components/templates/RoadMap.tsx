@@ -3,15 +3,21 @@ import React from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { ProgressLayout } from "../atoms";
 import { MapItem } from "../moleculers";
-import { ModalRoadMap } from "../organisms";
+import { ModalRechoose, ModalRoadMap } from "../organisms";
 import { IRoadmap } from "apis/roadmap/types";
 import _ from "lodash";
+import { EditIcon } from "@/assets/roadmap";
 
 interface RoadMapProps {
   stateStore: UseFormReturn<StateStoreType, any>;
   roadmap: IRoadmap | undefined;
+  handleReload: () => void;
 }
-const RoadMap: React.FC<RoadMapProps> = ({ roadmap, stateStore }) => {
+const RoadMap: React.FC<RoadMapProps> = ({
+  roadmap,
+  stateStore,
+  handleReload,
+}) => {
   const circumference = 60 * 2 * Math.PI;
   const percent = roadmap?.percent || 0;
   return (
@@ -33,24 +39,37 @@ const RoadMap: React.FC<RoadMapProps> = ({ roadmap, stateStore }) => {
         }}
       />
 
-      <div className="bg-[url('/bg_skill.png')] h-screen w-full right-0 bg-no-repeat absolute z-10 top-0 bg-right-top blur-lg"></div>
-      <div className="bg-[url('/bg_skill_2.png')] h-screen w-full right-0 bg-no-repeat absolute z-10 top-0 bg-left-top blur-lg"></div>
+      <Controller
+        control={stateStore.control}
+        name="isOpenRechoose"
+        render={({ field: { value: isOpenRechoose, onChange } }) => {
+          if (!isOpenRechoose) return <></>;
+          return (
+            <ModalRechoose
+              setOpen={(e) => onChange(e)}
+              handleReload={handleReload}
+            ></ModalRechoose>
+          );
+        }}
+      ></Controller>
+
+      {/* <div className="bg-[url('/bg_skill.png')] h-screen w-full right-0 bg-no-repeat absolute z-10 top-0 bg-right-top blur-lg">
+        C
+      </div> */}
+      {/* <div className="bg-[url('/bg_skill_2.png')] h-screen w-full right-0 bg-no-repeat absolute z-10 top-0 bg-left-top blur-lg"></div> */}
       <div className="h-[50vh] w-2/3 m-auto p-14 flex gap-10">
         <div className="flex flex-1 flex-col gap-3">
           <h2>Chào mừng quay lại với lộ trình trở thành</h2>
           <h1 className="font-bold text-3xl text-[#5F6368]">
             {roadmap?.maintype_name}
           </h1>
-          {/* <div className="mt-9 flex items-center gap-10">
-						<div className="flex flex-col justify-center items-center">
-							<p>Title 1</p>
-							<div className="w-28 h-28 shadow-lg bg-white rounded-2xl"></div>
-						</div>
-						<div className="flex flex-col justify-center items-center">
-							<p>Title 2</p>
-							<div className="w-28 h-28 shadow-lg bg-white rounded-2xl"></div>
-						</div>
-					</div> */}
+          <i
+            className=" text-blue-secondary flex items-center cursor-pointer"
+            onClick={() => stateStore.setValue("isOpenRechoose", true)}
+          >
+            <EditIcon></EditIcon>
+            <span className="ml-1">Đổi lộ trình khác</span>
+          </i>
         </div>
         <div className="flex-1 flex flex-col relative">
           <h2 className="text-[#0066FF] font-bold text-lg ml-10">

@@ -8,20 +8,25 @@ import { useForm } from "react-hook-form";
 
 export type StateStoreType = {
   isOpenModal: string | undefined;
+  isOpenRechoose: boolean;
 };
 const RoadMapPage = () => {
   const stateStore = useForm<StateStoreType>({
     defaultValues: {
       isOpenModal: undefined,
+      isOpenRechoose: false,
     },
   });
   const [roadmap, setRoadmap] = useState<IRoadmap | undefined>(undefined);
-  useEffect(() => {
+  const handleReload = () => {
     myRoadmap()
       .then((success) => setRoadmap(success.data))
       .catch((error) => console.log(error));
+  };
+  useEffect(() => {
+    handleReload();
   }, []);
-  const props = { roadmap, stateStore };
+  const props = { roadmap, stateStore, handleReload };
   return <RoadMap {...props} />;
 };
 
