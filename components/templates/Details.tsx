@@ -338,12 +338,12 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
 									<div className="h-40 flex gap-9">
 										<div className="w-48 h-full bg-white rounded-2xl flex flex-col justify-center items-center gap-2">
 											<h2 className="font-bold text-[#00000080] text-2xl">
-												{review?.averange.toFixed(1)} out of 5
+												{review?.averange?.toFixed(1)} out of 5
 											</h2>
 											<div className="flex gap-1">
 												{[
 													...Array(
-														Number(review?.averange.toFixed() || 0)
+														Number(review?.averange?.toFixed() || 0)
 													).keys(),
 												].map((num) => {
 													return <AiFillStar key={num} color="orange" />;
