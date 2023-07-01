@@ -62,7 +62,7 @@ const TagSkill: React.FC<TagSkillProps> = ({
       )}
       <p
         className={clsx("text-[10px] font-medium text-center uppercase", {
-          "!bg-gray-300 line-through": isCompleted,
+          "!line-through": isCompleted,
         })}
       >
         {children}

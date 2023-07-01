@@ -269,7 +269,7 @@ const ModalSurvey = (props: Props) => {
                 </div>
               </div>
 
-              <div className="flex-1 h-full p-3 flex flex-col gap-3 overflow-x-auto ">
+              <div className="flex-1 h-full p-3 flex flex-col gap-3 overflow-y-auto">
                 <>
                   {questions.map((question) => (
                     <div
@@ -392,37 +392,39 @@ const ModalSurvey = (props: Props) => {
                           ></ChatbotTyping>
                         )}
                       />
-                      <Controller
-                        name="programings"
-                        control={control}
-                        render={({ field }) => {
-                          return (
-                            <div className="flex w-full gap-2 h-[40px]">
-                              {fields.map((skill, index) => {
-                                return (
-                                  <Controller
-                                    key={skill.id}
-                                    control={control}
-                                    name={`programings.${index}` as const}
-                                    render={({ field: fieldItem }) => {
-                                      return (
-                                        <Button
-                                          mode="default"
-                                          className="!bg-blue-secondary"
-                                          isCloseToggle
-                                          onClick={() => remove(index)}
-                                        >
-                                          {fieldItem.value}
-                                        </Button>
-                                      );
-                                    }}
-                                  ></Controller>
-                                );
-                              })}
-                            </div>
-                          );
-                        }}
-                      />
+                      <div className="w-full relative">
+                        <Controller
+                          name="programings"
+                          control={control}
+                          render={({ field }) => {
+                            return (
+                              <div className="flex w-full gap-2 overflow-x-auto max-w-full flex-wrap">
+                                {fields.map((skill, index) => {
+                                  return (
+                                    <Controller
+                                      key={skill.id}
+                                      control={control}
+                                      name={`programings.${index}` as const}
+                                      render={({ field: fieldItem }) => {
+                                        return (
+                                          <Button
+                                            mode="default"
+                                            className="!bg-blue-secondary"
+                                            isCloseToggle
+                                            onClick={() => remove(index)}
+                                          >
+                                            {fieldItem.value}
+                                          </Button>
+                                        );
+                                      }}
+                                    ></Controller>
+                                  );
+                                })}
+                              </div>
+                            );
+                          }}
+                        />
+                      </div>
                     </div>
                   )}
                 </>

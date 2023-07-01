@@ -4,10 +4,11 @@ import { Controller, UseFormReturn } from "react-hook-form";
 import { ProgressLayout } from "../atoms";
 import { MapItem } from "../moleculers";
 import { ModalRechoose, ModalRoadMap } from "../organisms";
-import { IRoadmap } from "apis/roadmap/types";
+import { IDetail, IRoadmap } from "apis/roadmap/types";
 import _ from "lodash";
 import { EditIcon } from "@/assets/roadmap";
 
+const circumference = 60 * 2 * Math.PI;
 interface RoadMapProps {
   stateStore: UseFormReturn<StateStoreType, any>;
   roadmap: IRoadmap | undefined;
@@ -18,7 +19,6 @@ const RoadMap: React.FC<RoadMapProps> = ({
   stateStore,
   handleReload,
 }) => {
-  const circumference = 60 * 2 * Math.PI;
   const percent = roadmap?.percent || 0;
   return (
     <div className="bg-white">
@@ -29,10 +29,7 @@ const RoadMap: React.FC<RoadMapProps> = ({
           return (
             <>
               {value && (
-                <ModalRoadMap
-                  onClose={() => onChange(false)}
-                  detailId={value}
-                />
+                <ModalRoadMap onClose={() => onChange(false)} detail={value} />
               )}
             </>
           );
@@ -93,7 +90,7 @@ const RoadMap: React.FC<RoadMapProps> = ({
                     className="text-blue-500"
                     strokeWidth={30}
                     strokeDasharray={
-                      percent !== 100 ? circumference - 30 : circumference
+                      circumference - (percent / 100) * circumference
                     }
                     strokeDashoffset={
                       circumference - (percent / 100) * circumference
@@ -117,9 +114,9 @@ const RoadMap: React.FC<RoadMapProps> = ({
       <div className="w-4/5 m-auto relative mt-28 grid grid-cols-2 pb-20 z-20">
         {roadmap?.sections.map((item, index) => (
           <MapItem
-            onTap={(detailId: string) =>
+            onTap={(detailF: IDetail) =>
               _.throttle(
-                () => stateStore.setValue("isOpenModal", detailId),
+                () => stateStore.setValue("isOpenModal", detailF),
                 1000
               )()
             }

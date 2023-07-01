@@ -24,21 +24,21 @@ const MyCourse = (props: Props) => {
           width={500}
           height={500}
           alt="avatar"
-          className="rounded-full border-8 border-white w-[15rem] h-[15rem]"
+          className="rounded-full border-8 border-white w-[15rem] h-[15rem] object-cover"
         ></Image>
         <div className=" rounded-2xl relative flex-1 overflow-hidden">
           <div className="absolute inset-0 bg-white opacity-80"></div>
           <div className="absolute inset-0 p-8 flex flex-col w-full gap-4">
             <div className=" items-stretch flex gap-3 justify-between">
               <h1 className="text-2xl text-black">{data?.user.fullname}</h1>
-              <Button className="!bg-blue-secondary">Edit Profile</Button>
+              {/* <Button className="!bg-blue-secondary">Edit Profile</Button> */}
             </div>
             <h5>Assistant Professor at Mcmaster University</h5>
-            <p className=" font-light">
+            {/* <p className=" font-light">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt utlabore et dolore magna aliqua. Ut enum
               ad minim veniam, quis nostrud
-            </p>
+            </p> */}
           </div>
         </div>
       </div>

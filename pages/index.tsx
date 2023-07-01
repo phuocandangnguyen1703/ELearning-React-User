@@ -1,4 +1,4 @@
-import { allCourses } from "@/apis/course";
+import { allCourses, randomCourses } from "@/apis/course";
 import { Home } from "@/components/templates";
 import { UserReduxProps } from "@/redux/features/slices/user";
 import { RootState } from "@/redux/store";
@@ -23,7 +23,7 @@ const HomePage = () => {
     },
   });
   useEffect(() => {
-    allCourses()
+    randomCourses()
       .then((success) => setCourse(success.data.map((x) => x._id)))
       .catch((error) => console.log(error));
   }, []);

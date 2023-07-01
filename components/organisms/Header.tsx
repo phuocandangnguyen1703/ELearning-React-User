@@ -69,15 +69,15 @@ const Header = () => {
             </Link>
           </div>
 
-          <div className="flex items-center mx-4 h-8">
+          {/* <div className="flex items-center mx-4 h-8">
             <TextFieldSearch className="flex-1 text-white" />
-          </div>
+          </div> */}
           {/* Logo */}
           <section className="ml-auto flex items-center px-8">
             <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
               {auth?.token ? (
                 <>
-                  <BsCart3
+                  {/* <BsCart3
                     size={20}
                     onClick={() => push("/cart")}
                     className="text-xs font-medium text-white hover:text-gray-100"
@@ -88,11 +88,14 @@ const Header = () => {
                     className="text-xs font-medium text-white hover:text-gray-100"
                     onClick={() => dispatch(setModal({ isOpen: true }))}
                     color="white"
-                  />
+                  /> */}
 
                   <span className="h-8 w-px bg-gray-200" aria-hidden="true" />
 
-                  <div id="user" className="flex items-center gap-2 relative">
+                  <div
+                    id="user"
+                    className="flex items-center gap-2 relative pr-12"
+                  >
                     <Image
                       className="object-cover w-8 h-8 rounded-full"
                       src={"" || "https://shorturl.at/aNQT2"}
@@ -106,43 +109,44 @@ const Header = () => {
                       {auth?.name}
                     </p>
                     <BiChevronDown size={14} color="white" />
+
                     <div
                       id="dropdown"
-                      className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute top-[30px] right-0 translate-x-1/2 w-fit"
+                      className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute top-[30px] right-0 w-fit whitespace-normal min-w-12 -translate-x-12"
                     >
                       <ul
-                        className="py-2 text-sm text-gray-700"
+                        className="py-2 text-sm text-gray-700 w-full "
                         aria-labelledby="dropdownDefaultButton"
                       >
-                        <li>
+                        {/* <li>
                           <a
                             href="#"
                             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                           >
                             Dashboard
                           </a>
-                        </li>
-                        <li>
+                        </li> */}
+                        {/* <li>
                           <a
                             href="#"
                             className="block px-4 py-2 hover:bg-gray-100"
                           >
                             Settings
                           </a>
-                        </li>
-                        <li>
+                        </li> */}
+                        {/* <li>
                           <a
                             href="#"
                             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                           >
                             Earnings
                           </a>
-                        </li>
+                        </li> */}
                         <li>
                           <a
                             onClick={handleSignout}
                             href="/"
-                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white whitespace-nowrap"
                           >
                             Sign out
                           </a>
@@ -160,10 +164,10 @@ const Header = () => {
                 </Button>
               )}
 
-              <div className="flex items-center gap-2 bg-[#1414681A] rounded-full p-2">
+              {/* <div className="flex items-center gap-2 bg-[#1414681A] rounded-full p-2">
                 <span className="bg-[url('/vietnam.png')] rounded-full w-4 h-4 bg-no-repeat bg-contain" />
                 <BiChevronDown size={14} color="white" />
-              </div>
+              </div> */}
             </div>
           </section>
         </div>

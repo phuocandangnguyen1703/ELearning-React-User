@@ -6,14 +6,14 @@ import { Course } from "../moleculers";
 import { GrClose } from "react-icons/gr";
 import { getCoursesSimilarTag } from "apis/roadmap";
 import { ELevel, ICourse } from "@/types/course";
-import { ICourseSimilar } from "apis/roadmap/types";
+import { ICourseSimilar, IDetail } from "apis/roadmap/types";
 import _ from "lodash";
 
 interface ModalSurveyProps {
   onClose: () => void;
-  detailId: string;
+  detail: IDetail;
 }
-const ModalSurvey: React.FC<ModalSurveyProps> = ({ onClose, detailId }) => {
+const ModalSurvey: React.FC<ModalSurveyProps> = ({ onClose, detail }) => {
   const dispatch = useDispatch();
   const [list, setList] = useState<ICourseSimilar[]>([]);
   useEffect(() => {
@@ -27,22 +27,21 @@ const ModalSurvey: React.FC<ModalSurveyProps> = ({ onClose, detailId }) => {
   const [filterLevel, setFilterLevel] = useState(ELevel.ALL_LEVELS);
   useEffect(() => {
     _.throttle(() => {
-      getCoursesSimilarTag(detailId)
+      getCoursesSimilarTag(detail.detail_id)
         .then((success) => setList(success.data))
         .catch((error) => console.log(error));
     }, 1000)();
-  }, [detailId]);
-
+  }, [detail]);
   return (
     <div className="bg-[#50505072] fixed top-0 bottom-0 z-50 h-screen w-screen flex items-center justify-center">
       <div
         className={
-          "w-2/3 h-4/5 bg-white flex flex-col overflow-hidden rounded-lg p-2"
+          "w-2/3 h-3.5/5 bg-white flex flex-col overflow-hidden rounded-lg p-2"
         }
       >
         <div className="flex items-center justify-between gap-2 p-8">
           <div className="flex items-center gap-2">
-            <h2 className="font-semibold text-2xl">Basic Operations</h2>
+            <h2 className="font-semibold text-2xl">{detail.detail_name}</h2>
             <span>
               <svg
                 width="21"
@@ -114,7 +113,7 @@ const ModalSurvey: React.FC<ModalSurveyProps> = ({ onClose, detailId }) => {
         </div>
         <AnimatePresence mode="wait">
           <motion.div
-            className="flex-1 h-full py-8 px-12 border-2 border-t-transparent rounded-b-lg"
+            className="flex-1 h-full py-2 px-3 border-2 border-t-transparent rounded-b-lg overflow-y-auto"
             key={filterLevel}
             initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

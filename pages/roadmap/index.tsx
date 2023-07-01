@@ -1,13 +1,13 @@
 import { RoadMap } from "@/components/templates";
 import { HFLayout } from "@/layouts/Layouts";
 import { myRoadmap } from "apis/roadmap";
-import { IRoadmap } from "apis/roadmap/types";
+import { IDetail, IRoadmap } from "apis/roadmap/types";
 import { Permission } from "middleware";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export type StateStoreType = {
-  isOpenModal: string | undefined;
+  isOpenModal: IDetail | undefined;
   isOpenRechoose: boolean;
 };
 const RoadMapPage = () => {

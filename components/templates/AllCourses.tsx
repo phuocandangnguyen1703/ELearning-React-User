@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Controller, UseFormReturn } from "react-hook-form";
+import { Controller, UseFormReturn, useFieldArray } from "react-hook-form";
 import { Button, Select, TextField, useLoading } from "../atoms";
 import { OptionType } from "@/types/common";
 import { Course, Pagination } from "../moleculers";
@@ -7,7 +7,7 @@ import { StateStoreType } from "@/pages/course";
 import { allCourses } from "@/apis/course";
 import Link from "next/link";
 import _ from "lodash";
-import { searchCourses } from "@/apis/search";
+import { allMaintypes, allUsers, searchCourses } from "@/apis/search";
 interface CoursesProps {
   stateStore: UseFormReturn<StateStoreType, any>;
 }
@@ -40,6 +40,49 @@ const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
         .catch((error) => console.log(error));
     }, 300)();
   }, []);
+  useEffect(() => {
+    allUsers()
+      .then((success) =>
+        stateStore.setValue(
+          "option.authors",
+          success.data.map((user) => ({
+            label: user.fullname,
+            value: user._id,
+          }))
+        )
+      )
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    allMaintypes()
+      .then((success) =>
+        stateStore.setValue(
+          "option.maintypes",
+          success.data.map((maintype) => ({
+            value: maintype._id,
+            label: maintype.type_name,
+          }))
+        )
+      )
+      .catch((error) => console.log(error));
+  }, []);
+  const maintypeArray = useFieldArray({
+    control: stateStore.control,
+    name: "option.maintypes",
+  });
+  const authorArray = useFieldArray({
+    control: stateStore.control,
+    name: "option.authors",
+  });
+  const languageArray = useFieldArray({
+    control: stateStore.control,
+    name: "option.languages",
+  });
+  const levelArray = useFieldArray({
+    control: stateStore.control,
+    name: "option.levels",
+  });
   return (
     <div className="flex flex-col items-center overflow-x-hidden">
       <div className="w-full h-44 flex items-center justify-center bg-[url('/bg-all-courses.png')] bg-cover flex-col gap-2">
@@ -56,18 +99,14 @@ const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
             )}
           />
 
-          <Button className="flex items-center justify-center !bg-[#0066FF]">
+          <Button
+            className="flex items-center justify-center !bg-[#0066FF]"
+            onClick={handleSearch}
+          >
             Search
           </Button>
         </div>
         <div className="flex items-center justify-center gap-4">
-          <Controller
-            name="type"
-            control={stateStore.control}
-            render={({ field }) => (
-              <Select placeHolder="Type" options={[]} {...field} />
-            )}
-          />
           <Controller
             name="type"
             control={stateStore.control}
@@ -80,7 +119,7 @@ const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
               />
             )}
           />
-          <Controller
+          {/* <Controller
             name="type"
             control={stateStore.control}
             render={({ field }) => (
@@ -90,7 +129,7 @@ const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
                 {...field}
               />
             )}
-          />
+          /> */}
           <Controller
             name="type"
             control={stateStore.control}

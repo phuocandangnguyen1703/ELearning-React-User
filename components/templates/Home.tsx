@@ -52,7 +52,7 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
               công ty tuyển dụng,...
             </p>
             <Button
-              className="!bg-blue-500 uppercase h-12 !text-base"
+              className="!bg-blue-500 uppercase h-12 !text-base flex justify-center"
               onClick={() => router.push("/chatbot")}
             >
               TRÒ CHUYỆN NGAY
@@ -96,14 +96,14 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
               </Link>
               <div className="row-start-2  rounded-xl overflow-hidden p-6 bg-[url('/home_c.png')] bg-cover bg-no-repeat">
                 <div>
-                  <h2 className="uppercase font-medium">lộ trình của bạn</h2>
-                  <p className="text-sm text-[#4F4F4F]">Tiến độ 15%</p>
+                  <h2 className="uppercase font-medium">Bài kiểm tra</h2>
+                  <p className="text-sm text-[#4F4F4F]">Coming soon</p>
                 </div>
               </div>
               <div className="row-start-2  rounded-xl overflow-hidden p-6 bg-[url('/home_d.png')] bg-cover bg-no-repeat">
                 <div>
-                  <h2 className="uppercase font-medium">lộ trình của bạn</h2>
-                  <p className="text-sm text-[#4F4F4F]">Tiến độ 15%</p>
+                  <h2 className="uppercase font-medium">Giấy chứng nhận</h2>
+                  <p className="text-sm text-[#4F4F4F]">Coming soon</p>
                 </div>
               </div>
             </div>
@@ -152,7 +152,7 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
               </div>
             )}
           />
-          <div className="mt-8">
+          {/* <div className="mt-8">
             <h2 className="uppercase text-3xl text-center text-[#000054] pb-8">
               Hơn 12.000 khóa học được tìm kiếm
             </h2>
@@ -162,7 +162,7 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
                 placeholder="Bạn muốn học gì?"
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

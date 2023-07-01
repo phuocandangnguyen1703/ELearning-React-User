@@ -1,5 +1,5 @@
 import { ICourse } from "@/types/course";
-import { getVideo } from "apis/learning";
+import { getVideo, streamVideo } from "apis/learning";
 import clsx from "clsx";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ type Props = {
   course: ICourse;
 };
 const Elearning = ({ lessonId, course, courseId }: Props) => {
-  const [video, setVideo] = useState<string | undefined>();
+  const [videoToken, setVideoToken] = useState<string | undefined>();
   const loading = useLoading();
   useEffect(() => {
     if (!lessonId) return;
@@ -23,7 +23,7 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
     (async () => {
       loading.open();
       await getVideo(lessonId, courseId)
-        .then((success) => setVideo(success))
+        .then((success) => setVideoToken(success))
         .catch((error) => console.log(error));
       loading.close();
     })();
@@ -54,7 +54,12 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
             </div>
           </div>
           <div className="rounded-xl overflow-hidden w-full">
-            {video && <Video video={video} thumbnail={thumbnail.src}></Video>}
+            {videoToken && (
+              <Video
+                video={streamVideo(videoToken)}
+                thumbnail={thumbnail.src}
+              ></Video>
+            )}
           </div>
         </div>
         <div className="w-[21rem] h-full flex flex-col gap-8">
@@ -65,7 +70,7 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
             <div className="flex flex-col gap-2 flex-1 overflow-hidden">
               <div className="flex items-center justify-between">
                 <p className="text-sm uppercase text-[#2F80ED]">
-                  2/5 COMPLETED
+                  0/{course.chapters.length} COMPLETED
                 </p>
                 <p className="text-sm uppercase text-[#2F80ED]">
                   <BsCalendarMinus size={18} />
@@ -76,7 +81,7 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
                   <span
                     key={chapter._id}
                     className={clsx("flex-1 h-1 bg-[#2F80ED]", {
-                      "opacity-25": index > 2,
+                      "opacity-25": index >= 0,
                     })}
                   />
                 ))}

@@ -15,3 +15,5 @@ export function extractLastName(fullName: string) {
   const lastName = words[words.length - 1];
   return lastName;
 }
+
+

@@ -101,12 +101,12 @@ const Login: React.FC<LoginProps> = ({ loginForm, handleSubmit }) => {
                   >
                     Đăng nhập
                   </Button>
-                  <p className="text-center italic text-sm text-[#838383]">
+                  {/* <p className="text-center italic text-sm text-[#838383]">
                     Hoặc
                   </p>
                   <Button className="!text-sm font-medium gap-2 !bg-[#F6F6F6] h-10 flex items-center justify-center !text-[#2F80ED]">
                     <FcGoogle size={20} /> Đăng nhập với Google
-                  </Button>
+                  </Button> */}
                 </form>
               </motion.div>
             </AnimatePresence>

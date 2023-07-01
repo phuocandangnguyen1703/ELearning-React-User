@@ -51,13 +51,37 @@ const Course: React.FC<CourseProps> = ({ fitWidth, courseId }) => {
       <Link
         href={`/course/${courseId}`}
         className="text-base font-semibold text-black"
+        style={
+          {
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            "-webkit-box-orient": "vertical",
+            "-webkit-line-clamp": 2 /* number of lines to show */,
+            lineHeight: "20px" /* fallback */,
+            maxHeight: "40px",
+          } as React.CSSProperties
+        }
       >
         {course?.course_name}
       </Link>
-      <p className="line-clamp-3 text-sm opacity-70 flex-1">
+      <p
+        className="line-clamp-2 text-sm opacity-70 flex-1"
+        style={
+          {
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            "-webkit-box-orient": "vertical",
+            "-webkit-line-clamp": 2 /* number of lines to show */,
+            lineHeight: "20px" /* fallback */,
+            maxHeight: "40px",
+          } as React.CSSProperties
+        }
+      >
         {course?.description}
       </p>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between truncate">
         <div className="flex items-center">
           <div className="flex-shrink-0">
             <img
@@ -74,7 +98,18 @@ const Course: React.FC<CourseProps> = ({ fitWidth, courseId }) => {
         </div>
         <div className="flex gap-1 items-center">
           {/* <p className="line-through text-sm opacity-50"></p> */}
-          <p className="text-lg text-[#2F80ED] font-bold">
+          <p
+            className="text-lg text-[#2F80ED] font-bold truncate max-h-[]"
+            style={
+              {
+                display: "-webkit-box",
+                "-webkit-box-orient": "vertical",
+                "-webkit-line-clamp": 2 /* number of lines to show */,
+                lineHeight: "20px" /* fallback */,
+                maxHeight: "40px",
+              } as React.CSSProperties
+            }
+          >
             {course?.course_fee.toLocaleString()} đ
           </p>
         </div>

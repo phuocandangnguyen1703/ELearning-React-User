@@ -22,7 +22,7 @@ for (const colorName in tailwindColors) {
   const pallette = tailwindColors[colorName];
 
   if (typeof pallette === "object") {
-    shades.forEach((shade) => {
+    shades?.forEach((shade) => {
       if (shade in pallette) {
         colorSafeList.push(`text-${colorName}-${shade}`);
         colorSafeList.push(`bg-${colorName}-${shade}`);
