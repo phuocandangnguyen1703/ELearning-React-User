@@ -1,10 +1,11 @@
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ModalChoosen from "./ModalChoosen";
 import { useLoading } from "../atoms";
 import { chooseMaintype, processRecommend } from "@/apis/recommend";
 import { useToast } from "@iscv/toast";
 import Router, { useRouter } from "next/router";
+import _ from "lodash";
 
 type Props = {
   setOpen: (e: boolean) => void;
@@ -38,20 +39,23 @@ const ModalRechoose = (props: Props) => {
       loading.close();
     })();
   }, []);
-  const handleChoose = async (choosen: string) => {
-    loading.open();
-    await chooseMaintype(choosen)
-      .then((success) => {
-        toast.success();
-        handleReload();
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error;
-      });
-    loading.close();
-  };
+  const handleChoose = useCallback(
+    _.throttle(async (choosen: string) => {
+      loading.open();
+      await chooseMaintype(choosen)
+        .then((success) => {
+          toast.success();
+          handleReload();
+          setOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error;
+        });
+      loading.close();
+    }, 1500),
+    []
+  );
   return (
     <div className="bg-[#50505072] fixed top-0 bottom-0 z-50 h-screen w-screen flex items-center justify-center rounded-2xl overflow-hidden">
       <div

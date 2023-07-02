@@ -17,6 +17,7 @@ import {
   flutter,
   frontend,
 } from "@/assets/home";
+import _ from "lodash";
 
 const ModalChoosen = (props: Props) => {
   const { prediction, handleChoose, setOpen } = props;
@@ -76,7 +77,10 @@ const ModalChoosen = (props: Props) => {
               >
                 <button
                   className="flex shadow-lg p-[7px] rounded-2xl items-center"
-                  onClick={() => handleChoose(item.maintype_id)}
+                  onClick={_.throttle(
+                    () => handleChoose(item.maintype_id),
+                    1500
+                  )}
                 >
                   <Image
                     alt="main_type"

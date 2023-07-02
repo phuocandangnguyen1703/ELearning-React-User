@@ -10,13 +10,13 @@ const ChatbotRecent = (props: Props) => {
   return (
     <>
       <div
-        className=" flex-1 bg-cover blur-sm overflow-hidden"
+        className=" flex-1 bg-cover overflow-hidden"
         style={{ backgroundImage: `url(${chatBackground.src})` }}
       ></div>
       <div className=" absolute inset-0">
-        <div className="px-[19px] py-[10px] text-white font-semibold text-lg">
+        {/* <div className="px-[19px] py-[10px] text-white font-semibold text-lg">
           <span>Tin nhắn gần đây</span>
-        </div>
+        </div> */}
         <div className="flex flex-col w-full overflow-y-auto p-[12px] gap-2">
           {/* {recents?.map((recent) => {
             return <ChatbotRecentItem></ChatbotRecentItem>;

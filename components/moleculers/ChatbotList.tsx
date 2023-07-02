@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { EChatbotFrom, IChatbot } from "@/types/chatbot";
 import { ChatbotContext } from "../contexts/ChatbotContext";
+import { avatar } from "@/assets/mycourse";
 type Props = {
   chats: IChatbot[];
 };
@@ -35,7 +36,7 @@ const ChatbotList = ({ chats }: Props) => {
                   {chat.messages}
                 </div>
                 <Image
-                  src="https://cafebiz.cafebizcdn.vn/thumb_w/600/162123310254002176/2021/4/22/photo1619081646120-16190816462552046046483.jpg"
+                  src={avatar.src}
                   alt="avatar"
                   className="rounded-full w-9 h-9 object-cover"
                   width={40}

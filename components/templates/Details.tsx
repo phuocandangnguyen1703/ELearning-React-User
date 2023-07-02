@@ -318,7 +318,7 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
               </div>
             </div>
           </div>
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             {[1, 2, 3, 4].map((num) => (
               <Button
                 key={num}
@@ -327,7 +327,7 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
                 Overview
               </Button>
             ))}
-          </div>
+          </div> */}
           <Controller
             control={control}
             name="review"

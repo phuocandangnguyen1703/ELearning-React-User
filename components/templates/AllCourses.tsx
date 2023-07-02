@@ -106,7 +106,7 @@ const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
             Search
           </Button>
         </div>
-        <div className="flex items-center justify-center gap-4">
+        {/* <div className="flex items-center justify-center gap-4">
           <Controller
             name="type"
             control={stateStore.control}
@@ -119,7 +119,7 @@ const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
               />
             )}
           />
-          {/* <Controller
+          <Controller
             name="type"
             control={stateStore.control}
             render={({ field }) => (
@@ -129,7 +129,7 @@ const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
                 {...field}
               />
             )}
-          /> */}
+          />
           <Controller
             name="type"
             control={stateStore.control}
@@ -144,7 +144,7 @@ const AllCourses: React.FC<CoursesProps> = ({ stateStore }) => {
               <Select placeHolder="Level" options={[]} {...field} />
             )}
           />
-        </div>
+        </div> */}
       </div>
       <div className="max-w-full min-w-[70%] mt-10 flex flex-col items-center">
         <div className="grid grid-cols-4 grid-rows-2 gap-4 content-center">

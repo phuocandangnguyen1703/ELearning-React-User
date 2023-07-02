@@ -32,14 +32,14 @@ const ChatbotMain = (props: Props) => {
             <i className=" text-sm text-1">Trợ lý AI</i>
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <Button className=" bg-blue-secondary flex justify-center items-center !rounded-full w-[40px] h-[40px] !p-2">
               <AiOutlineSearch className="text-xl w-full h-full"></AiOutlineSearch>
             </Button>
             <Button className=" bg-blue-secondary flex justify-center items-center !rounded-full w-[40px] h-[40px] !p-2">
               <AiOutlineClose className="text-xl w-full h-full"></AiOutlineClose>
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
 
