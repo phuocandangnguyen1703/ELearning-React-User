@@ -1,0 +1,9 @@
+export { default as Header } from "./Header";
+export { default as Footer } from "./Footer";
+export { default as ModalSurvey } from "./ModalSurvey";
+export { default as ImageComponent } from "./ImageComponent";
+export { default as ModalRoadMap } from "./ModalRoadMap";
+export { default as ChatbotAside } from "./ChatbotAside";
+export { default as ChatbotSearch } from "./ChatbotSearch";
+export { default as ModalChoosen } from "./ModalChoosen";
+export { default as ModalRechoose } from "./ModalRechoose";
