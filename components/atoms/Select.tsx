@@ -130,7 +130,7 @@ const SelectComplete: React.FC<ISelectProps> = forwardRef<
 			);
 		};
 		return (
-			<div className="flex flex-col w-full relative pb-2">
+			<div className="flex flex-col w-full relative pb-2 min-w-[40%]">
 				{title && (
 					<label
 						htmlFor="name"
