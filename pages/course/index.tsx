@@ -18,7 +18,6 @@ export type StateStoreType = {
 		levels: OptionType[];
 	};
 	maintype_id: OptionType;
-	author_id: OptionType;
 	language: OptionType;
 	level: OptionType;
 };
@@ -98,7 +97,7 @@ const AllCoursePage = () => {
 	}, []);
 
 	const onChangeFilter = () => {
-		const { language, level, author_id } = stateStore.getValues();
+		const { language, level, maintype_id } = stateStore.getValues();
 	};
 
 	const props = {

@@ -1,7 +1,7 @@
 import { StateStoreType } from "@/pages/course";
 import React from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
-import { Button, Select, TextField } from "../atoms";
+import { Button, TextField } from "../atoms";
 import { Course, Pagination } from "../moleculers";
 interface CoursesProps {
 	stateStore: UseFormReturn<StateStoreType, any>;
@@ -36,17 +36,17 @@ const AllCourses: React.FC<CoursesProps> = ({
 						Tìm
 					</Button>
 				</div>
-				<div className="flex items-center justify-center gap-4">
+				{/* <div className="flex items-center justify-center gap-4">
 					<Controller
-						name="option.authors"
+						name="option.maintypes"
 						control={stateStore.control}
 						render={({ field: { value: opts } }) => (
 							<Controller
-								name="author_id"
+								name="maintype_id"
 								control={stateStore.control}
 								render={({ field }) => (
 									<Select
-										placeHolder="Author"
+										placeHolder="Chủ đề"
 										options={opts}
 										value={field.value}
 										onChange={(v) => {
@@ -101,7 +101,7 @@ const AllCourses: React.FC<CoursesProps> = ({
 							/>
 						)}
 					/>
-				</div>
+				</div> */}
 			</div>
 			<div className="max-w-full min-w-[70%] mt-10 flex flex-col items-center">
 				<div className="grid grid-cols-4 grid-rows-2 gap-4 content-center">
