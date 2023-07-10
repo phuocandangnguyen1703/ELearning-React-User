@@ -1,4 +1,5 @@
 import { ICourse } from "@/types/course";
+import { EPaymentStatus } from "@/types/payment";
 import AxiosServices from "apis/axiosServices";
 
 export const getCoursesSimilar = (courseId: string) => {
@@ -14,7 +15,7 @@ export const getCoursePrice = (courseId: string) => {
 };
 
 export const checkPayment = (courseId: string) => {
-  return new AxiosServices().get<{ is_paid: boolean }>(
+  return new AxiosServices().get<{ payment_status: EPaymentStatus }>(
     `payment/check_payment?course_id=${courseId}`
   );
 };

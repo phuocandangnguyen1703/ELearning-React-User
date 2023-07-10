@@ -8,6 +8,7 @@ export const checkStatus = (userId: string) => {
       maintype: string;
       maintype_id: any;
       percent: number;
+      order: number;
     }[];
   }>(`recommend/check_status/${userId}`);
 };
@@ -22,6 +23,7 @@ export const processRecommend = (skills?: string[]) => {
       maintype: string;
       maintype_id: string;
       percent: number;
+      order: number;
     }[]
   >("/recommend/process_recommend", {
     skills,

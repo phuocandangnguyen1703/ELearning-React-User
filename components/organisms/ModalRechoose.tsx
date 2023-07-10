@@ -19,6 +19,7 @@ const ModalRechoose = (props: Props) => {
       maintype: string;
       maintype_id: string;
       percent: number;
+      order: number;
     }[]
   >([]);
 

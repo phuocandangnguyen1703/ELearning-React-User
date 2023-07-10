@@ -28,6 +28,7 @@ import { useSelector } from "react-redux";
 import { Button, ImageOptimizing, TextAreaField, useLoading } from "../atoms";
 import { Course } from "../moleculers";
 import { ImageComponent } from "../organisms";
+import { EPaymentStatus } from "@/types/payment";
 interface DetailsProps {
   imageURL: string;
   course: ICourse | undefined;
@@ -35,7 +36,7 @@ interface DetailsProps {
 }
 
 type IForm = {
-  isPaid: boolean;
+  paymentStatus: EPaymentStatus | undefined;
   review: ICourseReview | undefined;
   rating: {
     isRating: boolean;
@@ -53,7 +54,7 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
   const toast = useToast();
   const { control, setValue, getValues } = useForm<IForm>({
     defaultValues: {
-      isPaid: false,
+      paymentStatus: undefined,
       review: undefined,
       rating: {
         isRating: false,
@@ -69,7 +70,9 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
     (async () => {
       loading.open();
       await checkPayment(courseId as string)
-        .then((success) => setValue("isPaid", success.data.is_paid))
+        .then((success) =>
+          setValue("paymentStatus", success.data.payment_status)
+        )
         .catch((error) => console.log(error));
       loading.close();
     })();
@@ -249,8 +252,7 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
                 <p className="text-sm uppercase text-[#2F80ED]">
                   Đã hoàn thành 0/{course?.chapters.length}
                 </p>
-                <p className="text-sm uppercase text-[#2F80ED]">
-                </p>
+                <p className="text-sm uppercase text-[#2F80ED]"></p>
               </div>
               <div className="flex gap-1">
                 {course?.chapters.map((chapter, index) => (
@@ -348,7 +350,7 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
                         })}
                       </div>
                       <h2 className="font-normal text-[#00000080] text-xl">
-                       Top đánh giá
+                        Top đánh giá
                       </h2>
                     </div>
                     <div className="flex-1 h-full bg-white rounded-2xl p-2 flex flex-col gap-2">
@@ -653,27 +655,33 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
 
           <Controller
             control={control}
-            name="isPaid"
-            render={({ field: { value: isPaid } }) => {
+            name="paymentStatus"
+            render={({ field: { value: paymentStatus } }) => {
               return (
                 <Button
                   className={clsx(
                     "w-full text-base font-bold h-15 text-center flex justify-center items-center",
                     {
-                      "!bg-[#2F80ED]": !isPaid,
-                      "!bg-green-600": isPaid,
+                      "!bg-[#2F80ED]": !paymentStatus,
+                      " !bg-yellow-600":
+                        paymentStatus === EPaymentStatus.PENDING,
+                      "!bg-green-600": paymentStatus === EPaymentStatus.PAID,
                     }
                   )}
                   onClick={() => {
-                    if (isPaid) {
+                    if (paymentStatus === EPaymentStatus.PAID) {
                       setValue("rating.isRating", true);
                       return;
                     }
-                    router.push(`/payment?course_id=${course?._id}`);
+                    if (!paymentStatus) {
+                      router.push(`/payment?course_id=${course?._id}`);
+                      return;
+                    }
                   }}
                 >
-                  {!isPaid && "Mua ngay"}
-                  {isPaid && "Đánh giá ngay"}
+                  {!paymentStatus && "Mua ngay"}
+                  {paymentStatus === EPaymentStatus.PENDING && "Chờ thanh toán"}
+                  {paymentStatus === EPaymentStatus.PAID && "Đánh giá ngay"}
                 </Button>
               );
             }}
@@ -715,12 +723,14 @@ const Details: React.FC<DetailsProps> = ({ imageURL, course, courseId }) => {
           <div className="h-[1px] w-full bg-black"></div>
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-bold text-black">
-             Khoá học này đào tạo:
+              Khoá học này đào tạo:
             </h2>
             <p className="text-[#696984] text-sm">{course?.description}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <h2 className="text-xl font-bold text-black">Chia sẻ khoá học này</h2>
+            <h2 className="text-xl font-bold text-black">
+              Chia sẻ khoá học này
+            </h2>
             <div className="flex items-center gap-2">
               <AiFillTwitterCircle size={18} />
               <AiFillGoogleCircle size={18} />

@@ -5,6 +5,7 @@ type Props = {
     maintype: string;
     maintype_id: string;
     percent: number;
+    order: number;
   }[];
   handleChoose: (choosen: string) => void;
   setOpen: (e: boolean) => void;
@@ -18,6 +19,7 @@ import {
   frontend,
 } from "@/assets/home";
 import _ from "lodash";
+import { FirstIcon, SecondIcon, ThirdIcon } from "@/assets/recommend";
 
 const ModalChoosen = (props: Props) => {
   const { prediction, handleChoose, setOpen } = props;
@@ -68,7 +70,7 @@ const ModalChoosen = (props: Props) => {
       <div className="flex flex-col items-stretch gap-7">
         <p>Chọn 1 lộ trình dưới đây để bắt đầu hành trình của bạn</p>
         {prediction
-          ?.filter((x) => Boolean(x.percent))
+          ?.filter((x) => Boolean(x.order))
           .map((item) => {
             return (
               <div
@@ -76,7 +78,7 @@ const ModalChoosen = (props: Props) => {
                 className="h-[105px] flex items-center"
               >
                 <button
-                  className="flex shadow-lg p-[7px] rounded-2xl items-center"
+                  className="flex shadow-lg p-[7px] rounded-2xl items-center flex-grow-[1] basis-0"
                   onClick={_.throttle(
                     () => handleChoose(item.maintype_id),
                     1500
@@ -93,8 +95,18 @@ const ModalChoosen = (props: Props) => {
                     {item.maintype}
                   </h4>
                 </button>
-                <div className=" shrink-0 text-center w-[160px] text-2xl ">
-                  {item.percent?.toFixed(2)} %
+                <div className=" shrink-0 text-center w-[160px] text-2xl flex justify-center items-center">
+                  <Image
+                    alt="rank"
+                    src={
+                      (item.order === 1 && FirstIcon.src) ||
+                      (item.order === 2 && SecondIcon.src) ||
+                      (item.order === 3 && ThirdIcon.src) ||
+                      ""
+                    }
+                    width={100}
+                    height={100}
+                  ></Image>
                 </div>
               </div>
             );
@@ -109,7 +121,7 @@ const ModalChoosen = (props: Props) => {
         <div className="w-full overflow-hidden">
           <div className="flex gap-5 overflow-y-auto py-8 px-1">
             {prediction
-              .filter((x) => !Boolean(x.percent))
+              .filter((x) => !Boolean(x.order))
               .map((item) => {
                 return (
                   <div
