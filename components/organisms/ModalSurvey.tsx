@@ -47,14 +47,7 @@ const QUESTIONS = [
     name: "q3",
     type: "input",
     questions: [
-      "Hãy liệt kê một số kỹ năng hoặc ngôn ngữ lập trình mà bạn từng sử dụng nhé",
-    ],
-  },
-  {
-    name: "q4",
-    type: "input",
-    questions: [
-      "Hãy liệt kê một số kỹ năng hoặc ngôn ngữ lập trình mà bạn muốn tìm hiểu nhé",
+      "Hãy liệt kê một số kỹ năng hoặc ngôn ngữ lập trình mà bạn yêu thích nhé ",
     ],
   },
 ];
