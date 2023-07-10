@@ -130,7 +130,7 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
                             {lesson.lesson_name}
                           </p>
                           <p className=" whitespace-nowrap">
-                            {lesson.duration}h
+                            {lesson.duration}phút
                           </p>
                         </Link>
                       ))}
