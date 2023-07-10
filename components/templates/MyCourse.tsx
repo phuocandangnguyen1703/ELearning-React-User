@@ -21,8 +21,8 @@ const MyCourse = (props: Props) => {
       >
         <Image
           src={avatar.src}
-          width={500}
-          height={500}
+          width={400}
+          height={400}
           alt="avatar"
           className="rounded-full border-8 border-white w-[15rem] h-[15rem] object-cover"
         ></Image>

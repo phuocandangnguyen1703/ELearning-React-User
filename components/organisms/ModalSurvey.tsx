@@ -50,6 +50,13 @@ const QUESTIONS = [
       "Hãy liệt kê một số kỹ năng hoặc ngôn ngữ lập trình mà bạn từng sử dụng nhé",
     ],
   },
+  {
+    name: "q4",
+    type: "input",
+    questions: [
+      "Hãy liệt kê một số kỹ năng hoặc ngôn ngữ lập trình mà bạn muốn tìm hiểu nhé",
+    ],
+  },
 ];
 type Props = {};
 const ModalSurvey = (props: Props) => {
@@ -61,14 +68,7 @@ const ModalSurvey = (props: Props) => {
   const router = useRouter();
   const selectionRef = useRef<any>(null);
   const list = useRef<string[]>([]);
-  // useEffect(() => {
-  // 	const bodyElement = document.querySelector("body");
-  // 	if (bodyElement) bodyElement.classList.add("!overflow-hidden", "relative");
 
-  // 	return () => {
-  // 		if (bodyElement) bodyElement.classList.remove("!overflow-hidden");
-  // 	};
-  // }, []);
 
   useEffect(() => {
     listTag()

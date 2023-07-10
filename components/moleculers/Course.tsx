@@ -43,7 +43,8 @@ const Course: React.FC<CourseProps> = ({ fitWidth, courseId }) => {
           <FiClock color="gray" />
           {course?.duration && (
             <span className="text-xs">
-              {Math.round(course?.duration / 24)} days
+              {/*{Math.round(course?.duration / 24)} days*/}
+              Còn 1 ngày
             </span>
           )}
         </div>
@@ -90,8 +91,8 @@ const Course: React.FC<CourseProps> = ({ fitWidth, courseId }) => {
               alt="Avatar"
             />
           </div>
-          <div className="ml-4">
-            <h2 className="text-base font-bold text-gray-900">
+          <div className="ml-2">
+            <h2 className="text-base font-bold text-gray-600">
               {course?.fullname && extractLastName(course?.fullname!)}
             </h2>
           </div>

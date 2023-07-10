@@ -113,7 +113,7 @@ const Home: React.FC<HomeProps> = ({ courses, stateStore, user }) => {
 					<div className="py-4">
 						<div className="flex justify-between items-center overflow-auto">
 							<h2 className="uppercase text-xl font-medium">
-								KHóa học phổ biến
+								Khóa học phổ biến
 							</h2>
 							<Link
 								href="/course"
