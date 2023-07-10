@@ -47,8 +47,8 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
                 </h1>
 
                 <div className="flex items-center gap-4 text-xs">
-                  <p>{course.lesson_quantity} Lesson</p>
-                  <p>{course.duration} hours</p>
+                  <p>{course.lesson_quantity} Bài học</p>
+                  <p>{course.duration} Phút</p>
                 </div>
               </div>
             </div>
@@ -70,10 +70,7 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
             <div className="flex flex-col gap-2 flex-1 overflow-hidden">
               <div className="flex items-center justify-between">
                 <p className="text-sm uppercase text-[#2F80ED]">
-                  0/{course.chapters.length} COMPLETED
-                </p>
-                <p className="text-sm uppercase text-[#2F80ED]">
-                  <BsCalendarMinus size={18} />
+                 ĐÃ HOÀN THÀNH 0/{course.chapters.length}
                 </p>
               </div>
               <div className="flex gap-1">
@@ -110,11 +107,11 @@ const Elearning = ({ lessonId, course, courseId }: Props) => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1 text-xs text-[#252641CC]">
                           <AiOutlineClockCircle size={14} />
-                          <span>{chapter.duration} Hour</span>
+                          <span>{chapter.duration} Phút</span>
                         </div>
                         <div className="flex items-center gap-1 text-xs text-[#252641CC]">
                           <BsBook size={14} />
-                          <span>{chapter.lessons?.length} Lessons</span>
+                          <span>{chapter.lessons?.length} Bài học</span>
                         </div>
                       </div>
                     </div>
