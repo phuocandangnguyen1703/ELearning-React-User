@@ -4,19 +4,20 @@ import { AllCourses } from "@/components/templates";
 import { HFLayout } from "@/layouts/Layouts";
 import { OptionType } from "@/types/common";
 import { ELanguage, ELevel } from "@/types/course";
-import { getEnumKeys, getEnumValues } from "@/utils/enum";
+import { getEnumKeys } from "@/utils/enum";
 import _ from "lodash";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 export type StateStoreType = {
 	search: string;
-	courses: string[];
+	courses: any[];
 	option: {
 		maintypes: OptionType[];
 		authors: OptionType[];
 		languages: OptionType[];
 		levels: OptionType[];
 	};
+	page: number;
 	maintype_id: OptionType;
 	language: OptionType;
 	level: OptionType;
@@ -27,7 +28,7 @@ const AllCoursePage = () => {
 		defaultValues: {
 			search: "",
 			courses: [],
-
+			page: 1,
 			option: {
 				maintypes: [],
 				authors: [],
@@ -98,6 +99,9 @@ const AllCoursePage = () => {
 
 	const onChangeFilter = () => {
 		const { language, level, maintype_id } = stateStore.getValues();
+		// call api
+		const courses: any = [];
+		stateStore.setValue("courses", courses);
 	};
 
 	const props = {

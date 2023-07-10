@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { CgChevronDoubleLeft, CgChevronDoubleRight } from "react-icons/cg";
+import { useRouter } from "next/router";
 interface PaginationProps {
 	currentPage: number;
 	pageSize: number;
@@ -16,7 +17,7 @@ const Pagination: React.FC<PaginationProps> = ({
 	onChange,
 }) => {
 	const [items, setItems] = useState<any[]>([]);
-
+	const { query, push, isReady } = useRouter();
 	const handleClickPrev = () => {
 		onChange(currentPage - 1);
 	};
@@ -57,6 +58,19 @@ const Pagination: React.FC<PaginationProps> = ({
 		setItems(listNums);
 	}, [pageSize, currentPage]);
 
+	useEffect(() => {
+		(async () => {
+			if (query?.page && isReady) {
+				const qPage = Number(query?.page);
+				if (pageSize < qPage) {
+					push("?page=1");
+				} else {
+					onChange(qPage);
+				}
+			}
+		})();
+	}, [query?.page, isReady, pageSize]);
+
 	const classNames = clsx("flex justify-center items-center w-full", {
 		[className as string]: !!className,
 	});
@@ -91,7 +105,10 @@ const Pagination: React.FC<PaginationProps> = ({
 				{items.map((num, index) => (
 					<div
 						key={num + index}
-						onClick={() => Number(num) && handleClickItem(num)}
+						onClick={() => {
+							Number(num) && handleClickItem(num);
+							push("?page=" + num);
+						}}
 						className={clsx(
 							"flex cursor-pointer justify-center items-center rounded-md font-bold text-sm bg-gray-100 min-w-[40px] h-10",
 							{
